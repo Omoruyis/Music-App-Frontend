@@ -40,15 +40,24 @@ class Signup extends Component {
 
     render() {
         return (
-            <div>
-                <form onSubmit={this.fetch}>
-                    <input type="email" placeholder="email" ref={el => this.email = el} />
-                    <input type="password" placeholder="password" ref={el => this.password = el} />
-                    <input type="text" placeholder="fistName" ref={el => this.firstname = el} />
-                    <input type="text" placeholder="lastName" ref={el => this.lastname = el} />
-                    <input type="number" placeholder="phone number" ref={el => this.number = el} />
-                    <button type="submit">Submit</button>
-                </form>
+            <div className="signup_image_container">
+                <div className="signup_container">
+                    <div className="signup_text">
+                        <p>Join The Largest Music Community In The World</p>
+                    </div>
+                    <div className="signup">
+                        <p className="signup_community">Join our community</p>
+                        <p className="signup_existing">Existing User? <a>Sign in</a></p>
+                        <form>
+                            <label>Display Name</label>
+                            <input type="text" placeholder="John Doe" className="underline"/>
+                            <label>E-mail Address</label>
+                            <input type="email" placeholder="johndoe@example.com"/>
+                            <label>Password</label>
+                            <input type="password"/>
+                        </form>
+                    </div>
+                </div>
             </div>
         );
     }

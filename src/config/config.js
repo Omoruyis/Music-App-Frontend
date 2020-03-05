@@ -1,4 +1,5 @@
-const url = 'http://localhost:8080'
+// const url = 'http://localhost:8080'
+const url = 'https://omoruyi-music-store-app.herokuapp.com'
 
 let token 
 let config 
