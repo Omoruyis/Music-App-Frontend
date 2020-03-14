@@ -93,9 +93,9 @@ class Welcome extends Component {
                                         <p>Album</p>
                                         <p>Time</p>
                                         <p>Add</p>
-                                        <img src={star} className="charts_like" />
+                                        <img src={star} alt="like" className="charts_like" />
                                     </div>
-                                }
+                                } else {return ''}
                             })}
                             <div id="charts_songs_button">
                                 <button className="charts_songs_button">Show More</button>
@@ -110,24 +110,24 @@ class Welcome extends Component {
                             {charts && charts.chartAlbums.map((album, index) => {
                                 if (index < 4) {
                                     return <div className="charts_albums" key={index}>
-                                        <img src={album.cover_big} className="chart_albums_image" alt="image-cover" />
+                                        <img src={album.cover_big} className="chart_albums_image" alt="album cover" />
                                         <p className="chart_album_title">{album.title}</p>
                                         <p className="chart_album_artist_name">{album.artist.name}</p>
                                     </div>
-                                }
+                                } else {return ''}
                             })}
                         </div>
                     </div>
                 </div>
                 <div className="advert_container">
-                    <img src={cd} className="cd_image" />
+                    <img src={cd} alt="cd" className="cd_image" />
                     <div className="advert_content">
                         <p className="advert_content_head">50 million songs on all your devices</p>
                         <p className="advert_content_text">Expand your music experience with music store. Access it on your desktop, or on your mobile browser</p>
                     </div>
                 </div>
                 <div className="iframe_container">
-                    <iframe scrolling="no" frameborder="0" allowTransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&emptyPlayer=true&playlist=false&width=100%&height=350&color=ff0000&layout=dark&size=medium&type=${type}s&id=${id}&app_id=1`} width="100%" height="90"></iframe> 
+                    <iframe title="music-player" scrolling="no" frameborder="0" allowTransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&emptyPlayer=true&playlist=false&width=100%&height=350&color=ff0000&layout=dark&size=medium&type=${type}s&id=${id}&app_id=1`} width="100%" height="90"></iframe> 
                 </div>
             </div>
         );

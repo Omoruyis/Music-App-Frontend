@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css';
@@ -16,4 +17,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect()(App);

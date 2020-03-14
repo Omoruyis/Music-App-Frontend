@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import config from '../config/config'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 import password from '../assets/images/password.png'
-
+import config from '../config/config'
 import '../App.css';
 
 class Signup extends Component {
@@ -59,7 +59,7 @@ class Signup extends Component {
                     </div>
                     <div className="signup">
                         <p className="signup_community">Join our community</p>
-                        <p className="signup_existing">Existing User? <a>Sign in</a></p>
+                        <p className="signup_existing">Existing User? <Link to="/">Sign in</Link></p>
                         <form className="signup_form" onSubmit={this.submitForm}>
                             <label className="signup_label">Display Name</label>
                             <input type="text" placeholder="John Doe" className="signup_text" ref={el => this.name = el} required='true' />
@@ -67,7 +67,7 @@ class Signup extends Component {
                             <input type="email" placeholder="johndoe@example.com" className="signup_text" ref={el => this.email = el} required='true' />
                             <div className="signup_password_container">
                                 <input type="password" placeholder="Password" minLength="6" className="signup_text_password" ref={el => this.password = el} required='true' />
-                                <img src={password} className="signup_password_image" onClick={this.show} />
+                                <img src={password}  alt="show password" className="signup_password_image" onClick={this.show} />
                             </div>
                         </form>
                         <button className="signup_button" onClick={this.submitForm}>

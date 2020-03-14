@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import { IconContext } from "react-icons";
 import { MdCancel } from "react-icons/md";
-import axios from 'axios'
-
-import config from '../config/config'
-import playButton from '../assets/images/playbutton.png'
-import play from '../assets/images/play.png'
-import star from '../assets/images/star.png'
-import cd from '../assets/images/cd.png'
-
 
 import '../App.css';
 

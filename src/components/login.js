@@ -75,7 +75,7 @@ class Login extends Component {
                         <input type="email" placeholder="Email Address" className="login_details" ref={el => this.email = el} required />
                         <div className="login_password">
                             <input type="password" placeholder="Password" minlength="6" className="login_details_password" ref={el => this.password = el} required />
-                            <img src={password} className="password_image" onClick={this.show} />
+                            <img src={password} alt="show password" className="password_image" onClick={this.show} />
                         </div>
                     </form>
                     <button className="login_button">LOGIN</button>
