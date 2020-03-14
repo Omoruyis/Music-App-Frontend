@@ -12,16 +12,33 @@ import '../App.css';
 
 class Welcome extends Component {
     state = {
-        charts: null
+        charts: null,
+        type: null,
+        id: 0,
     }
 
-    getCharts = () => {
-        axios.get(`${config.url}/explore`, config.headers)
-            .then(res => {
-                this.setState({
-                    charts: res.data
-                })
-            })
+    getCharts = async () => {
+        const result = await axios.get(`${config.url}/explore`, config.headers)
+        this.setState({
+            charts: result.data
+        })
+    }
+
+    play = (id, type) => {
+        this.setState({
+            id,
+            type
+        })
+    }
+
+    appendIframe = (e) => {
+        const parent = e.target.parentNode.parentNode
+        const html = `<div class="iframe">
+        <iframe scrolling="no" frameborder="0" allowTransparency="true" src="https://www.deezer.com/plugins/player?format=classic&autoplay=false&emptyPlayer=true&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=album&id=119606&app_id=1" width="700" height="90"></iframe>
+        <button onClick="removeIframe
+        ()">remove</button>
+    </div>`
+        parent.insertAdjacentHTML('beforeend', html)
     }
 
     componentDidMount() {
@@ -29,7 +46,7 @@ class Welcome extends Component {
     }
 
     render() {
-        const { charts } = this.state
+        const { charts, id, type } = this.state
 
         return (
             <div className="welcome_container">
@@ -48,21 +65,26 @@ class Welcome extends Component {
                     <div className="charts_songs_container">
                         <div className="charts_songs_title">
                             <p className="charts_songs_title_p">Top Songs</p>
-                            <div className="chart_songs_head">
-                                <p className="more_width">#</p>
-                                <p className="more_width">Track/Artist</p>
-                                <p>Album</p>
-                                <p>Time</p>
-                                <p>Add</p>
-                                <p>Like</p>
+                            <div className="iframe_container">
+                                <div className="chart_songs_head">
+                                    <p className="more_width">#</p>
+                                    <p className="more_width">Track/Artist</p>
+                                    <p>Album</p>
+                                    <p>Time</p>
+                                    <p>Add</p>
+                                    <p onClick={this.appendIframe}>Like</p>
+                                </div>
+                                
                             </div>
                             {charts && charts.tracks.map((track, index) => {
                                 if (index < 4) {
-                                    return <div className="charts_songs">
+                                    return <div className="charts_songs" key={index}>
                                         <div className="charts_songs_images">
                                             <p className="chart_song_number">{track.position}</p>
                                             <img src={track.album.cover} className="chart_song_cover" alt="track-cover" />
-                                            <img src={play} className="chart_song_play_image" alt="play" />
+                                            <img src={play} className="chart_song_play_image" alt="play" onClick={() => {
+                                                this.play(track.id, track.type)
+                                            }}/>
                                         </div>
                                         <div className="charts_songs_track">
                                             <p className="song">{track.title}</p>
@@ -87,7 +109,7 @@ class Welcome extends Component {
                         <div className="charts_albums_albums">
                             {charts && charts.chartAlbums.map((album, index) => {
                                 if (index < 4) {
-                                    return <div className="charts_albums">
+                                    return <div className="charts_albums" key={index}>
                                         <img src={album.cover_big} className="chart_albums_image" alt="image-cover" />
                                         <p className="chart_album_title">{album.title}</p>
                                         <p className="chart_album_artist_name">{album.artist.name}</p>
@@ -98,11 +120,14 @@ class Welcome extends Component {
                     </div>
                 </div>
                 <div className="advert_container">
-                    <img src={cd} className="cd_image"/>
+                    <img src={cd} className="cd_image" />
                     <div className="advert_content">
                         <p className="advert_content_head">50 million songs on all your devices</p>
                         <p className="advert_content_text">Expand your music experience with music store. Access it on your desktop, or on your mobile browser</p>
                     </div>
+                </div>
+                <div className="iframe_container">
+                    <iframe scrolling="no" frameborder="0" allowTransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&emptyPlayer=true&playlist=false&width=100%&height=350&color=ff0000&layout=dark&size=medium&type=${type}s&id=${id}&app_id=1`} width="100%" height="90"></iframe> 
                 </div>
             </div>
         );

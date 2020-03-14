@@ -1,30 +1,30 @@
-// const url = 'http://localhost:8080'
-const url = 'https://omoruyi-music-store-app.herokuapp.com'
+const url = 'http://localhost:8080'
+// const url = 'https://omoruyi-music-store-app.herokuapp.com'
 
-let token 
+// let token 
 let config 
+// token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTY4YjViNjJmZTQwZTMwMTBjYTFkMTIiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTgzOTIwNTY2fQ.ZsE5uI-JNYlmWF3vP6oYcGwHcgHfzqRgZ50OVG3ByRU"
 
-if (!token) {
-    config = {
-        url,
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json'
-        }
-    }
-} else {
+// if (!token) {
+//     config = {
+//         url,
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Accept: 'application/json'
+//         }
+//     }
+// } else {
     config = {
         url,
         headers: {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTU3YjRhYWZlN2ZiZDc4MzBkY2VlYmUiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTgyODA2MTg4fQ._mKRL6RGyQEvkphLZk3o8HZPxnEGJfIceZCas3frssM',
-                take: 'skskks',
-                Accept: 'application/json'
+                Accept: 'application/json',
+                authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTY4YjViNjJmZTQwZTMwMTBjYTFkMTIiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTgzOTIwNTY2fQ.ZsE5uI-JNYlmWF3vP6oYcGwHcgHfzqRgZ50OVG3ByRU'
             }
         }
     }
-}
+// }
 
 
 

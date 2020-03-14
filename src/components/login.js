@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import config from '../config/config'
 import axios from 'axios'
+import { GoogleLogin } from 'react-google-login'
+
+import password from '../assets/images/password.png'
 
 import '../App.css';
 
@@ -14,9 +17,19 @@ class Login extends Component {
         }
     }
 
+    responseGoogle = (res) => {
+        axios.post(`${config.url}/googleLogin`, {id: res.googleId, email: res.profileObj.email, displayName: res.profileObj.name}, config.headers)
+            .then(res => {
+                console.log('thanks')
+                console.log(res.data)
+                localStorage.setItem("token", res.data.token);
+            })
+            .catch(e => console.log('this is the error', e))
+    }
+      
     login = (e) => {
         e.preventDefault()
-        if (!this.validEmail(this.email.value) ) {
+        if (!this.validEmail(this.email.value)) {
             return alert('wrong email address')
         }
 
@@ -26,10 +39,11 @@ class Login extends Component {
         }
 
         axios.post(`${config.url}/login`, request, config.headers)
-            .then(user => {
-                console.log(user)
+            .then(res => {
+                console.log(res)
+                localStorage.setItem("token", res.data.token);
             })
-            .catch(e => console.log('this is the error', e))   
+            .catch(e => console.log('this is the error', e))
     }
 
     update = (e) => {
@@ -47,24 +61,43 @@ class Login extends Component {
             .catch(e => console.log('this is the error', e))
     }
 
+    show = () => {
+        this.password.type = this.password.type === 'password' ? 'text' : 'password'
+    }
+
 
     render() {
         return (
-            <div>
-                <form onSubmit={this.login}>
-                    <input type="email" placeholder="email" ref={el => this.email = el}/>
-                    <input type="password" placeholder="password" ref={el => this.password = el}/>
-                    <button type="submit">Submit</button>
-                </form>
-                <form onSubmit={this.update}>
-                    <input type="email" placeholder="email" ref={el => this.newemail = el} />
-                    <input type="password" placeholder="password" ref={el => this.newpassword = el} />
-                    <input type="password" placeholder="new password" ref={el => this.updatedpassword = el} />
-                    <button type="submit">Change Password</button>
-                </form>
+            <div className="login_container">
+                <div className="login_section">
+                    <p className="login">LOGIN</p>
+                    <form onSubmit={this.login} style={{width: '100%'}}>
+                        <input type="email" placeholder="Email Address" className="login_details" ref={el => this.email = el} required />
+                        <div className="login_password">
+                            <input type="password" placeholder="Password" minlength="6" className="login_details_password" ref={el => this.password = el} required />
+                            <img src={password} className="password_image" onClick={this.show} />
+                        </div>
+                    </form>
+                    <button className="login_button">LOGIN</button>
+                    <div className="login_or">
+                        <div className="login_underline"></div><p className="login_text">Or</p><div className="login_underline"></div>
+                    </div>
+                    <GoogleLogin 
+                        clientId= "271277109562-8tt8jqb5m0cg2b5pgph5ig419irp4ir2.apps.googleusercontent.com"
+                        buttonText= "LOGIN WITH GOOGLE"
+                        onSuccess={this.responseGoogle}
+                        onFailure={this.responseGoogle}
+                        cookiePolicy={'single_host_origin'}
+                        className="login_google"
+                    />
+                    <div className="login_create_account">
+                        <p className="login_text">Don't have an account?</p>
+                        <button className="login_button">SIGN UP</button>
+                    </div>
+                </div>
             </div>
         );
-    }  
+    }
 }
 
 export default Login;

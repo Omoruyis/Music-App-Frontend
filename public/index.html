@@ -29,6 +29,7 @@
 </head>
 
 <body>
+  <div class="g-signin2" data-onsuccess="onSignIn"></div>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
   <!--
@@ -51,6 +52,14 @@
     src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
     crossorigin
   ></script>
+  <script>
+    const removeIframe = function () {
+      const iframe = Array.from(document.querySelectorAll('.iframe'))
+      console.log(iframe)
+      iframe.forEach(cur => cur.innerHTML = '')
+      console.log(iframe)
+  }
+  </script>
 </body>
 
 </html>
