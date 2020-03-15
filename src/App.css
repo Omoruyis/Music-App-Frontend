@@ -598,7 +598,7 @@
 .explore_tracks {
   display: flex;
   height: 250px;
-  width: 500px;
+  width: 50%;
   cursor: pointer;
   position: relative;
 }
@@ -804,6 +804,23 @@
 #current {
   color: red;
 }
+
+/*****Playlist ******/
+.playlist_container {
+  padding: 20px 100px 20px 100px;
+}
+
+.playlist_header {
+  display: flex;
+  width: 50%; 
+  height: 250px;
+}
+
+.playlist_image {
+  height: 100%;
+  width: 40%;
+}
+
 
 /*****Welcome Page ***/ 
 @media (max-width: 850px) {

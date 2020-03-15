@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { IconContext } from "react-icons";
 import { MdCancel } from "react-icons/md";
+import { Link } from 'react-router-dom'
 
 import '../../App.css';
 
@@ -30,6 +31,7 @@ class Nav extends Component {
 
     render() {
         const { inputValue, name } = this.state
+        const { type, id } = this.props
         return (
             <div className="explorenav_container">
                 <div className="explorenav_search">
@@ -45,8 +47,12 @@ class Nav extends Component {
                         <p className="display_name">{name}</p>
                     </div> :
                     <div className="explorenav_buttons">
+                        <Link to={`/login?redirect_link=${type}${id}`} style={{textDecoration: 'none' }} >
                         <button className="explorenav_login">Login</button>
+                        </Link>
+                        <Link to={`/signup?redirect_link=${type}${id}`} style={{textDecoration: 'none' }}>
                         <button className="explorenav_signup">Sign up</button>
+                        </Link>
                     </div>
                 }
 

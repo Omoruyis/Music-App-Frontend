@@ -18,7 +18,7 @@ class Playlist extends Component {
     }
 
     getPlaylists = async () => {
-        const result = await axios.get(`${config().url}/search/playlist`, { id: this.props.match.params.id }, config().headers)
+        const result = await axios.post(`${config().url}/search/playlist`, { id: this.props.match.params.id }, config().headers)
         this.setState({
             playlist: result.data
         })
@@ -38,17 +38,19 @@ class Playlist extends Component {
     }
 
     render() {
-        const { playlistId } = this.state
+        const { playlistId, loggedIn, playlist } = this.state
         const { match } = this.props
 
         return (
             <div className="general_container">
                 {loggedIn ? <Sidebar current="explore" /> : ''}
                 <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
-                    <Nav />
+                    <Nav type="playlist" id={match.params.id}/>
                     {playlist ?
                         <div className="playlist_container">
-                            <img src={playlist.picture_medium} />
+                            <div className="playlist_header">
+                                <img src={playlist.picture_medium} className="playlist_image" />
+                            </div>
                         </div> : ''}
                 </div>
             </div>

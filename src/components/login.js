@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import config from '../config/config'
 import axios from 'axios'
 import { GoogleLogin } from 'react-google-login'
+import queryString from 'query-string'
 
 import password from '../assets/images/password.png'
 
@@ -18,13 +19,13 @@ class Login extends Component {
     }
 
     responseGoogle = (res) => {
+        const redirect = queryString.parse(this.props.location.search).redirect_link
         axios.post(`${config().url}/googleLogin`, { id: res.googleId, email: res.profileObj.email, displayName: res.profileObj.name }, config().headers)
             .then(result => {
-                console.log(result)
                 localStorage.setItem("token", result.data.token);
                 localStorage.setItem("name", result.data.google.displayName);
-                if (window.redirect) {
-                    this.props.history.push(window.redirect)
+                if (redirect) {
+                    this.props.history.push(`/${redirect}`)
                 } else {
                     this.props.history.push('/explore')
                 }
@@ -41,13 +42,14 @@ class Login extends Component {
             email: this.email.value,
             password: this.password.value
         }
+        const redirect = queryString.parse(this.props.location.search.redirect_link)
 
         axios.post(`${config().url}/login`, request, config().headers)
             .then(res => {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("name", res.data.local.userName);
-                if (window.redirect) {
-                    this.props.history.push(window.redirect)
+                if (redirect) {
+                    this.props.history.push(`/${redirect}`)
                 } else {
                     this.props.history.push('/explore')
                 }

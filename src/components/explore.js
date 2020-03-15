@@ -116,9 +116,8 @@ class Explore extends Component {
         return answer
     }
 
-    login = (redirect) => {
-        window.redirect = redirect
-        this.props.history.push("/login")
+    login = () => {
+        this.props.history.push("/login?redirect_link=explore")
     }
 
     render() {
@@ -134,7 +133,7 @@ class Explore extends Component {
             <div className="general_container">
                 {loggedIn ? <Sidebar current="explore" /> : ''}
                 <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
-                    <Nav />
+                    <Nav type="explore" id="" />
                     <div className="explore_container">
                         <p className="explore_charts">Charts</p>
                         <div className="explore_today">
@@ -149,7 +148,7 @@ class Explore extends Component {
                                     </div>
                                 </Link>
                                 <div className="play_holder" ref={el => this.playTop = el} onClick={() => {
-                                    loggedIn ? this.play('charts', 0) : this.login('/explore')
+                                    loggedIn ? this.play('charts', 0) : this.login()
                                 }} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
                                     <MdPlayArrow style={{ fontSize: '25px' }} />
                                 </div>
@@ -170,7 +169,7 @@ class Explore extends Component {
                                                         className={!loggedIn ? 'favourite_holder white_favourite' : (this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite')}
                                                         ref={el => this.artistLike[index] = el}
                                                         onMouseOver={() => this.expandLike(this.artistLike[index])} onMouseOut={() => this.shrinkLike(this.artistLike[index])}
-                                                        onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.artistLike[index], "favourite_holder") : this.login('/explore')}
+                                                        onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.artistLike[index], "favourite_holder") : this.login()}
                                                     >
                                                         <FaRegHeart />
                                                     </div>
@@ -193,14 +192,14 @@ class Explore extends Component {
                                                     <Link to={`/${cur.type}${cur.id}`}>
                                                         <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" onClick={() => albumChange({ id: cur.id })} />
                                                     </Link>
-                                                    <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { loggedIn ? this.play('album', cur.id) : this.login('/explore') }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
+                                                    <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { loggedIn ? this.play('album', cur.id) : this.login() }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
                                                         <MdPlayArrow style={{ fontSize: '25px' }} />
                                                     </div>
                                                     <div
                                                         className={!loggedIn ? 'favourite_album_holder white_favourite' : (this.newLikes(cur, 'albumLikes') ? 'favourite_album_holder red_favourite' : 'favourite_album_holder white_favourite')}
                                                         ref={el => this.albumLike[index] = el}
                                                         onMouseOver={() => this.expandLike(this.albumLike[index])} onMouseOut={() => this.shrinkLike(this.albumLike[index])}
-                                                        onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.albumLike[index], "favourite_album_holder") : this.login('/explore')}
+                                                        onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.albumLike[index], "favourite_album_holder") : this.login()}
                                                     >
                                                         <FaRegHeart />
                                                     </div>
