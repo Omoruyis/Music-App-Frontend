@@ -53,16 +53,16 @@ class Welcome extends Component {
 
                 <div id="a">
                     <div className="welcome_page_buttons">
-                        <Link to='/login' style={{textDecoration: 'none' }}>
+                        <Link to='/login' style={{ textDecoration: 'none' }}>
                             <button className="home_login_button">Login</button>
                         </Link>
-                        <Link to='/signup' style={{textDecoration: 'none' }}>
+                        <Link to='/signup' style={{ textDecoration: 'none' }}>
                             <button className="home_signup_button">Sign up</button>
                         </Link>
                     </div>
                     <div className="welcome_page_details">
                         <h3 className="welcome_page_text">A New Way To Enjoy Music</h3>
-                        <Link to='/explore' style={{textDecoration: 'none' }}>
+                        <Link to='/explore' style={{ textDecoration: 'none' }}>
                             <buttton className="checkout_button">Explore<span style={{ paddingLeft: 10 }}><img src={playButton} alt="play button" /></span></buttton>
                         </Link>
                     </div>

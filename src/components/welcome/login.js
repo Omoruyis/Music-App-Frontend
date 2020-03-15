@@ -33,7 +33,7 @@ class Login extends Component {
             })
             .catch(e => console.log('this is the error', e))
     }
-      
+
     login = (e) => {
         e.preventDefault()
         if (!this.validEmail(this.email.value)) {
@@ -43,7 +43,7 @@ class Login extends Component {
             email: this.email.value,
             password: this.password.value
         }
-        const redirect = queryString.parse(this.props.location.search.redirect_link)
+        const redirect = queryString.parse(this.props.location.search).redirect_link
 
         axios.post(`${config().url}/login`, request, config().headers)
             .then(res => {
@@ -79,11 +79,13 @@ class Login extends Component {
 
 
     render() {
+        const redirect = queryString.parse(this.props.location.search).redirect_link
+
         return (
             <div className="login_container">
                 <div className="login_section">
                     <p className="login">LOGIN</p>
-                    <form onSubmit={this.login} style={{width: '100%'}}>
+                    <form onSubmit={this.login} style={{ width: '100%' }}>
                         <input type="email" placeholder="Email Address" className="login_details" ref={el => this.email = el} required />
                         <div className="login_password">
                             <input type="password" placeholder="Password" minLength="6" className="login_details_password" ref={el => this.password = el} required />
@@ -94,9 +96,9 @@ class Login extends Component {
                     <div className="login_or">
                         <div className="login_underline"></div><p className="login_text">Or</p><div className="login_underline"></div>
                     </div>
-                    <GoogleLogin 
-                        clientId= "271277109562-8tt8jqb5m0cg2b5pgph5ig419irp4ir2.apps.googleusercontent.com"
-                        buttonText= "LOGIN WITH GOOGLE"
+                    <GoogleLogin
+                        clientId="271277109562-8tt8jqb5m0cg2b5pgph5ig419irp4ir2.apps.googleusercontent.com"
+                        buttonText="LOGIN WITH GOOGLE"
                         onSuccess={this.responseGoogle}
                         onFailure={this.responseGoogle}
                         cookiePolicy={'single_host_origin'}
@@ -104,8 +106,8 @@ class Login extends Component {
                     />
                     <div className="login_create_account">
                         <p className="login_text">Don't have an account?</p>
-                        <Link to='/signup'>
-                        <button className="login_button">SIGN UP</button>
+                        <Link to={`/signup?redirect_link=${redirect}`}>
+                            <button className="login_button">SIGN UP</button>
                         </Link>
                     </div>
                 </div>

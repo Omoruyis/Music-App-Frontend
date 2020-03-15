@@ -139,7 +139,7 @@ class Explore extends Component {
                             <p className="explore_top">Today's top tracks</p>
                             <p className="explore_updated">Updated every day</p>
                             <div className="explore_tracks">
-                                <Link to={`/playlist${3155776842}`} className="explore_tracks" style={{textDecoration: 'none' }}>
+                                <Link to={`/playlist${3155776842}`} className="explore_tracks" style={{ textDecoration: 'none' }}>
                                     <img src={signup} alt="top tracks" className="explore_tracks_image" />
                                     <div className="explore_tracks_text">
                                         <p className="explore_tracks_text_top">Top WorldWide</p>

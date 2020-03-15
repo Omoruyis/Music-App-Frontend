@@ -47,7 +47,7 @@ class Playlist extends Component {
             <div className="general_container">
                 {loggedIn ? <Sidebar current="explore" /> : ''}
                 <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
-                    <Nav type="playlist" id={match.params.id}/>
+                    <Nav type="playlist" id={match.params.id} />
                     {playlist ?
                         <div className="playlist_container">
                             <div className="playlist_header">

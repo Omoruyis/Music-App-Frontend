@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import queryString from 'query-string'
 
 import password from '../../assets/images/password.png'
 import config from '../../config/config'
@@ -52,6 +53,8 @@ class Signup extends Component {
     }
 
     render() {
+        const redirect = queryString.parse(this.props.location.search).redirect_link
+
         return (
             <div className="signup_image_container">
                 <div className="signup_container">
@@ -60,20 +63,22 @@ class Signup extends Component {
                     </div>
                     <div className="signup">
                         <p className="signup_community">Join our community</p>
-                        <p className="signup_existing">Existing User? <Link to="/">Sign in</Link></p>
+                        <p className="signup_existing">Existing User? <Link to={`/login?redirect_link=${redirect}`} style={{ textDecoration: 'none' }}>Login</Link></p>
                         <form className="signup_form" onSubmit={this.submitForm}>
                             <label className="signup_label">Display Name</label>
-                            <input type="text" placeholder="John Doe" className="signup_text" ref={el => this.name = el} required='true' />
+                            <input type="text" placeholder="John Doe" className="signup_text" ref={el => this.name = el} required={true} />
                             <label className="signup_label">E-mail Address</label>
                             <input type="email" placeholder="johndoe@example.com" className="signup_text" ref={el => this.email = el} required='true' />
                             <div className="signup_password_container">
                                 <input type="password" placeholder="Password" minLength="6" className="signup_text_password" ref={el => this.password = el} required='true' />
-                                <img src={password}  alt="show password" className="signup_password_image" onClick={this.show} />
+                                <img src={password} alt="show password" className="signup_password_image" onClick={this.show} />
                             </div>
                         </form>
-                        <button className="signup_button" onClick={this.submitForm}>
-                            SIGN UP
+                        <Link to='/' style={{ textDecoration: 'none' }}>
+                            <button className="signup_button" onClick={this.submitForm}>
+                                SIGN UP
                         </button>
+                        </Link>
                     </div>
                 </div>
             </div>
