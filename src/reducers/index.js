@@ -7,7 +7,7 @@ import {
 import { combineReducers } from 'redux'
 
 
-function reducer(state = {}, action) {
+function reducer (state = {}, action) {
     const { id } = action
     switch (action.type) {
         case CHANGE_ARTIST:

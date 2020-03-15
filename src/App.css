@@ -593,7 +593,7 @@
 
 .explore_tracks_image {
   height: 100%;
-  width: 50%;
+  width: 100%;
   background-size: cover;
 }
 
@@ -664,6 +664,9 @@
   opacity: 0;
   border-radius: 50%;
 }
+.favourite_holder:hover {
+  cursor: pointer;
+}
 
 .favourite_album_holder {
   position: absolute;
@@ -677,6 +680,9 @@
   z-index: -1;
   opacity: 0;
   border-radius: 50%;
+}
+.favourite_album_holder:hover {
+  cursor: pointer;
 }
 
 .red_favourite {
@@ -711,6 +717,15 @@
   flex-direction: column;
   margin-right: 35px;
   align-items: center;
+}
+
+/********Sidebar ***/
+.sidebar_container {
+  width: 15%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
 }
 
 

@@ -18,11 +18,10 @@ class Login extends Component {
     }
 
     responseGoogle = (res) => {
-        axios.post(`${config.url}/googleLogin`, {id: res.googleId, email: res.profileObj.email, displayName: res.profileObj.name}, config.headers)
-            .then(res => {
-                console.log('thanks')
-                console.log(res.data)
-                localStorage.setItem("token", res.data.token);
+        axios.post(`${config().url}/googleLogin`, { id: res.googleId, email: res.profileObj.email, displayName: res.profileObj.name }, config().headers)
+            .then(result => {
+                localStorage.setItem("token", result.data.token);
+                this.props.history.push(window.redirect)
             })
             .catch(e => console.log('this is the error', e))
     }
@@ -32,16 +31,19 @@ class Login extends Component {
         if (!this.validEmail(this.email.value)) {
             return alert('wrong email address')
         }
-
         const request = {
             email: this.email.value,
             password: this.password.value
         }
 
-        axios.post(`${config.url}/login`, request, config.headers)
+        axios.post(`${config().url}/login`, request, config().headers)
             .then(res => {
-                console.log(res)
                 localStorage.setItem("token", res.data.token);
+                if (window.redirect) {
+                    this.props.history.push(window.redirect)
+                } else {
+                    this.props.history.push('/explore')
+                }
             })
             .catch(e => console.log('this is the error', e))
     }
@@ -54,7 +56,7 @@ class Login extends Component {
             newpassword: this.updatedpassword.value
         }
 
-        axios.post(`${config.url}/reset`, request, config.headers)
+        axios.post(`${config().url}/reset`, request, config().headers)
             .then(response => {
                 console.log(response.data)
             })
@@ -78,7 +80,7 @@ class Login extends Component {
                             <img src={password} alt="show password" className="password_image" onClick={this.show} />
                         </div>
                     </form>
-                    <button className="login_button">LOGIN</button>
+                    <button className="login_button" onClick={this.login}>LOGIN</button>
                     <div className="login_or">
                         <div className="login_underline"></div><p className="login_text">Or</p><div className="login_underline"></div>
                     </div>

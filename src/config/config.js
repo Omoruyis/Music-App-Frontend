@@ -1,33 +1,33 @@
 const url = 'http://localhost:8080'
 // const url = 'https://omoruyi-music-store-app.herokuapp.com'
 
-// let token 
-let config 
-// token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTY4YjViNjJmZTQwZTMwMTBjYTFkMTIiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTgzOTIwNTY2fQ.ZsE5uI-JNYlmWF3vP6oYcGwHcgHfzqRgZ50OVG3ByRU"
+function config () {
+    let token 
+    if (localStorage.token) {
+        token = localStorage.token
+    }
 
-// if (!token) {
-//     config = {
-//         url,
-//         headers: {
-//             'Content-Type': 'application/json',
-//             Accept: 'application/json'
-//         }
-//     }
-// } else {
-    config = {
-        url,
-        headers: {
+    if (!token) {
+        return {
+            url,
             headers: {
                 'Content-Type': 'application/json',
-                Accept: 'application/json',
-                authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTY4YjViNjJmZTQwZTMwMTBjYTFkMTIiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTgzOTIwNTY2fQ.ZsE5uI-JNYlmWF3vP6oYcGwHcgHfzqRgZ50OVG3ByRU'
+                Accept: 'application/json'
+            }
+        }
+    } else {
+        return {
+            url,
+            headers: {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    authorization: `Bearer ${token}`
+                }
             }
         }
     }
-// }
-
-
-
+}
 
 export default config
 

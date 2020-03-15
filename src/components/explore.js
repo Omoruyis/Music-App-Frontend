@@ -19,23 +19,37 @@ class Explore extends Component {
         likes: null,
         type: null,
         id: 0,
+        loggedIn: false
     }
 
     componentDidMount() {
         this.getCharts()
         this.getLikes()
+        this.checkLogin()
     }
 
     getCharts = async () => {
-        const result = await axios.get(`${config.url}/explore`, config.headers)
+        const result = await axios.get(`${config().url}/explore`, config().headers)
         this.setState({
             charts: result.data
         })
     }
     getLikes = async () => {
-        const result = await axios.get(`${config.url}/getlikes`, config.headers)
+        const result = await axios.get(`${config().url}/getlikes`, config().headers)
         this.setState({
             likes: result.data
+        })
+    }
+    checkLogin = async () => {
+        if(!localStorage.getItem('token')) {
+            return
+        }
+        const result = await axios.get(`${config().url}/authenticate`, config().headers)
+        if (result.status !== 200) {
+            return
+        }
+        this.setState({
+            loggedIn: true
         })
     }
 
@@ -51,39 +65,27 @@ class Explore extends Component {
         clas.style.zIndex = 1
         clas.style.opacity = 1
         secClas.style.opacity = 0.8
-        // Array.from(document.querySelectorAll(clas))[index].style['z-index'] = 1
-        // Array.from(document.querySelectorAll(clas))[index].style.opacity = 1
-        // Array.from(document.querySelectorAll(secClas))[index].style.opacity = 0.8
     }
     hideIcon = (clas, secClas) => {
         clas.style.zIndex = -1
         clas.style.opacity = 0
         secClas.style.opacity = 1
-        // Array.from(document.querySelectorAll(clas))[index].style.zIndex = -1
-        // Array.from(document.querySelectorAll(clas))[index].style.opacity = 0
-        // Array.from(document.querySelectorAll(secClas))[index].style.opacity = 1
     }
     expandPlay = (clas) => {
         clas.style.width = '35px'
         clas.style.height = '35px'
-        // document.querySelector(clas).style.fontSize = '40px'
     }
     shrinkPlay = (clas) => {
         clas.style.width = '30px'
         clas.style.height = '30px'
-        // document.querySelector(clas).style.fontSize = '35px'
     }
     expandLike = (clas) => {
         clas.style.width = '35px'
         clas.style.height = '35px'
-        // Array.from(document.querySelectorAll(clas))[index].style.width = '35px'
-        // Array.from(document.querySelectorAll(clas))[index].style.height = '35px'
     }
     shrinkLike = (clas) => {
         clas.style.width = '30px'
         clas.style.height = '30px'
-        // Array.from(document.querySelectorAll(clas))[index].style.width = '30px'
-        // Array.from(document.querySelectorAll(clas))[index].style.height = '30px'
     }
     addToLikes = (type, obj, clas, classs) => {
         const currentClass = clas
@@ -109,8 +111,13 @@ class Explore extends Component {
         return answer
     }
 
+    login = (redirect) => {
+        window.redirect = redirect
+        this.props.history.push("/login")
+    }
+
     render() {
-        const { charts, type, id } = this.state
+        const { charts, type, id, loggedIn } = this.state
         const { artistChange, albumChange, playlistChange } = this.props
         this.artistLike = []
         this.artistImage = []
@@ -127,14 +134,16 @@ class Explore extends Component {
                         <p className="explore_top">Today's top tracks</p>
                         <p className="explore_updated">Updated every day</p>
                         <div className="explore_tracks">
-                            <Link >
+                            <Link to="/playlist">
                                 <img src={signup} alt="top tracks" className="explore_tracks_image" onClick={() => playlistChange({ id: 3155776842 })} />
                             </Link>
                             <div className="explore_tracks_text">
                                 <p className="explore_tracks_text_top">Top WorldWide</p>
                                 <p className="explore_tracks_text_sub">100 tracks</p>
                             </div>
-                            <div className="play_holder" ref={el => this.playTop = el} onClick={() => { this.play('charts', 0) }} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
+                            <div className="play_holder" ref={el => this.playTop = el} onClick={() => {
+                                loggedIn ? this.play('charts', 0) : this.login('/explore')
+                            }} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
                                 <MdPlayArrow style={{ fontSize: '25px' }} />
                             </div>
                         </div>
@@ -148,12 +157,15 @@ class Explore extends Component {
                                         <div className="explore_artist" key={index}>
                                             <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
                                                 <Link to='/'>
-                                                    <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images" />
+                                                    <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images" onClick={() => artistChange({ id: cur.id })} />
                                                 </Link>
                                                 <div
-                                                    className={this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite'}
+                                                    className={!loggedIn ? 'favourite_holder white_favourite' : (this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite')}
+                                                    // className={this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite'}
                                                     ref={el => this.artistLike[index] = el}
-                                                    onMouseOver={() => this.expandLike(this.artistLike[index])} onMouseOut={() => this.shrinkLike(this.artistLike[index])} onClick={() => this.addToLikes(cur.type, cur, this.artistLike[index], "favourite_holder")}>
+                                                    onMouseOver={() => this.expandLike(this.artistLike[index])} onMouseOut={() => this.shrinkLike(this.artistLike[index])}
+                                                    onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.artistLike[index], "favourite_holder") : this.login('/explore')}
+                                                    >
                                                     <FaRegHeart />
                                                 </div>
                                             </div>
@@ -171,20 +183,23 @@ class Explore extends Component {
                                 if (index < 4) {
                                     return (
                                         <div className="explore_artist" key={index}>
-                                            <Link to='/'>
-                                                <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
-                                                    <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" />
-                                                    <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { this.play('album', cur.id) }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
-                                                        <MdPlayArrow style={{ fontSize: '25px' }} />
-                                                    </div>
-                                                    <div
-                                                        className={this.newLikes(cur, 'albumLikes') ? 'favourite_album_holder red_favourite' : 'favourite_album_holder white_favourite'}
-                                                        ref={el => this.albumLike[index] = el}
-                                                        onMouseOver={() => this.expandLike(this.albumLike[index])} onMouseOut={() => this.shrinkLike(this.albumLike[index])} onClick={() => this.addToLikes(cur.type, cur, this.albumLike[index], "favourite_album_holder")}>
-                                                        <FaRegHeart />
-                                                    </div>
+                                            <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
+                                                <Link to='/'>
+                                                    <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" onClick={() => albumChange({ id: cur.id })} />
+                                                </Link>
+                                                <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { loggedIn ? this.play('album', cur.id) : this.login('/explore') }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
+                                                    <MdPlayArrow style={{ fontSize: '25px' }} />
                                                 </div>
-                                            </Link>
+                                                <div
+                                                    className={!loggedIn ? 'favourite_album_holder white_favourite' : (this.newLikes(cur, 'albumLikes') ? 'favourite_album_holder red_favourite' : 'favourite_album_holder white_favourite')}
+                                                    // className={this.newLikes(cur, 'albumLikes') ? 'favourite_album_holder red_favourite' : 'favourite_album_holder white_favourite'}
+                                                    ref={el => this.albumLike[index] = el}
+                                                    onMouseOver={() => this.expandLike(this.albumLike[index])} onMouseOut={() => this.shrinkLike(this.albumLike[index])} 
+                                                    onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.albumLike[index], "favourite_album_holder") : this.login('/explore')}
+                                                    >
+                                                    <FaRegHeart />
+                                                </div>
+                                            </div>
                                             <p className="explore_artists_name">{cur.artist.name}</p>
                                         </div>
                                     )
@@ -204,7 +219,7 @@ class Explore extends Component {
 }
 
 function mapStateToProps() {
-    return null
+    return {}
 }
 
 function mapDispatchToProps(dispatch) {
