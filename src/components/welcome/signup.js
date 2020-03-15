@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
-import password from '../assets/images/password.png'
-import config from '../config/config'
-import '../App.css';
+import password from '../../assets/images/password.png'
+
+import config from '../../config/config'
+import '../../App.css'
 
 class Signup extends Component {
     state = {

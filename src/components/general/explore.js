@@ -5,14 +5,13 @@ import { FaRegHeart } from "react-icons/fa";
 import { MdPlayArrow } from "react-icons/md";
 import { Link } from 'react-router-dom'
 
-import { changeArtist, changeAlbum, changePlaylist, changeTrack } from '../actions'
-import Nav from './partials/nav'
-import Sidebar from './partials/sidebar'
-import config from '../config/config'
-import signup from '../assets/images/signup.png'
+import { changeArtist, changeAlbum, changePlaylist, changeTrack } from '../../actions'
+import Nav from '../partials/nav'
+import Sidebar from '../partials/sidebar'
+import signup from '../../assets/images/signup.png'
 
-
-import '../App.css';
+import config from '../../config/config'
+import '../../App.css';
 
 class Explore extends Component {
     state = {

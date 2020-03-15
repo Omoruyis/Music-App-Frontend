@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import config from '../config/config'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { GoogleLogin } from 'react-google-login'
 import queryString from 'query-string'
 
-import password from '../assets/images/password.png'
+import password from '../../assets/images/password.png'
 
-import '../App.css';
+import config from '../../config/config'
+import '../../App.css';
 
 class Login extends Component {
 
@@ -103,7 +104,9 @@ class Login extends Component {
                     />
                     <div className="login_create_account">
                         <p className="login_text">Don't have an account?</p>
+                        <Link to='/signup'>
                         <button className="login_button">SIGN UP</button>
+                        </Link>
                     </div>
                 </div>
             </div>
