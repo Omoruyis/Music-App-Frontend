@@ -26,19 +26,28 @@
   align-items: center;
 }
 
-.login_button {
-  color: #FFFBFB;
-  padding: 6px 20px;
-  margin-top: 15px;
+.home_login_button {
+  background-color: #272040;
+  border: 1px solid #707070;
+  border-radius: 10px;
+  padding: 9px 28px;
+  margin-left: 31px; 
+  color: #FFFBFB
 }
 
-.login_button:hover {
+.home_login_button:hover {
   cursor: pointer;
-  color: #272040
+  color: #272040;
+  background-color: #FFFBFB
+}
+.home_signup_button:hover {
+  cursor: pointer;
+  color: #272040;
+  background-color: #FFFBFB;
 }
 
-.signup_button {
-  background: #272040 0% 0% no-repeat padding-box;
+.home_signup_button {
+  background: #272040;
   border: 1px solid #707070;
   border-radius: 10px;
   padding: 9px 28px;
@@ -507,6 +516,13 @@
   border-bottom: 1px solid rgb(240, 232, 232);
 }
 
+.display_name {
+  font-size: 20px;
+  margin-bottom: 0;
+  font-weight: 300;
+  color: rgb(27, 26, 26);
+}
+
 .explorenav_buttons {
   display: flex;
   align-items: center;
@@ -593,7 +609,7 @@
 
 .explore_tracks_image {
   height: 100%;
-  width: 100%;
+  width: 50%;
   background-size: cover;
 }
 
@@ -720,14 +736,74 @@
 }
 
 /********Sidebar ***/
+.general_container {
+  display: flex;
+  position: relative;
+}
+.nav_child_container {
+  width: 100%;
+  min-height: 100vh;
+}
+.nav_child_container_margin {
+  margin-left: 16%;
+}
+
 .sidebar_container {
-  width: 15%;
+  position: fixed;
+  width: 16%;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 100px;
+  padding: 200px 20px 40px 20px;
+  border-right: 1px solid rgb(240, 232, 232);
 }
 
+.sidebar_content_div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.sidebar_content_div:hover {
+  cursor: pointer;
+}
+.sidebar_content_div:hover > p {
+  color: red;
+}
+.sidebar_content_div:hover > .sidebar_content_icon {
+  color: red;
+}
+#current > p {
+  color: red;
+}
+#current > .sidebar_content_icon {
+  color: red;
+}
+.sidebar_content_div > p {
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(20, 19, 19);
+  margin-bottom: 0;
+}
+
+.sidebar_content_icon {
+  font-size: 30px;
+  color: black;
+}
+
+.sidebar_content {
+  margin-left: 40px;
+  margin-top: 10px;
+  font-size: 15px;
+  color: grey;
+}
+.sidebar_content:hover {
+  color: red;
+}
+
+#current {
+  color: red;
+}
 
 /*****Welcome Page ***/ 
 @media (max-width: 850px) {

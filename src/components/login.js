@@ -20,8 +20,14 @@ class Login extends Component {
     responseGoogle = (res) => {
         axios.post(`${config().url}/googleLogin`, { id: res.googleId, email: res.profileObj.email, displayName: res.profileObj.name }, config().headers)
             .then(result => {
+                console.log(result)
                 localStorage.setItem("token", result.data.token);
-                this.props.history.push(window.redirect)
+                localStorage.setItem("name", result.data.google.displayName);
+                if (window.redirect) {
+                    this.props.history.push(window.redirect)
+                } else {
+                    this.props.history.push('/explore')
+                }
             })
             .catch(e => console.log('this is the error', e))
     }
@@ -39,6 +45,7 @@ class Login extends Component {
         axios.post(`${config().url}/login`, request, config().headers)
             .then(res => {
                 localStorage.setItem("token", res.data.token);
+                localStorage.setItem("name", res.data.local.userName);
                 if (window.redirect) {
                     this.props.history.push(window.redirect)
                 } else {
@@ -76,7 +83,7 @@ class Login extends Component {
                     <form onSubmit={this.login} style={{width: '100%'}}>
                         <input type="email" placeholder="Email Address" className="login_details" ref={el => this.email = el} required />
                         <div className="login_password">
-                            <input type="password" placeholder="Password" minlength="6" className="login_details_password" ref={el => this.password = el} required />
+                            <input type="password" placeholder="Password" minLength="6" className="login_details_password" ref={el => this.password = el} required />
                             <img src={password} alt="show password" className="password_image" onClick={this.show} />
                         </div>
                     </form>
