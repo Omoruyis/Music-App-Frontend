@@ -5,8 +5,8 @@ import axios from 'axios'
 import { changeArtist, changeAlbum, changePlaylist, changeTrack } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
-
 import config from '../../config/config'
+
 import '../../App.css';
 
 class Playlist extends Component {

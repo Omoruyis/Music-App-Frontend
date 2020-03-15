@@ -5,8 +5,8 @@ import { GoogleLogin } from 'react-google-login'
 import queryString from 'query-string'
 
 import password from '../../assets/images/password.png'
-
 import config from '../../config/config'
+
 import '../../App.css';
 
 class Login extends Component {

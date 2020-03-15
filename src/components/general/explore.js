@@ -9,8 +9,8 @@ import { changeArtist, changeAlbum, changePlaylist, changeTrack } from '../../ac
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import signup from '../../assets/images/signup.png'
-
 import config from '../../config/config'
+
 import '../../App.css';
 
 class Explore extends Component {
