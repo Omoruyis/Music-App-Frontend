@@ -17,7 +17,7 @@ function App() {
     <div>
       <Route exact path='/' component={Welcome} />
       <Route path='/explore' component={Explore} />
-      <Route path='/playlist:id' component={Playlist} />
+      <Route path='/playlist/:id' component={Playlist} />
       <Route path='/login' component={Login} />
       <Route path='/signup' component={Signup} />
       {/* <Explore />  */}

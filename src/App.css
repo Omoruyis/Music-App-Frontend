@@ -665,6 +665,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .favourite_holder {
@@ -702,7 +703,7 @@
 }
 
 .red_favourite {
-  background-color: red;
+  background-color: rgb(240, 82, 82);
 }
 
 .white_favourite {
@@ -736,6 +737,11 @@
 }
 
 /********Sidebar ***/
+.main_container {
+  display: flex;
+  flex-direction: column;
+}
+
 .general_container {
   display: flex;
   position: relative;
@@ -752,10 +758,15 @@
   position: fixed;
   width: 16%;
   height: 100vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   padding: 200px 20px 40px 20px;
   border-right: 1px solid rgb(240, 232, 232);
+}
+
+.sidebar_container::-webkit-scrollbar {
+  display: none;
 }
 
 .sidebar_content_div {
@@ -767,16 +778,16 @@
   cursor: pointer;
 }
 .sidebar_content_div:hover > p {
-  color: red;
+  color: rgb(240, 82, 82);
 }
 .sidebar_content_div:hover > .sidebar_content_icon {
-  color: red;
+  color: rgb(240, 82, 82);
 }
 #current > p {
-  color: red;
+  color: rgb(240, 82, 82);
 }
 #current > .sidebar_content_icon {
-  color: red;
+  color: rgb(240, 82, 82);
 }
 .sidebar_content_div > p {
   margin-left: 10px;
@@ -798,11 +809,11 @@
   color: grey;
 }
 .sidebar_content:hover {
-  color: red;
+  color: rgb(240, 82, 82);
 }
 
 #current {
-  color: red;
+  color: rgb(240, 82, 82);
 }
 
 /*****Playlist ******/
@@ -810,8 +821,13 @@
   padding: 20px 100px 20px 100px;
 }
 
+#playlist_header {
+  width: 55%; 
+}
+
 .playlist_header {
   display: flex;
+  position: relative;
   width: 50%; 
   height: 250px;
 }
@@ -819,6 +835,78 @@
 .playlist_image {
   height: 100%;
   width: 40%;
+}
+.playlist_image:hover {
+  opacity: 0.8
+}
+
+.playlist_details_holder {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px 20px
+}
+
+.playlist_title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.playlist_duration {
+  display: flex;
+  font-size: 15px;
+  color: rgb(185, 157, 157);
+}
+
+.playlist_time {
+  margin-left: 20px;
+}
+
+.playlist_actions_holder {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.playlist_button_holder {
+  display: flex;
+}
+
+.playlist_button {
+  padding: 6px 25px;
+  border-radius: 5px;
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(212, 206, 206);
+  color: black;
+  margin-right: 10px;
+}
+.playlist_button:hover {
+  background-color: white;
+}
+
+#playlist_listen {
+  background-color: rgb(240, 82, 82);
+  color: white;
+}
+#playlist_listen:hover {
+  background-color: rgb(156, 21, 21);
+}
+
+.playlist_button_icon {
+  font-size: 15px;
+  margin-right: 5px;
+}
+
+/***** Spinner ****/
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 }
 
 

@@ -47,10 +47,10 @@ class Nav extends Component {
                         <p className="display_name">{name}</p>
                     </div> :
                     <div className="explorenav_buttons">
-                        <Link to={`/login?redirect_link=${type}${id}`} style={{textDecoration: 'none' }} >
+                        <Link to={`/login?redirect_link=${type}/${id}`} style={{textDecoration: 'none' }} >
                         <button className="explorenav_login">Login</button>
                         </Link>
-                        <Link to={`/signup?redirect_link=${type}${id}`} style={{textDecoration: 'none' }}>
+                        <Link to={`/signup?redirect_link=${type}/${id}`} style={{textDecoration: 'none' }}>
                         <button className="explorenav_signup">Sign up</button>
                         </Link>
                     </div>

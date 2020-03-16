@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import axios from 'axios'
+import { CircularProgress } from '@material-ui/core';
 import { FaRegHeart } from "react-icons/fa";
 import { MdPlayArrow } from "react-icons/md";
 import { Link } from 'react-router-dom'
@@ -34,7 +35,6 @@ class Explore extends Component {
         })
     }
     getLikes = async () => {
-        console.log(this.state.loggedIn)
         if (!this.state.loggedIn) {
             return
         }
@@ -129,94 +129,102 @@ class Explore extends Component {
         this.playAlbum = []
 
         return (
-            <div className="general_container">
-                {loggedIn ? <Sidebar current="explore" /> : ''}
-                <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
-                    <Nav type="explore" id="" />
-                    <div className="explore_container">
-                        <p className="explore_charts">Charts</p>
-                        <div className="explore_today">
-                            <p className="explore_top">Today's top tracks</p>
-                            <p className="explore_updated">Updated every day</p>
-                            <div className="explore_tracks">
-                                <Link to={`/playlist${3155776842}`} className="explore_tracks" style={{ textDecoration: 'none' }}>
-                                    <img src={signup} alt="top tracks" className="explore_tracks_image" />
-                                    <div className="explore_tracks_text">
-                                        <p className="explore_tracks_text_top">Top WorldWide</p>
-                                        <p className="explore_tracks_text_sub">100 tracks</p>
+            <div className="main_container">
+                <div className="general_container">
+                    {loggedIn ? <Sidebar current="explore" /> : ''}
+                    <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
+                        <Nav type="explore" id="" />
+                        {charts ?
+                            <div className="explore_container">
+                                <p className="explore_charts">Charts</p>
+                                <div className="explore_today">
+                                    <p className="explore_top">Today's top tracks</p>
+                                    <p className="explore_updated">Updated every day</p>
+                                    <div className="explore_tracks">
+                                        <Link to={`/playlist/${3155776842}`} className="explore_tracks" style={{ textDecoration: 'none' }}>
+                                            <img src={signup} alt="top tracks" className="explore_tracks_image" />
+                                            <div className="explore_tracks_text">
+                                                <p className="explore_tracks_text_top">Top WorldWide</p>
+                                                <p className="explore_tracks_text_sub">100 tracks</p>
+                                            </div>
+                                        </Link>
+                                        <div className="play_holder" ref={el => this.playTop = el} onClick={() => {
+                                            loggedIn ? this.play('charts', 0) : this.login()
+                                        }} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
+                                            <MdPlayArrow style={{ fontSize: '25px' }} />
+                                        </div>
                                     </div>
-                                </Link>
-                                <div className="play_holder" ref={el => this.playTop = el} onClick={() => {
-                                    loggedIn ? this.play('charts', 0) : this.login()
-                                }} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
-                                    <MdPlayArrow style={{ fontSize: '25px' }} />
                                 </div>
-                            </div>
-                        </div>
-                        <div className="explore_artists_container">
-                            <p className="explore_top">Most streamed artists</p>
-                            <div className="explore_artists">
-                                {charts && charts.chartArtists.map((cur, index) => {
-                                    if (index < 4) {
-                                        return (
-                                            <div className="explore_artist" key={index}>
-                                                <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
-                                                    <Link to={`/${cur.type}${cur.id}`}>
-                                                        <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images" onClick={() => artistChange({ id: cur.id })} />
-                                                    </Link>
-                                                    <div
-                                                        className={!loggedIn ? 'favourite_holder white_favourite' : (this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite')}
-                                                        ref={el => this.artistLike[index] = el}
-                                                        onMouseOver={() => this.expandLike(this.artistLike[index])} onMouseOut={() => this.shrinkLike(this.artistLike[index])}
-                                                        onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.artistLike[index], "favourite_holder") : this.login()}
-                                                    >
-                                                        <FaRegHeart />
+                                <div className="explore_artists_container">
+                                    <p className="explore_top">Most streamed artists</p>
+                                    <div className="explore_artists">
+                                        {charts && charts.chartArtists.map((cur, index) => {
+                                            if (index < 4) {
+                                                return (
+                                                    <div className="explore_artist" key={index}>
+                                                        <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
+                                                            <Link to={`/${cur.type}/${cur.id}`}>
+                                                                <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images" onClick={() => artistChange({ id: cur.id })} />
+                                                            </Link>
+                                                            <div
+                                                                className={!loggedIn ? 'favourite_holder white_favourite' : (this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite')}
+                                                                ref={el => this.artistLike[index] = el}
+                                                                onMouseOver={() => this.expandLike(this.artistLike[index])} onMouseOut={() => this.shrinkLike(this.artistLike[index])}
+                                                                onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.artistLike[index], "favourite_holder") : this.login()}
+                                                            >
+                                                                <FaRegHeart />
+                                                            </div>
+                                                        </div>
+                                                        <p className="explore_artists_name">{cur.name}</p>
                                                     </div>
-                                                </div>
-                                                <p className="explore_artists_name">{cur.name}</p>
-                                            </div>
-                                        )
-                                    } else { return '' }
-                                })}
-                            </div>
-                        </div>
-                        <div className="explore_artists_container">
-                            <p className="explore_top">Most streamed albums</p>
-                            <div className="explore_artists">
-                                {charts && charts.chartAlbums.map((cur, index) => {
-                                    if (index < 4) {
-                                        return (
-                                            <div className="explore_artist" key={index}>
-                                                <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
-                                                    <Link to={`/${cur.type}${cur.id}`}>
-                                                        <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" onClick={() => albumChange({ id: cur.id })} />
-                                                    </Link>
-                                                    <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { loggedIn ? this.play('album', cur.id) : this.login() }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
-                                                        <MdPlayArrow style={{ fontSize: '25px' }} />
+                                                )
+                                            } else { return '' }
+                                        })}
+                                    </div>
+                                </div>
+                                <div className="explore_artists_container">
+                                    <p className="explore_top">Most streamed albums</p>
+                                    <div className="explore_artists">
+                                        {charts && charts.chartAlbums.map((cur, index) => {
+                                            if (index < 4) {
+                                                return (
+                                                    <div className="explore_artist" key={index}>
+                                                        <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
+                                                            <Link to={`/${cur.type}/${cur.id}`}>
+                                                                <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" onClick={() => albumChange({ id: cur.id })} />
+                                                            </Link>
+                                                            <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { loggedIn ? this.play('album', cur.id) : this.login() }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
+                                                                <MdPlayArrow style={{ fontSize: '25px' }} />
+                                                            </div>
+                                                            <div
+                                                                className={!loggedIn ? 'favourite_album_holder white_favourite' : (this.newLikes(cur, 'albumLikes') ? 'favourite_album_holder red_favourite' : 'favourite_album_holder white_favourite')}
+                                                                ref={el => this.albumLike[index] = el}
+                                                                onMouseOver={() => this.expandLike(this.albumLike[index])} onMouseOut={() => this.shrinkLike(this.albumLike[index])}
+                                                                onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.albumLike[index], "favourite_album_holder") : this.login()}
+                                                            >
+                                                                <FaRegHeart />
+                                                            </div>
+                                                        </div>
+                                                        <p className="explore_artists_name">{cur.title}</p>
                                                     </div>
-                                                    <div
-                                                        className={!loggedIn ? 'favourite_album_holder white_favourite' : (this.newLikes(cur, 'albumLikes') ? 'favourite_album_holder red_favourite' : 'favourite_album_holder white_favourite')}
-                                                        ref={el => this.albumLike[index] = el}
-                                                        onMouseOver={() => this.expandLike(this.albumLike[index])} onMouseOut={() => this.shrinkLike(this.albumLike[index])}
-                                                        onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.albumLike[index], "favourite_album_holder") : this.login()}
-                                                    >
-                                                        <FaRegHeart />
-                                                    </div>
-                                                </div>
-                                                <p className="explore_artists_name">{cur.artist.name}</p>
-                                            </div>
-                                        )
-                                    } else { return '' }
-                                })}
+                                                )
+                                            } else { return '' }
+                                        })}
+                                    </div>
+                                </div>
+
+                            </div> :
+                            <div className="spinner">
+                                <CircularProgress />
                             </div>
-                        </div>
+                        }
 
                     </div>
 
-                    {type ? <div className="iframe_container">
-                        <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
-                    </div> : ''}
                 </div>
+                {type ? <div className="iframe_container">
+                    <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
+                </div> : ''}
             </div>
         )
     }
