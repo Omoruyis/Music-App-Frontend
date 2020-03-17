@@ -12,7 +12,8 @@ function config () {
             url,
             headers: {
                 'Content-Type': 'application/json',
-                Accept: 'application/json'
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*'
             }
         }
     } else {
@@ -22,7 +23,8 @@ function config () {
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
-                    authorization: `Bearer ${token}`
+                    authorization: `Bearer ${token}`,
+                    'Access-Control-Allow-Origin': 'http://localhost:3000'
                 }
             }
         }

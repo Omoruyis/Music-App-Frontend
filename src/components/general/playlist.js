@@ -6,6 +6,9 @@ import { MdPlayArrow } from "react-icons/md";
 import { MdPlayCircleOutline } from "react-icons/md";
 import { GoPlus } from "react-icons/go";
 import { IoMdHeartEmpty } from "react-icons/io";
+import { IoIosHeart } from "react-icons/io";
+import { IoIosHeartDislike } from "react-icons/io";
+import { IoMdRemove } from "react-icons/io";
 
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
@@ -18,11 +21,14 @@ class Playlist extends Component {
     state = {
         path: null,
         playlist: null,
+        displayTracks: null,
         loggedIn: false,
         type: null,
         id: 0,
         liked: false,
-        available: false
+        available: null,
+        _id: null,
+        likes: null
     }
 
     componentDidMount() {
@@ -43,7 +49,18 @@ class Playlist extends Component {
     getPlaylist = async () => {
         const result = await axios.post(`${config().url}/search/playlist`, { id: parseInt(this.props.match.params.id) }, config().headers)
         this.setState({
-            playlist: result.data
+            playlist: result.data,
+            displayTracks: result.data.tracks.data
+        })
+    }
+
+    getLikes = async () => {
+        if (!this.state.loggedIn) {
+            return
+        }
+        const result = await axios.get(`${config().url}/getlikes`, config().headers)
+        this.setState({
+            likes: result.data
         })
     }
 
@@ -58,12 +75,14 @@ class Playlist extends Component {
         this.setState({
             loggedIn: true
         })
+        this.getLikes()
     }
 
     checkAvailable = async (id, type) => {
         const result = await axios.post(`${config().url}/checkavailable`, { id, type }, config().headers)
         this.setState({
-            available: result.data
+            available: result.data.status,
+            _id: result.data._id
         })
     }
 
@@ -90,26 +109,56 @@ class Playlist extends Component {
         clas.style.height = '30px'
     }
 
-    libraryAction = (id, type, action, newState) => {
-        axios.post(`${config().url}/${action}`, { id, type }, config().headers)
-        console.log(id, type)
-        console.log(3155776842 )
+    libraryAction = async (id, type, action, newState) => {
         this.setState({
-            available: newState
+            available: newState,
+        })
+        const result = await axios.post(`${config().url}/${action}`, { id, type }, config().headers)
+        this.setState({
+            _id: action === 'add' ? result.data._id : 0
         })
     }
 
-    addToLikes = (type, obj, clas, classs) => {
-        const currentClass = clas
-        const secondClass = currentClass.className.split(' ')
-        if (secondClass[1] === 'white_favourite') {
-            currentClass.className = `${classs} red_favourite`
-            axios.post(`${config().url}/likeUndownload`, { type, data: obj }, config().headers)
+    likeDownloadAction = (type, obj, action, _id) => {
+        if (action === 'like') {
+            this.setState({ liked: true })
+            axios.post(`${config().url}/like`, { type, data: { id: obj.id }, _id }, config().headers)
         } else {
-            currentClass.className = `${classs} white_favourite`
-            axios.post(`${config().url}/unlikeUndownload`, { type, data: obj }, config().headers)
+            this.setState({ liked: false })
+            axios.post(`${config().url}/unlike`, { type, _id }, config().headers)
         }
     }
+
+    likeUndownloadAction = (type, obj, action) => {
+        if (action === 'like') {
+            this.setState({ liked: true })
+            axios.post(`${config().url}/likeUndownload`, { type, data: { id: obj.id } }, config().headers)
+        } else {
+            this.setState({ liked: false })
+            axios.post(`${config().url}/unlikeUndownload`, { type, data: { id: obj.id } }, config().headers)
+        }
+    }
+
+    addToLikes = (type, obj, clas) => {
+        const currentClass = clas
+        const secondClass = currentClass.className.split(' ')
+        const s = clas.querySelector('#liked_track')
+        const u = clas.querySelector('#unliked_track')
+        if (secondClass[1] === 'is_liked') {
+            s.style.display = 'none'
+            u.style.display = 'block'
+            u.style.color = 'black'
+            currentClass.className = "track_like_holder is_unliked"
+            axios.post(`${config().url}/unlikeUndownload`, { type, data: { id: obj.id } }, config().headers)
+        } else {
+            s.style.display = 'block'
+            s.style.color = 'red'
+            u.style.display = 'none'
+            currentClass.className = "track_like_holder is_liked"
+            axios.post(`${config().url}/likeUndownload`, { type, data: obj }, config().headers)
+        }
+    }
+
     newLikes = (value, type) => {
         let answer
         for (let i = 0; i < this.state.likes[type].length; i++) {
@@ -123,13 +172,26 @@ class Playlist extends Component {
         return answer
     }
 
+    showPlayButton = (number, button) => {
+        number.style.display = 'none'
+        button.style.display = 'block'
+    }
+
+    hidePlayButton = (number, button) => {
+        number.style.display = 'block'
+        button.style.display = 'none'
+    }
+
     login = () => {
         this.props.history.push(`/login?redirect_link=playlist/${this.props.match.params.id}`)
     }
 
     render() {
-        const { loggedIn, playlist, type, id, liked, available, path } = this.state
+        const { loggedIn, playlist, type, id, liked, available, path, _id, displayTracks } = this.state
         const { match } = this.props
+        this.trackLike = []
+        this.trackNumber = []
+        this.playSong = []
 
         return (
             <div className="main_container">
@@ -168,15 +230,50 @@ class Playlist extends Component {
                                             Add
                                         </button> :
                                             <button className="playlist_button" onClick={() => loggedIn ? this.libraryAction(parseInt(match.params.id), path, 'delete', false) : this.login()}>
-                                                <GoPlus className="playlist_button_icon" />
+                                                <IoMdRemove className="playlist_button_icon" />
                                             Remove
                                         </button>}
-                                        <button className="playlist_button">
-                                            <IoMdHeartEmpty className="playlist_button_icon" />
+                                        {!liked ?
+                                            <button className="playlist_button" onClick={() => { !loggedIn ? this.login() : (available ? this.likeDownloadAction(path, playlist, 'like', _id) : this.likeUndownloadAction(path, playlist, 'like')) }}>
+                                                <IoMdHeartEmpty className="playlist_button_icon" />
                                             Like
-                                        </button>
+                                        </button> :
+                                            <button className="playlist_button" id="unlike_button" onClick={() => { !loggedIn ? this.login() : (_id ? this.likeDownloadAction(path, playlist, 'unlike', _id) : this.likeUndownloadAction(path, playlist, 'unlike')) }}>
+                                                <IoIosHeartDislike className="playlist_button_icon" />
+                                        Unlike
+                                    </button>
+                                        }
                                     </div>
                                     <input type="search" placeholder="Search within tracks" />
+                                </div>
+                                <div>
+                                    <div className="tracks_header">
+                                        <p className="playlist_tracks_header" id="track_number">#</p>
+                                        <p className="playlist_tracks_header" id="track_title" >TRACK</p>
+                                        <p className="playlist_tracks_header track_artist">ARTIST</p>
+                                        <p className="playlist_tracks_header track_artist">ALBUM</p>
+                                        <p className="playlist_tracks_header" id="track_duration">DURATION</p>
+                                    </div>
+                                    {displayTracks.map((track, index) => {
+                                        return (
+                                            <div className="tracks_header" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index])} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index])}>
+                                                <div className="track_number">
+                                                    <p style={{marginBottom: '0'}} ref={el => this.trackNumber[index] = el}>{index + 1}</p>
+                                                    <div className="play_track_button" ref={el => this.playSong[index] = el} onClick={() => { loggedIn ? this.play('track', track.id) : this.login() }}>
+                                                                <MdPlayArrow style={{ fontSize: '25px' }} />
+                                                            </div>
+                                                    <div onClick={() => loggedIn ? this.addToLikes(track.type, track, this.trackLike[index]) : this.login()} ref={el => this.trackLike[index] = el} className={`track_like_holder ${this.newLikes(track, 'trackLikes') ? 'is_liked' : 'is_unliked'}`}>
+                                                        <IoIosHeart className={!loggedIn ? 'hide' : (this.newLikes(track, 'trackLikes') ? 'track_liked' : 'hide')} id="liked_track"/>
+                                                        <IoMdHeartEmpty className={!loggedIn ? 'show' : (this.newLikes(track, 'trackLikes') ? 'hide' : 'track_not_liked')} id="unliked_track" />
+                                                    </div>
+                                                </div>
+                                                <div className="track_title">{track.title}</div>
+                                                <p className="track_artist"></p>
+                                                <p className="track_album"></p>
+                                                <p className="track_duration"></p>
+                                            </div>
+                                        )
+                                    })}
                                 </div>
                             </div> :
                             <div className="spinner">
