@@ -930,14 +930,24 @@
   margin-bottom: 0;
 }
 
+.add_icon_holder {
+  display: flex;
+  justify-content: space-between;
+  width: 20%;
+  padding-right: 20px;
+}
+
 #track_number {
   width: 12%;
 }
 #track_title {
   width: 40%;
+  display: flex;
+  justify-content: space-between;
 }
 .track_artist {
   width: 20%;
+  margin-bottom: 0; 
 }
 #track_duration {
   width: 8%;
@@ -998,9 +1008,79 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  display: none;
+  display: block;
   cursor: pointer;
 }
+.u {
+  display: flex;
+  justify-content: center;
+  width: 30px;
+  margin-bottom: 0;
+}
+
+.track_title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 35px;
+  width: 40%;
+}
+.track_title > p {
+  margin-bottom: 0;
+}
+
+.track_album {
+  width: 20%;
+  margin-bottom: 0;
+}
+
+.track_duration {
+  margin-bottom: 0;
+}
+
+/*****Album ***/
+.track_album_title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 35px;
+  width: 80%;
+}
+.track_album_title > p {
+  margin-bottom: 0;
+}
+
+#track_album_number {
+  width: 12%;
+}
+#track_album_title {
+  width: 80%;
+}
+#track_album_duration {
+  width: 8%;
+}
+.add_library_icon {
+  display: none;
+}
+
+.add_icons_play {
+  width: 25px;
+  height: 25px;
+  color: black; 
+  
+}
+.add_icons_play:hover {
+  cursor: pointer;
+  color: grey;
+}
+
+.search_track {
+  padding: 7px 15px;
+  border-radius: 5px;
+  font-size: 15px;
+  width: 350px;
+}
+
 
 
 /*****Welcome Page ***/ 

@@ -10,6 +10,7 @@ import Welcome from './components/welcome/welcome'
 import Nav from './components/partials/nav'
 import Explore from './components/general/explore'
 import Playlist from './components/general/playlist'
+import Album from './components/general/album'
 import Sidebar from './components/partials/sidebar'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Route exact path='/' component={Welcome} />
       <Route path='/explore' component={Explore} />
       <Route path='/playlist/:id' component={Playlist} />
+      <Route path='/album/:id' component={Album} />
       <Route path='/login' component={Login} />
       <Route path='/signup' component={Signup} />
       {/* <Explore />  */}

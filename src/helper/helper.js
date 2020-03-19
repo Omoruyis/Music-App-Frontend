@@ -6,4 +6,13 @@ const time = (seconds) => {
     return `${hours} hrs ${minutes} mins`
 }
 
-export default time
+const trackTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${minutes < 10 ? 0 : ''}${minutes}:${secs < 10 ? 0 : ''}${secs}`
+}
+
+export {
+    time, 
+    trackTime
+}

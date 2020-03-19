@@ -35,7 +35,7 @@ class Signup extends Component {
             password: this.password.value,
         }
 
-        axios.post(`${config.url}/signup`, request, config.headers)
+        axios.post(`${config().url}/signup`, request, config().headers)
             .then(response => {
                 if (response.data === 'User already exists') {
                     this.name.value = ''
@@ -68,14 +68,14 @@ class Signup extends Component {
                             <label className="signup_label">Display Name</label>
                             <input type="text" placeholder="John Doe" className="signup_text" ref={el => this.name = el} required={true} />
                             <label className="signup_label">E-mail Address</label>
-                            <input type="email" placeholder="johndoe@example.com" className="signup_text" ref={el => this.email = el} required='true' />
+                            <input type="email" placeholder="johndoe@example.com" className="signup_text" ref={el => this.email = el} required={true} />
                             <div className="signup_password_container">
-                                <input type="password" placeholder="Password" minLength="6" className="signup_text_password" ref={el => this.password = el} required='true' />
+                                <input type="password" placeholder="Password" minLength="6" className="signup_text_password" ref={el => this.password = el} required={true} />
                                 <img src={password} alt="show password" className="signup_password_image" onClick={this.show} />
                             </div>
                         </form>
                         <Link to='/' style={{ textDecoration: 'none' }}>
-                            <button className="signup_button" onClick={this.submitForm}>
+                            <button type="submit" className="signup_button" onClick={this.submitForm}>
                                 SIGN UP
                         </button>
                         </Link>

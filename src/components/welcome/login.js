@@ -86,13 +86,13 @@ class Login extends Component {
                 <div className="login_section">
                     <p className="login">LOGIN</p>
                     <form onSubmit={this.login} style={{ width: '100%' }}>
-                        <input type="email" placeholder="Email Address" className="login_details" ref={el => this.email = el} required />
+                        <input type="email" placeholder="Email Address" className="login_details" ref={el => this.email = el} required={true} />
                         <div className="login_password">
-                            <input type="password" placeholder="Password" minLength="6" className="login_details_password" ref={el => this.password = el} required />
+                            <input type="password" placeholder="Password" minLength="6" className="login_details_password" ref={el => this.password = el} required={true} />
                             <img src={password} alt="show password" className="password_image" onClick={this.show} />
                         </div>
                     </form>
-                    <button className="login_button" onClick={this.login}>LOGIN</button>
+                    <button type="submit" className="login_button" onClick={this.login}>LOGIN</button>
                     <div className="login_or">
                         <div className="login_underline"></div><p className="login_text">Or</p><div className="login_underline"></div>
                     </div>
@@ -106,7 +106,7 @@ class Login extends Component {
                     />
                     <div className="login_create_account">
                         <p className="login_text">Don't have an account?</p>
-                        <Link to={`/signup?redirect_link=${redirect}`}>
+                        <Link to={`/signup?redirect_link=${redirect}`} style={{ textDecoration: 'none' }}>
                             <button className="login_button">SIGN UP</button>
                         </Link>
                     </div>
