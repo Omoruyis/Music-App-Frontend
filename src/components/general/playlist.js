@@ -17,7 +17,7 @@ import { IoMdRemove } from "react-icons/io";
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
-import { time, trackTime } from '../../helper/helper'
+import { trimString, time, trackTime } from '../../helper/helper'
 
 import '../../App.css';
 
@@ -356,11 +356,11 @@ class Playlist extends Component {
                                                     </div>
                                                 </div>
                                                 <p className="track_artist">
-                                                    <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none' }}>{track.artist.name}</Link>
+                                                    <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none' }}>{trimString(track.artist.name, 17)}</Link>
                                                 </p>
 
                                                 <p className="track_album">
-                                                    <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none' }}>{track.album.title}</Link>
+                                                    <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none' }}>{trimString(track.album.title, 17)}</Link>
                                                 </p>
                                                 <p className="track_duration">{trackTime(track.duration)}</p>
                                             </div>

@@ -107,7 +107,7 @@ class Discography extends Component {
                                             <img src={cur.picture} className="discography_playlist_image"/>
                                             </div>
                                             <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none', width: '60%' }}>
-                                            <p style={{marginBottom: '0'}}>{trimString(cur.title, 13)}</p>
+                                            <p style={{marginBottom: '0'}}>{trimString(cur.title, 11)}</p>
                                             </Link>
                                             <div onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.playlistLike[index]) : this.login()} ref={el => this.playlistLike[index] = el} className={`track_like_holder ${loggedIn ? (this.newLikes(cur, 'trackLikes') ? 'is_liked' : 'is_unliked') : ''}`} style={{width: '10%'}}>
 
@@ -124,20 +124,6 @@ class Discography extends Component {
                         </div>
                     </div>
                 </div>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
-                <p>thanks</p>
             </div>
         )
     }

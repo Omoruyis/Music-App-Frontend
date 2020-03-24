@@ -16,7 +16,7 @@ import { IoMdRemove } from "react-icons/io";
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
-import { time, trackTime } from '../../helper/helper'
+import { trimString, time, trackTime } from '../../helper/helper'
 
 import '../../App.css';
 
@@ -343,7 +343,7 @@ class Album extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="track_album_title">
-                                                    <p style={{ width: '70%' }}>{track.title}</p>
+                                                    <p style={{ width: '70%' }}>{trimString(track.title, 40)}</p>
                                                     <div className="add_icon_holder">
                                                         <div ref={el => this.addIcon[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.addAlbPl(path, parseInt(match.params.id), index) : this.login() }}>
                                                             <IoIosAddCircleOutline className="add_icons_play" />
