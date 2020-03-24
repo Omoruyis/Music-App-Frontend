@@ -11,6 +11,7 @@ import Nav from './components/partials/nav'
 import Explore from './components/general/explore'
 import Playlist from './components/general/playlist'
 import Album from './components/general/album'
+import Artist from './components/general/artist'
 import Sidebar from './components/partials/sidebar'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <Route path='/explore' component={Explore} />
       <Route path='/playlist/:id' component={Playlist} />
       <Route path='/album/:id' component={Album} />
+      <Route path='/artist/:id' component={Artist} />
       <Route path='/login' component={Login} />
       <Route path='/signup' component={Signup} />
       {/* <Explore />  */}

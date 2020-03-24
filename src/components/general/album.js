@@ -8,6 +8,7 @@ import { MdExplicit } from "react-icons/md";
 import { GoPlus } from "react-icons/go";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosHeart } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
@@ -38,8 +39,7 @@ class Album extends Component {
         this.getPathName()
         this.checkLogin()
         this.getPlaylist()
-        this.checkLike(parseInt(this.props.match.params.id), 'album')
-        this.checkAvailable(parseInt(this.props.match.params.id), 'album')
+
     }
 
     getPathName = () => {
@@ -55,14 +55,16 @@ class Album extends Component {
             playlist: result.data,
             displayTracks: result.data.tracks.data
         })
-        let availableTracks = []
-        result.data.tracks.data.forEach(async (cur, index) => {
-            const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: parseInt(this.props.match.params.id), trackId: cur.id }, config().headers)
-            availableTracks[index] = res.data
-        })
-        this.setState({
-            availableTracks
-        })
+        if (this.state.loggedIn) {
+            let availableTracks = []
+            result.data.tracks.data.forEach(async (cur, index) => {
+                const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: parseInt(this.props.match.params.id), trackId: cur.id }, config().headers)
+                availableTracks[index] = res.data
+            })
+            this.setState({
+                availableTracks
+            })
+        }
     }
 
     getLikes = async () => {
@@ -87,6 +89,8 @@ class Album extends Component {
             loggedIn: true
         })
         this.getLikes()
+        this.checkLike(parseInt(this.props.match.params.id), 'album')
+        this.checkAvailable(parseInt(this.props.match.params.id), 'album')
     }
 
     checkAvailable = async (id, type) => {
@@ -98,9 +102,11 @@ class Album extends Component {
     }
 
     checkLike = async (id, type) => {
+        console.log(id, type)
         const result = await axios.post(`${config().url}/checklike`, { id, type }, config().headers)
+        console.log(result)
         this.setState({
-            liking: result.data
+            liked: result.data
         })
     }
 
@@ -173,7 +179,7 @@ class Album extends Component {
     newLikes = (value, type) => {
         let answer
         for (let i = 0; i < this.state.likes[type].length; i++) {
-            if (this.state.likes[type][i].information.id === value.id && this.state.likes[type][i].information.type === value.type) {
+            if (this.state.likes[type][i].information.id === value.id && this.state.likes[type][i].type === value.type) {
                 answer = true
                 break
             } else {
@@ -192,6 +198,15 @@ class Album extends Component {
         })
     }
 
+    removeAlbPl = (id, trackId, index) => {
+        axios.post(`${config().url}/removeAlbPlayTrack`, { id, trackId }, config().headers)
+        let newState = this.state.availableTracks
+        newState[index] = false
+        this.setState({
+            availableTracks: newState
+        })
+    }
+
     showPlayButton = async (number, button, icon, plIcon, index) => {
         number.style.display = 'none'
         button.style.backgroundColor = 'black'
@@ -200,11 +215,14 @@ class Album extends Component {
         button.style.justifyContent = 'center'
         if (!this.state.loggedIn) {
             icon.style.display = 'block';
-            plIcon.style.display = 'block';
+            plIcon.style.display = 'none';
             return
         }
         if (this.state.availableTracks[index] !== true) {
             icon.style.display = 'block';
+            plIcon.style.display = 'none';
+        } else {
+            icon.style.display = 'none';
             plIcon.style.display = 'block';
         }
     }
@@ -224,6 +242,7 @@ class Album extends Component {
             this.setState({
                 displayTracks: this.state.playlist.tracks.data
             })
+            return 
         }
         const display = this.state.playlist.tracks.data.filter(cur => {
             const lower = cur.title.toLowerCase()
@@ -299,7 +318,7 @@ class Album extends Component {
                                     </button>
                                         }
                                     </div>
-                                    <input type="search" className="search_track" placeholder="Search within tracks" onInput={() => this.filterTracks()} ref={el => this.searchTrack = el}/>
+                                    <input type="search" className="search_track" placeholder="Search within tracks" onInput={() => this.filterTracks()} ref={el => this.searchTrack = el} />
                                 </div>
                                 <div>
                                     <div className="tracks_header">
@@ -318,7 +337,7 @@ class Album extends Component {
                                                         <MdPlayArrow style={{ fontSize: '25px', color: 'white' }} />
                                                     </div>
                                                     <div onClick={() => loggedIn ? this.addToLikes(track.type, track, this.trackLike[index]) : this.login()} ref={el => this.trackLike[index] = el} className={`track_like_holder ${loggedIn ? (this.newLikes(track, 'trackLikes') ? 'is_liked' : 'is_unliked') : ''}`}>
-                                                    
+
                                                         <IoIosHeart className={!loggedIn ? 'hide' : (this.newLikes(track, 'trackLikes') ? 'track_liked' : 'hide')} id="liked_track" />
                                                         <IoMdHeartEmpty className={!loggedIn ? 'show' : (this.newLikes(track, 'trackLikes') ? 'hide' : 'track_not_liked')} id="unliked_track" />
                                                     </div>
@@ -326,11 +345,11 @@ class Album extends Component {
                                                 <div className="track_album_title">
                                                     <p style={{ width: '70%' }}>{track.title}</p>
                                                     <div className="add_icon_holder">
-                                                        <div ref={el => this.addIcon[index] = el} className="add_library_icon" onClick={() => {loggedIn ? this.addAlbPl(path, parseInt(match.params.id), index) : this.login()}}>
+                                                        <div ref={el => this.addIcon[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.addAlbPl(path, parseInt(match.params.id), index) : this.login() }}>
                                                             <IoIosAddCircleOutline className="add_icons_play" />
                                                         </div>
-                                                        <div ref={el => this.addIconPl[index] = el} className="add_library_icon">
-                                                            <IoIosAddCircleOutline className="add_icons_play"/>
+                                                        <div ref={el => this.addIconPl[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.removeAlbPl(parseInt(match.params.id), track.id, index) : this.login() }}>
+                                                            <IoIosRemoveCircleOutline className="add_icons_play" />
                                                         </div>
                                                     </div>
                                                     <div style={{ width: '10%' }}>

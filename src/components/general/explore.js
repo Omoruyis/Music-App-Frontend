@@ -105,7 +105,7 @@ class Explore extends Component {
     newLikes = (value, type) => {
         let answer
         for (let i = 0; i < this.state.likes[type].length; i++) {
-            if (this.state.likes[type][i].information.id === value.id && this.state.likes[type][i].information.type === value.type) {
+            if (this.state.likes[type][i].information.id === value.id && this.state.likes[type][i].type === value.type) {
                 answer = true
                 break
             } else {
@@ -121,7 +121,7 @@ class Explore extends Component {
 
     render() {
         const { charts, type, id, loggedIn } = this.state
-        const { artistChange, albumChange, playlistChange } = this.props
+        // const { artistChange, albumChange, playlistChange } = this.props
         this.artistLike = []
         this.artistImage = []
         this.albumLike = []
@@ -164,7 +164,7 @@ class Explore extends Component {
                                                     <div className="explore_artist" key={index}>
                                                         <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
                                                             <Link to={`/${cur.type}/${cur.id}`}>
-                                                                <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images" onClick={() => artistChange({ id: cur.id })} />
+                                                                <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images" />
                                                             </Link>
                                                             <div
                                                                 className={!loggedIn ? 'favourite_holder white_favourite' : (this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite')}
@@ -191,7 +191,7 @@ class Explore extends Component {
                                                     <div className="explore_artist" key={index}>
                                                         <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
                                                             <Link to={`/${cur.type}/${cur.id}`}>
-                                                                <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" onClick={() => albumChange({ id: cur.id })} />
+                                                                <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" />
                                                             </Link>
                                                             <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { loggedIn ? this.play('album', cur.id) : this.login() }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
                                                                 <MdPlayArrow style={{ fontSize: '25px' }} />

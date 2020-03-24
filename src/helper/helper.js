@@ -12,7 +12,16 @@ const trackTime = (seconds) => {
     return `${minutes < 10 ? 0 : ''}${minutes}:${secs < 10 ? 0 : ''}${secs}`
 }
 
+const trimString = (str, length) => {
+    if (str.length > length) {
+        const res = str.slice(0, length - 1);
+        return `${res}...`
+    }
+    return str
+}
+
 export {
     time, 
-    trackTime
+    trackTime, 
+    trimString
 }
