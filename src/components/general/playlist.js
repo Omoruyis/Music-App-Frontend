@@ -257,7 +257,7 @@ class Playlist extends Component {
 
     render() {
         const { loggedIn, playlist, type, id, liked, available, path, _id, displayTracks, likes } = this.state
-        const { match } = this.props
+        const { match, history } = this.props
         this.trackLike = []
         this.trackNumber = []
         this.playSong = []
@@ -269,7 +269,7 @@ class Playlist extends Component {
                 <div className="general_container">
                     {loggedIn ? <Sidebar current="explore" /> : ''}
                     <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
-                        <Nav type={path} id={match.params.id} />
+                        <Nav type={path} id={match.params.id} history={history} />
                         {playlist && (loggedIn ? likes : true) ?
                             <div className="playlist_container">
                                 <div className="playlist_header" id={loggedIn ? "playlist_header" : ''}>

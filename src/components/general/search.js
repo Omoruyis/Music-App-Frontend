@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Route } from 'react-router-dom'
 import axios from 'axios'
-import Discography from '../artist_discography/discography'
-import TopTracks from '../artist_discography/top_tracks'
-import ArtistPlaylists from '../artist_discography/playlist'
-import ArtistAlbums from '../artist_discography/album'
-import SimilarArtist from '../artist_discography/similar_artist'
+import All from '../search/all'
+import Tracks from '../search/tracks'
+import Playlists from '../search/playlists'
+import Albums from '../search/albums'
+import Artists from '../search/artists'
 import { CircularProgress } from '@material-ui/core';
-import { IoMdHeartEmpty } from "react-icons/io";
-import { IoIosHeartDislike } from "react-icons/io";
 
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
@@ -17,12 +15,12 @@ import config from '../../config/config'
 
 import '../../App.css';
 
-class Artist extends Component {
+class Search extends Component {
     state = {
         path: null,
         loggedIn: false,
-        playlist: null,
-        liked: false,
+        searchResult: null,
+        // liked: false,
         type: null,
         id: 0,
         likes: null,
@@ -32,15 +30,15 @@ class Artist extends Component {
     componentDidMount() {
         this.getPathName()
         this.checkLogin()
-        this.getPlaylist()
+        this.getSearchResult()
     }
 
-    refresh = async (type, id) => {
-        this.setState({ playlist: null})
-        await this.props.history.push(`/${type}/${id}`)
-        this.checkLogin()
-        this.getPlaylist()
-    }
+    // refresh = async (type, id) => {
+    //     this.setState({ playlist: null })
+    //     await this.props.history.push(`/${type}/${id}`)
+    //     this.checkLogin()
+    //     this.getPlaylist()
+    // }
 
     getPathName = () => {
         const path = this.props.location.pathname.split('/')[1]
@@ -61,18 +59,18 @@ class Artist extends Component {
             loggedIn: true
         })
         this.getLikes()
-        this.checkLike(parseInt(this.props.match.params.id), 'artist')
+        // this.checkLike(parseInt(this.props.match.params.id), 'artist')
     }
 
-    getPlaylist = async () => {
-        const result = await axios.post(`${config().url}/search/artist`, { id: parseInt(this.props.match.params.id) }, config().headers)
+    getSearchResult = async () => {
+        const result = await axios.post(`${config().url}/search`, { searchQuery: this.props.match.params.query }, config().headers)
         this.setState({
-            playlist: result.data,
+            searchResult: result.data,
             // displayTracks: result.data.tracks.data
         })
         if (this.state.loggedIn) {
             let availableTracks = []
-            result.data.tracklist.forEach(async (cur, index) => {
+            result.data.tracks.forEach(async (cur, index) => {
                 const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: cur.album.id, trackId: cur.id }, config().headers)
                 availableTracks[index] = res.data
             })
@@ -92,12 +90,12 @@ class Artist extends Component {
         })
     }
 
-    checkLike = async (id, type) => {
-        const result = await axios.post(`${config().url}/checklike`, { id, type }, config().headers)
-        this.setState({
-            liked: result.data
-        })
-    }
+    // checkLike = async (id, type) => {
+    //     const result = await axios.post(`${config().url}/checklike`, { id, type }, config().headers)
+    //     this.setState({
+    //         liked: result.data
+    //     })
+    // }
 
     addAlbPl = (type, id, trackId, index) => {
         axios.post(`${config().url}/addAlbPlayTrack`, { type, id, trackId }, config().headers)
@@ -119,7 +117,7 @@ class Artist extends Component {
 
     addToLikes = (type, obj, clas) => {
         const currentClass = clas
-        const secondClass = currentClass.className.split(' ')       
+        const secondClass = currentClass.className.split(' ')
         const s = clas.querySelector('#liked_track')
         const u = clas.querySelector('#unliked_track')
         if (secondClass[1] === 'is_liked') {
@@ -214,7 +212,7 @@ class Artist extends Component {
     }
 
     render() {
-        const { playlist, loggedIn, type, path, likes, id, liked, availableTracks } = this.state
+        const { searchResult, loggedIn, type, path, likes, id, liked, availableTracks } = this.state
         const { match, history } = this.props
 
         return (
@@ -222,45 +220,33 @@ class Artist extends Component {
                 <div className="general_container">
                     {loggedIn ? <Sidebar current="explore" /> : ''}
                     <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
-                        <Nav type={path} id={match.params.id} history={history} />
-                        {playlist && (loggedIn ? likes : true) ?
-                            <div className="playlist_container">
-                                <div className="artist_details">
-                                    <img src={playlist.typeDetails.picture_medium} alt="artist_picture" />
-                                    <div className="artist_details_like">
-                                        <p className="playlist_title">{playlist.typeDetails.name}</p>
-                                        {!liked ?
-                                            <button className="playlist_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist.typeDetails, 'like') }}>
-                                                <IoMdHeartEmpty className="playlist_button_icon" />
-                                            Like
-                                        </button> :
-                                            <button className="playlist_button" id="unlike_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist.typeDetails, 'unlike') }}>
-                                                <IoIosHeartDislike className="playlist_button_icon" />
-                                        Unlike
-                                    </button>
-                                        }
-                                    </div>
+                        <Nav type="explore" id="" history={history} />
+                        {searchResult && (loggedIn ? likes : true) ?
+                            <div className="search_container">
+                                <div className="artist_discography search_headers">
+                                    <Link to={`/${path}/${match.params.query}`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}` ? 'artist_border' : ''}>All</p></Link>
+                                    <Link to={`/${path}/${match.params.query}/tracks`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/tracks` ? 'artist_border' : ''}>Tracks</p></Link>
+                                    <Link to={`/${path}/${match.params.query}/albums`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/albums` ? 'artist_border' : ''}>Albums</p></Link>
+                                    <Link to={`/${path}/${match.params.query}/artists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/artists` ? 'artist_border' : ''}>Artists</p></Link>
+                                    <Link to={`/${path}/${match.params.query}/playlists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/playlists` ? 'artist_border' : ''}>Playlists</p></Link>
                                 </div>
-                                <div className="artist_discography">
-                                    <Link to={`/${path}/${match.params.id}`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}` ? 'artist_border' : ''}>Discography</p></Link>
-                                    <Link to={`/${path}/${match.params.id}/top_tracks`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}/top_tracks` ? 'artist_border' : ''}>Top Tracks</p></Link>
-                                    <Link to={`/${path}/${match.params.id}/albums`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}/albums` ? 'artist_border' : ''}>Albums</p></Link>
-                                    <Link to={`/${path}/${match.params.id}/similar_artists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}/similar_artists` ? 'artist_border' : ''}>Similar Artists</p></Link>
-                                    <Link to={`/${path}/${match.params.id}/playlists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}/playlists` ? 'artist_border' : ''}>Playlists</p></Link>
-                                </div> 
-                                <div>
-                                    <Route exact path='/artist/:id' render={(props) => <Discography {...props} topTracks={playlist} play={this.play} path={path} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} path={path}/>} likeUndownloadAction={this.likeUndownloadAction}></Route>
-                                    <Route path='/artist/:id/top_tracks' render={(props) => <TopTracks {...props} topTracks={playlist.tracklist} play={this.play} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} availableTracks={availableTracks} path={path} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl}/>}></Route>
-                                    <Route path='/artist/:id/playlists' render={(props) => <ArtistPlaylists {...props} playlists={playlist.playlists} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
-                                    <Route path='/artist/:id/albums' render={(props) => <ArtistAlbums {...props} albums={playlist.albums} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
-                                    <Route path='/artist/:id/similar_artists' render={(props) => <SimilarArtist {...props} related={playlist.relatedArtists} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes} refresh={this.refresh}/>}></Route>
+                                <div className="search_headers">
+                                    <Route exact path='/search/:query' render={(props) => <All {...props} searchResult={searchResult} play={this.play} path={path} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} likeUndownloadAction={this.likeUndownloadAction} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl} availableTracks={availableTracks} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} addToLikes2={this.addToLikes2} />}></Route>
+
+                                    <Route path='/search/:query/tracks' render={(props) => <Tracks {...props} searchResult={searchResult} play={this.play} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} availableTracks={availableTracks} path={path} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl}/>}></Route>
+
+                                    <Route path='/search/:query/playlists' render={(props) => <Playlists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
+
+                                    <Route path='/search/:query/albums' render={(props) => <Albums {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
+
+                                    <Route path='/search/:query/artists' render={(props) => <Artists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes} refresh={this.refresh}/>}></Route>
                                 </div>
                             </div> :
                             <div className="spinner">
                                 <CircularProgress />
-                            </div>
-                        }
+                            </div>}
                     </div>
+
                 </div>
                 {type ? <div className="iframe_container">
                     <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
@@ -270,4 +256,4 @@ class Artist extends Component {
     }
 }
 
-export default Artist
+export default Search 

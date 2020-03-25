@@ -11,16 +11,21 @@ class Nav extends Component {
         name: localStorage.name
     }
 
-    checkInput = () => {
-        if (this.search.value) {
-            this.setState({
-                inputValue: true
-            })
-        } else {
-            this.setState({
-                inputValue: false
-            })
+    checkInput = (e) => {
+        if (e.key === 'Enter') {
+            const value = this.search.value
+            this.search.blur()
+            this.props.history.push(`/search/${value}`)
         }
+        // if (this.search.value) {
+        //     this.setState({
+        //         inputValue: true
+        //     })
+        // } else {
+        //     this.setState({
+        //         inputValue: false
+        //     })
+        // }
     }
 
     clearSearch = () => {
@@ -35,10 +40,10 @@ class Nav extends Component {
         return (
             <div className="explorenav_container">
                 <div className="explorenav_search">
-                    <input type="search" placeholder="Search" className="explorenav_search_input" ref={el => this.search = el} onChange={this.checkInput} />
+                    <input type="search" placeholder="Search" className="explorenav_search_input" ref={el => this.search = el} onKeyPress={this.checkInput} />
                     {inputValue ?
                         <IconContext.Provider value={{ size: '2em', className: "explorenav_cancel_search" }}>
-                            <MdCancel onClick={this.clearSearch} />
+                            <MdCancel />
                         </IconContext.Provider> : ''}
                 </div>
 

@@ -12,6 +12,7 @@ import Explore from './components/general/explore'
 import Playlist from './components/general/playlist'
 import Album from './components/general/album'
 import Artist from './components/general/artist'
+import Search from './components/general/search'
 import Sidebar from './components/partials/sidebar'
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Route path='/artist/:id' component={Artist} />
       <Route path='/login' component={Login} />
       <Route path='/signup' component={Signup} />
+      <Route path='/search/:query' component={Search} />
       {/* <Explore />  */}
     </div>
   );

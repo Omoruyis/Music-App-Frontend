@@ -45,7 +45,7 @@ class SimilarArtist extends Component {
                         <div className="explore_artist" id="discography_playlist_mapped" key={index}>
                             <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
                                 {/* <Link to={`/${cur.type}/${cur.id}`}> */}
-                                    <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images" onClick={() => this.refresh(cur.type, cur.id)}/>
+                                    <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images hover_similar" onClick={() => this.refresh(cur.type, cur.id)}/>
                                 {/* </Link> */}
                                 <div
                                     className={!loggedIn ? 'favourite_holder white_favourite' : (this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite')}
@@ -57,7 +57,7 @@ class SimilarArtist extends Component {
                                 </div>
                             </div>
                             {/* <Link to={`/${cur.type}/${cur.id}`}> */}
-                                <p className="explore_artists_name" onClick={() => this.refresh(cur.type, cur.id)}>{cur.name}</p>
+                                <p className="explore_artists_name" style={{cursor: 'pointer'}} onClick={() => this.refresh(cur.type, cur.id)}>{cur.name}</p>
                             {/* </Link> */}
                         </div>
                     )

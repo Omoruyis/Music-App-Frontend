@@ -121,7 +121,7 @@ class Explore extends Component {
 
     render() {
         const { charts, type, id, loggedIn } = this.state
-        // const { artistChange, albumChange, playlistChange } = this.props
+        const { history } = this.props
         this.artistLike = []
         this.artistImage = []
         this.albumLike = []
@@ -133,7 +133,7 @@ class Explore extends Component {
                 <div className="general_container">
                     {loggedIn ? <Sidebar current="explore" /> : ''}
                     <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
-                        <Nav type="explore" id="" />
+                        <Nav type="explore" id="" history={history} />
                         {charts ?
                             <div className="explore_container">
                                 <p className="explore_charts">Charts</p>
