@@ -327,7 +327,7 @@ class Playlist extends Component {
                                     </div>
                                     {displayTracks.map((track, index) => {
                                         return (
-                                            <div className="tracks_header" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
+                                            <div className="tracks_header tracks_header_background" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
                                                 <div className="track_number">
                                                     <div className="u" ref={el => this.trackNumber[index] = el}>
                                                         <p style={{ marginBottom: '0' }}>{index + 1}</p>
@@ -342,7 +342,7 @@ class Playlist extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="track_title">
-                                                    <p style={{ width: '70%' }}>{track.title}</p>
+                                                    <p style={{ width: '70%' }}>{trimString(track.title, 27)}</p>
                                                     <div className="add_icon_holder">
                                                         <div ref={el => this.addIcon[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.addAlbPl(path, track.album.id, track.id, index) : this.login() }}>
                                                             <IoIosAddCircleOutline className="add_icons_play" />

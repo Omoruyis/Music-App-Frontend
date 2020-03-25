@@ -63,7 +63,7 @@ class Discography extends Component {
         return (
             <div>
                 <div className="discography_first">
-                    <div className="discography_top_tracks">
+                    {topTracks.mostPlayed ? <div className="discography_top_tracks">
                         <p className="discography_header_text">Top Tracks</p>
                         <div className="discography_mapped_container">
                             {topTracks.mostPlayed.map((track, index) => {
@@ -83,7 +83,7 @@ class Discography extends Component {
                                             </div>
                                         </div>
                                         <div className="track_album_title_discograph">
-                                            <p style={{ width: '70%', marginBottom: '0' }}>{track.title}</p>
+                                            <p style={{ width: '70%', marginBottom: '0' }}>{trimString(track.title, 27)}</p>
                                             <div style={{ width: '10%' }}>
                                                 {track.explicit_lyrics ? <MdExplicit /> : ''}
                                             </div>
@@ -95,34 +95,34 @@ class Discography extends Component {
                                 <div className="discography_see_more_tracks">See more tracks</div>
                             </Link>
                         </div>
-                    </div>
-                    <div className="discography_playlists">
+                    </div> : ''}
+                    {topTracks.playlists ? <div className="discography_playlists">
                         <p className="discography_header_text">Playlists</p>
                         <div>
                             {topTracks.playlists.map((cur, index) => {
                                 if (index < 4) {
                                     return (
                                         <div className="discography_playlist" key={index}>
-                                            <div style={{width: '30%'}}>
-                                            <img src={cur.picture} className="discography_playlist_image"/>
+                                            <div style={{ width: '30%' }}>
+                                                <img src={cur.picture} className="discography_playlist_image" />
                                             </div>
                                             <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none', width: '60%' }}>
-                                            <p style={{marginBottom: '0'}}>{trimString(cur.title, 11)}</p>
+                                                <p style={{ marginBottom: '0' }}>{trimString(cur.title, 11)}</p>
                                             </Link>
-                                            <div onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.playlistLike[index]) : this.login()} ref={el => this.playlistLike[index] = el} className={`track_like_holder ${loggedIn ? (this.newLikes(cur, 'trackLikes') ? 'is_liked' : 'is_unliked') : ''}`} style={{width: '10%'}}>
+                                            <div onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.playlistLike[index]) : this.login()} ref={el => this.playlistLike[index] = el} className={`track_like_holder ${loggedIn ? (this.newLikes(cur, 'trackLikes') ? 'is_liked' : 'is_unliked') : ''}`} style={{ width: '10%' }}>
 
                                                 <IoIosHeart className={!loggedIn ? 'hide' : (this.newLikes(cur, 'playlistLikes') ? 'track_liked' : 'hide')} id="liked_track" />
                                                 <IoMdHeartEmpty className={!loggedIn ? 'show' : (this.newLikes(cur, 'playlistLikes') ? 'hide' : 'track_not_liked')} id="unliked_track" />
                                             </div>
                                         </div>
                                     )
-                                } else { return ''}
+                                } else { return '' }
                             })}
                             <Link to={`/${path}/${match.params.id}/playlists`} style={{ textDecoration: 'none', width: '100%' }}>
                                 <div className="discography_see_more_tracks">See more playlists</div>
                             </Link>
                         </div>
-                    </div>
+                    </div> : ''}
                 </div>
             </div>
         )

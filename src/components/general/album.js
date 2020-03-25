@@ -328,7 +328,7 @@ class Album extends Component {
                                     </div>
                                     {displayTracks.map((track, index) => {
                                         return (
-                                            <div className="tracks_header" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
+                                            <div className="tracks_header tracks_header_background" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
                                                 <div className="track_number">
                                                     <div className="u" ref={el => this.trackNumber[index] = el}>
                                                         <p style={{ marginBottom: '0' }}>{index + 1}</p>
