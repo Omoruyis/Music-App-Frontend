@@ -15,17 +15,9 @@ class Nav extends Component {
         if (e.key === 'Enter') {
             const value = this.search.value
             this.search.blur()
+            this.search.value = ''
             this.props.history.push(`/search/${value}`)
         }
-        // if (this.search.value) {
-        //     this.setState({
-        //         inputValue: true
-        //     })
-        // } else {
-        //     this.setState({
-        //         inputValue: false
-        //     })
-        // }
     }
 
     clearSearch = () => {

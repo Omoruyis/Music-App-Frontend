@@ -26,20 +26,24 @@ class Artist extends Component {
         type: null,
         id: 0,
         likes: null,
-        availableTracks: []
+        availableTracks: [],
+        url: this.props.match.params.id
     }
 
     componentDidMount() {
         this.getPathName()
         this.checkLogin()
-        this.getPlaylist()
+        this.getPlaylist(this.props.match.params.id)
     }
 
-    refresh = async (type, id) => {
-        this.setState({ playlist: null})
-        await this.props.history.push(`/${type}/${id}`)
-        this.checkLogin()
-        this.getPlaylist()
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextState.url !== nextProps.match.params.id) {
+            this.setState({ playlist: null })
+            this.checkLogin()
+            this.getPlaylist(nextProps.match.params.id)
+            this.setState({ url: nextProps.match.params.id })
+        }
+        return true
     }
 
     getPathName = () => {
@@ -64,8 +68,8 @@ class Artist extends Component {
         this.checkLike(parseInt(this.props.match.params.id), 'artist')
     }
 
-    getPlaylist = async () => {
-        const result = await axios.post(`${config().url}/search/artist`, { id: parseInt(this.props.match.params.id) }, config().headers)
+    getPlaylist = async (value) => {
+        const result = await axios.post(`${config().url}/search/artist`, { id: parseInt(value) }, config().headers)
         this.setState({
             playlist: result.data,
             // displayTracks: result.data.tracks.data
@@ -215,7 +219,6 @@ class Artist extends Component {
 
     render() {
         const { playlist, loggedIn, type, path, likes, id, liked, availableTracks } = this.state
-        console.log(this.state.playlist)
         const { match, history } = this.props
 
         return (
@@ -250,14 +253,18 @@ class Artist extends Component {
                                     {playlist.albums ? <Link to={`/${path}/${match.params.id}/albums`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}/albums` ? 'artist_border' : ''}>Albums</p></Link> : ''}
 
                                     {playlist.relatedArtists ? <Link to={`/${path}/${match.params.id}/similar_artists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}/similar_artists` ? 'artist_border' : ''}>Similar Artists</p></Link> : ''}
-                                    
+
                                     {playlist.playlists ? <Link to={`/${path}/${match.params.id}/playlists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}/playlists` ? 'artist_border' : ''}>Playlists</p></Link> : ''}
                                 </div> 
                                 <div>
                                     <Route exact path='/artist/:id' render={(props) => <Discography {...props} topTracks={playlist} play={this.play} path={path} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} path={path}/>} likeUndownloadAction={this.likeUndownloadAction}></Route>
+
                                     <Route path='/artist/:id/top_tracks' render={(props) => <TopTracks {...props} topTracks={playlist.tracklist} play={this.play} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} availableTracks={availableTracks} path={path} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl}/>}></Route>
+
                                     <Route path='/artist/:id/playlists' render={(props) => <ArtistPlaylists {...props} playlists={playlist.playlists} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
+
                                     <Route path='/artist/:id/albums' render={(props) => <ArtistAlbums {...props} albums={playlist.albums} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
+                                    
                                     <Route path='/artist/:id/similar_artists' render={(props) => <SimilarArtist {...props} related={playlist.relatedArtists} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes} refresh={this.refresh}/>}></Route>
                                 </div>
                             </div> :

@@ -20,25 +20,28 @@ class Search extends Component {
         path: null,
         loggedIn: false,
         searchResult: null,
-        // liked: false,
         type: null,
         id: 0,
         likes: null,
-        availableTracks: []
+        availableTracks: [],
+        url: this.props.match.params.query
     }
 
     componentDidMount() {
         this.getPathName()
         this.checkLogin()
-        this.getSearchResult()
+        this.getSearchResult(this.props.match.params.query)
     }
 
-    // refresh = async (type, id) => {
-    //     this.setState({ playlist: null })
-    //     await this.props.history.push(`/${type}/${id}`)
-    //     this.checkLogin()
-    //     this.getPlaylist()
-    // }
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextState.url !== nextProps.match.params.query) {
+            this.setState({ searchResult: null })
+            this.checkLogin()
+            this.getSearchResult(nextProps.match.params.query)
+            this.setState({ url: nextProps.match.params.query })
+        }
+        return true
+    }
 
     getPathName = () => {
         const path = this.props.location.pathname.split('/')[1]
@@ -59,14 +62,13 @@ class Search extends Component {
             loggedIn: true
         })
         this.getLikes()
-        // this.checkLike(parseInt(this.props.match.params.id), 'artist')
     }
 
-    getSearchResult = async () => {
-        const result = await axios.post(`${config().url}/search`, { searchQuery: this.props.match.params.query }, config().headers)
+    getSearchResult = async (query) => {
+        console.log(query)
+        const result = await axios.post(`${config().url}/search`, { searchQuery: query }, config().headers)
         this.setState({
             searchResult: result.data,
-            // displayTracks: result.data.tracks.data
         })
         if (this.state.loggedIn) {
             let availableTracks = []
@@ -89,13 +91,6 @@ class Search extends Component {
             likes: result.data
         })
     }
-
-    // checkLike = async (id, type) => {
-    //     const result = await axios.post(`${config().url}/checklike`, { id, type }, config().headers)
-    //     this.setState({
-    //         liked: result.data
-    //     })
-    // }
 
     addAlbPl = (type, id, trackId, index) => {
         axios.post(`${config().url}/addAlbPlayTrack`, { type, id, trackId }, config().headers)

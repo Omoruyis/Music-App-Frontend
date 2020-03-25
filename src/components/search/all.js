@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { IconContext } from "react-icons";
-import { CircularProgress } from '@material-ui/core';
 import { MdPlayArrow } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
-import { MdPlayCircleOutline } from "react-icons/md";
 import { MdExplicit } from "react-icons/md";
-import { GoPlus } from "react-icons/go";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { IoIosHeart } from "react-icons/io";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
-import { IoIosHeartDislike } from "react-icons/io";
-import { IoMdRemove } from "react-icons/io";
 
 import { trimString, trackTime } from '../../helper/helper'
-
-import '../../App.css';
 
 class All extends Component {
     showPlayButton = (number, button, icon, plIcon, index) => {
@@ -136,7 +128,7 @@ class All extends Component {
                         <Link to={`/${topResults.artist.type}/${topResults.artist.id}`}>
                             <img src={topResults.artist.picture_medium} className="top_search_image" alt="artist cover" />
                         </Link>
-                        <Link>
+                        <Link to={`/${topResults.artist.type}/${topResults.artist.id}`}>
                             <p className="top_search_image_text">{topResults.artist.name}</p>
                         </Link>
                     </div>

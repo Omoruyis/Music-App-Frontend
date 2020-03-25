@@ -9,9 +9,6 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 
 import { trimString, trackTime } from '../../helper/helper'
 
-import '../../App.css';
-
-
 class TopTracks extends Component {
     state = {
         displayTracks: this.props.topTracks

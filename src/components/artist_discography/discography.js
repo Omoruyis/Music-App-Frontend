@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { IconContext } from "react-icons";
-import { CircularProgress } from '@material-ui/core';
 import { MdPlayArrow } from "react-icons/md";
-import { MdPlayCircleOutline } from "react-icons/md";
 import { MdExplicit } from "react-icons/md";
-import { GoPlus } from "react-icons/go";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { IoIosHeart } from "react-icons/io";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { IoIosHeartDislike } from "react-icons/io";
-import { IoMdRemove } from "react-icons/io";
 
 import { trimString } from '../../helper/helper'
 
