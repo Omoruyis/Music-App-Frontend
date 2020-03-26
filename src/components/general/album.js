@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import { connect } from 'react-redux'
 import axios from 'axios'
 import { CircularProgress } from '@material-ui/core';
 import { MdPlayArrow } from "react-icons/md";
@@ -13,6 +13,7 @@ import { IoIosHeart } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
 
+import { getAllAlbums, getAllPlaylists, getAllLikes } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
@@ -40,6 +41,15 @@ class Album extends Component {
         this.checkLogin()
         this.getPlaylist()
 
+    }
+
+    componentWillUnmount() {
+        if(!this.state.loggedIn) {
+            return
+        }
+        this.props.getAlbums()
+        this.props.getPlaylists()
+        this.props.getLikes()
     }
 
     getPathName = () => {
@@ -376,12 +386,16 @@ class Album extends Component {
     }
 }
 
-// function mapStateToProps(reducer) {
-//     return {
-//         playlistId: reducer.playlist
-//     }
-// }
+function mapStateToProps() {
+    return {}
+}
 
+function mapDispatchToProps(dispatch) {
+    return {
+        getAlbums: () => dispatch(getAllAlbums()),
+        getPlaylists: () => dispatch(getAllPlaylists()),
+        getLikes: () => dispatch(getAllLikes()),
+    }
+}
 
-
-export default Album
+export default connect(mapStateToProps, mapDispatchToProps)(Album)

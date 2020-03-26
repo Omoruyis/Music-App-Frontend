@@ -29,15 +29,12 @@ class Explore extends Component {
     }
 
     componentWillUnmount() {
-        console.log('show')
         if(!this.state.loggedIn) {
-            console.log('not logged in')
             return
         }
         this.props.getAlbums()
         this.props.getPlaylists()
         this.props.getLikes()
-        console.log('now')
     }
 
     getCharts = async () => {

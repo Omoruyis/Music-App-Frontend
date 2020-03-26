@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Route } from 'react-router-dom'
+import { connect } from 'react-redux'
 import axios from 'axios'
 import Discography from '../artist_discography/discography'
 import TopTracks from '../artist_discography/top_tracks'
@@ -11,6 +12,7 @@ import { CircularProgress } from '@material-ui/core';
 import { IoMdHeartEmpty } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 
+import { getAllAlbums, getAllPlaylists, getAllLikes } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
@@ -34,6 +36,15 @@ class Artist extends Component {
         this.getPathName()
         this.checkLogin()
         this.getPlaylist(this.props.match.params.id)
+    }
+
+    componentWillUnmount() {
+        if(!this.state.loggedIn) {
+            return
+        }
+        this.props.getAlbums()
+        this.props.getPlaylists()
+        this.props.getLikes()
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -282,4 +293,16 @@ class Artist extends Component {
     }
 }
 
-export default Artist
+function mapStateToProps() {
+    return {}
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        getAlbums: () => dispatch(getAllAlbums()),
+        getPlaylists: () => dispatch(getAllPlaylists()),
+        getLikes: () => dispatch(getAllLikes()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Artist)

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Route } from 'react-router-dom'
+import { connect } from 'react-redux'
 import axios from 'axios'
 import All from '../search/all'
 import Tracks from '../search/tracks'
@@ -9,6 +10,7 @@ import Albums from '../search/albums'
 import Artists from '../search/artists'
 import { CircularProgress } from '@material-ui/core';
 
+import { getAllAlbums, getAllPlaylists, getAllLikes } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
@@ -31,6 +33,15 @@ class Search extends Component {
         this.getPathName()
         this.checkLogin()
         this.getSearchResult(this.props.match.params.query)
+    }
+
+    componentWillUnmount() {
+        if(!this.state.loggedIn) {
+            return
+        }
+        this.props.getAlbums()
+        this.props.getPlaylists()
+        this.props.getLikes()
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -255,4 +266,17 @@ class Search extends Component {
     }
 }
 
-export default Search 
+
+function mapStateToProps() {
+    return {}
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        getAlbums: () => dispatch(getAllAlbums()),
+        getPlaylists: () => dispatch(getAllPlaylists()),
+        getLikes: () => dispatch(getAllLikes()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search)

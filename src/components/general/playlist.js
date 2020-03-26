@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux'
 import axios from 'axios'
-import { IconContext } from "react-icons";
 import { CircularProgress } from '@material-ui/core';
 import { MdPlayArrow } from "react-icons/md";
 import { MdPlayCircleOutline } from "react-icons/md";
@@ -14,6 +14,7 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
 
+import { getAllAlbums, getAllPlaylists, getAllLikes } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
@@ -40,6 +41,15 @@ class Playlist extends Component {
         this.getPathName()
         this.checkLogin()
         this.getPlaylist()
+    }
+
+    componentWillUnmount() {
+        if(!this.state.loggedIn) {
+            return
+        }
+        this.props.getAlbums()
+        this.props.getPlaylists()
+        this.props.getLikes()
     }
 
     getPathName = () => {
@@ -382,12 +392,18 @@ class Playlist extends Component {
     }
 }
 
-// function mapStateToProps(reducer) {
-//     return {
-//         playlistId: reducer.playlist
-//     }
-// }
 
 
+function mapStateToProps() {
+    return {}
+}
 
-export default Playlist
+function mapDispatchToProps(dispatch) {
+    return {
+        getAlbums: () => dispatch(getAllAlbums()),
+        getPlaylists: () => dispatch(getAllPlaylists()),
+        getLikes: () => dispatch(getAllLikes()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Playlist)
