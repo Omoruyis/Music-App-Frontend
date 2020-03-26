@@ -61,7 +61,7 @@ class Tracks extends Component {
     }
 
     login = () => {
-        this.props.history.push(`/login?redirect_link=${this.props.path}/${this.props.match.params.id}/top_tracks`)
+        this.props.history.push(`/login?redirect_link=${this.props.path}/${this.props.match.params.query}/tracks`)
     }
 
     render() {

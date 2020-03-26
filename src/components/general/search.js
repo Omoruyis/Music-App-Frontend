@@ -203,7 +203,7 @@ class Search extends Component {
     }
 
     login = () => {
-        this.props.history.push(`/login?redirect_link=${this.state.path}/${this.props.match.params.id}`)
+        this.props.history.push(`/login?redirect_link=${this.state.path}/${this.props.match.params.query}`)
     }
 
     render() {
@@ -234,11 +234,11 @@ class Search extends Component {
 
                                     <Route path='/search/:query/tracks' render={(props) => <Tracks {...props} searchResult={searchResult} play={this.play} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} availableTracks={availableTracks} path={path} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl}/>}></Route>
 
-                                    <Route path='/search/:query/playlists' render={(props) => <Playlists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
+                                    <Route path='/search/:query/playlists' render={(props) => <Playlists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes} path={path}/>}></Route>
 
-                                    <Route path='/search/:query/albums' render={(props) => <Albums {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
+                                    <Route path='/search/:query/albums' render={(props) => <Albums {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} path={path} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
 
-                                    <Route path='/search/:query/artists' render={(props) => <Artists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes} refresh={this.refresh}/>}></Route>
+                                    <Route path='/search/:query/artists' render={(props) => <Artists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} path={path} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
                                 </div>
                             </div> :
                             <div className="spinner">

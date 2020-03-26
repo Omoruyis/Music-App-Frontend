@@ -509,6 +509,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: white;
+  position: sticky;
+  right: 0;
+  top: 0;
+  z-index: 200;
   height: 60px;
   width: 100%;
   padding: 15px 40px;

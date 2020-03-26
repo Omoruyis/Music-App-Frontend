@@ -5,7 +5,17 @@ import {
     CHANGE_TRACK
 } from '../actions'
 import { combineReducers } from 'redux'
+import { getPlaylists, getAlbums, getLikes } from '../utils/getAPI'
 
+import axios from 'axios'
+import config from '../config/config'
+
+let using
+
+(async () => {
+    const result = await axios.post(`${config().url}/search`, { searchQuery: 'eminem' }, config().headers)
+    using = result.data
+})()
 
 function reducer (state = {}, action) {
     const { id } = action

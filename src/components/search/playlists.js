@@ -43,7 +43,7 @@ class Playlists extends Component {
     }
 
     login = () => {
-        this.props.history.push(`/login?redirect_link=${this.props.path}/${this.props.match.params.id}/playlists`)
+        this.props.history.push(`/login?redirect_link=${this.props.path}/${this.props.match.params.query}/playlists`)
     }
 
     render () {

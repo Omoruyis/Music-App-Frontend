@@ -27,8 +27,8 @@ class SimilarArtist extends Component {
         return this.props.newLikes(value, type)
     }
 
-    refresh = (type, id) => {
-        this.props.refresh(type, id)
+    login = () => {
+        this.props.history.push(`/login?redirect_link=${this.props.path}/${this.props.match.params.id}/similar_artists`)
     }
 
     render () {

@@ -1,3 +1,5 @@
+import { getPlaylists, getAlbums, getLikes } from '../utils/getAPI'
+
 export const CHANGE_ARTIST = 'CHANGE_ARTIST'
 export const CHANGE_ALBUM = 'CHANGE_ALBUM'
 export const CHANGE_PLAYLIST = 'CHANGE_PLAYLIST'

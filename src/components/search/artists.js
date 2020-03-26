@@ -29,6 +29,10 @@ class Artist extends Component {
         return this.props.newLikes(value, type)
     }
 
+    login = () => {
+        this.props.history.push(`/login?redirect_link=${this.props.path}/${this.props.match.params.query}/artists`)
+    }
+
     render () {
         const { loggedIn, path } = this.props
         const { artists } = this.props.searchResult
