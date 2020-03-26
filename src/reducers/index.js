@@ -1,8 +1,7 @@
 import {
-    CHANGE_ARTIST,
-    CHANGE_ALBUM,
-    CHANGE_PLAYLIST,
-    CHANGE_TRACK
+    ALL_ALBUMS,
+    ALL_PLAYLISTS,
+    ALL_LIKES,
 } from '../actions'
 import { combineReducers } from 'redux'
 import { getPlaylists, getAlbums, getLikes } from '../utils/getAPI'
@@ -10,39 +9,28 @@ import { getPlaylists, getAlbums, getLikes } from '../utils/getAPI'
 import axios from 'axios'
 import config from '../config/config'
 
-let using
 
-(async () => {
-    const result = await axios.post(`${config().url}/search`, { searchQuery: 'eminem' }, config().headers)
-    using = result.data
-})()
-
-function reducer (state = {}, action) {
-    const { id } = action
+function rootReducer (state = {}, action) {
+    const { albums, playlists, likes } = action
     switch (action.type) {
-        case CHANGE_ARTIST:
+        case ALL_ALBUMS:
             return {
                 ...state,
-                artist: id
+                albums
             }
-        case CHANGE_ALBUM:
+        case ALL_PLAYLISTS:
             return {
                 ...state,
-                album: id
+                playlists
             }
-        case CHANGE_PLAYLIST:
+        case ALL_LIKES:
             return {
                 ...state,
-                playlist: id
-            }
-        case CHANGE_TRACK:
-            return {
-                ...state,
-                track: id
+                likes
             }
         default:
             return state
     }
 }
 
-export default reducer
+export default rootReducer

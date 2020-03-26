@@ -6,7 +6,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { MdPlayArrow } from "react-icons/md";
 import { Link } from 'react-router-dom'
 
-import { changeArtist, changeAlbum, changePlaylist, changeTrack } from '../../actions'
+import { getAllAlbums, getAllPlaylists, getAllLikes } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import signup from '../../assets/images/signup.png'
@@ -26,6 +26,18 @@ class Explore extends Component {
     componentDidMount() {
         this.checkLogin()
         this.getCharts()
+    }
+
+    componentWillUnmount() {
+        console.log('show')
+        if(!this.state.loggedIn) {
+            console.log('not logged in')
+            return
+        }
+        this.props.getAlbums()
+        this.props.getPlaylists()
+        this.props.getLikes()
+        console.log('now')
     }
 
     getCharts = async () => {
@@ -236,10 +248,9 @@ function mapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        artistChange: (data) => dispatch(changeArtist(data)),
-        albumChange: (data) => dispatch(changeAlbum(data)),
-        playlistChange: (data) => dispatch(changePlaylist(data)),
-        trackChange: (data) => dispatch(changeTrack(data))
+        getAlbums: () => dispatch(getAllAlbums()),
+        getPlaylists: () => dispatch(getAllPlaylists()),
+        getLikes: () => dispatch(getAllLikes()),
     }
 }
 
