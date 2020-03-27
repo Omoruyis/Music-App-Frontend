@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { IconContext } from "react-icons";
-import { MdCancel } from "react-icons/md";
 import { Link } from 'react-router-dom'
 
 import '../../App.css';
@@ -33,10 +31,6 @@ class Nav extends Component {
             <div className="explorenav_container">
                 <div className="explorenav_search">
                     <input type="search" placeholder="Search" className="explorenav_search_input" ref={el => this.search = el} onKeyPress={this.checkInput} />
-                    {inputValue ?
-                        <IconContext.Provider value={{ size: '2em', className: "explorenav_cancel_search" }}>
-                            <MdCancel />
-                        </IconContext.Provider> : ''}
                 </div>
 
                 {name ?

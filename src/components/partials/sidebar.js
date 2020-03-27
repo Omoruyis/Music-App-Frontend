@@ -29,7 +29,7 @@ class Sidebar extends Component {
                         <p>Recently Added</p>
                     </div>
                 </Link>
-                <Link to='/songs' style={{textDecoration: 'none' }}>
+                <Link to='/my_tracks' style={{textDecoration: 'none' }}>
                         <p className="sidebar_content" id={current === 'songs' ? 'current' : ''}>Songs</p>
                 </Link>
                 <Link to='/playlists' style={{textDecoration: 'none' }}>

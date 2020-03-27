@@ -6,7 +6,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { MdPlayArrow } from "react-icons/md";
 import { Link } from 'react-router-dom'
 
-import { getAllAlbums, getAllPlaylists, getAllLikes } from '../../actions'
+import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import signup from '../../assets/images/signup.png'
@@ -33,6 +33,7 @@ class Explore extends Component {
             return
         }
         this.props.getAlbums()
+        this.props.getTracks()
         this.props.getPlaylists()
         this.props.getLikes()
     }
@@ -246,6 +247,7 @@ function mapStateToProps() {
 function mapDispatchToProps(dispatch) {
     return {
         getAlbums: () => dispatch(getAllAlbums()),
+        getTracks: () => dispatch(getAllTracks()),
         getPlaylists: () => dispatch(getAllPlaylists()),
         getLikes: () => dispatch(getAllLikes()),
     }

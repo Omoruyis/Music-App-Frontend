@@ -10,7 +10,7 @@ import Albums from '../search/albums'
 import Artists from '../search/artists'
 import { CircularProgress } from '@material-ui/core';
 
-import { getAllAlbums, getAllPlaylists, getAllLikes } from '../../actions'
+import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
@@ -40,6 +40,7 @@ class Search extends Component {
             return
         }
         this.props.getAlbums()
+        this.props.getTracks()
         this.props.getPlaylists()
         this.props.getLikes()
     }
@@ -274,6 +275,7 @@ function mapStateToProps() {
 function mapDispatchToProps(dispatch) {
     return {
         getAlbums: () => dispatch(getAllAlbums()),
+        getTracks: () => dispatch(getAllTracks()),
         getPlaylists: () => dispatch(getAllPlaylists()),
         getLikes: () => dispatch(getAllLikes()),
     }

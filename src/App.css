@@ -1284,6 +1284,14 @@
   border-top: 0;
 }
 
+.my_tracks {
+  margin: 60px;
+}
+
+.remove_header_border {
+  border-top: 0;
+}
+
 
 /*****Welcome Page ***/ 
 @media (max-width: 850px) {

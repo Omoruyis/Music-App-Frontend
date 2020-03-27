@@ -7,6 +7,11 @@ const getAlbums = async () => {
     return result.data
 }
 
+const getTracks = async () => {
+    const result = await axios.get(`${config().url}/alltracks`, config().headers)
+    return result.data
+}
+
 const getPlaylists = async () => {
     const result = await axios.get(`${config().url}/allplaylists`, config().headers)
     return result.data
@@ -19,6 +24,7 @@ const getLikes = async () => {
 
 export {
     getAlbums, 
+    getTracks,
     getPlaylists,
     getLikes
 }

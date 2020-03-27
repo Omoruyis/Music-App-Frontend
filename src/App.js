@@ -7,13 +7,12 @@ import './App.css';
 import Signup from './components/welcome/signup'
 import Login from './components/welcome/login'
 import Welcome from './components/welcome/welcome'
-import Nav from './components/partials/nav'
 import Explore from './components/general/explore'
 import Playlist from './components/general/playlist'
 import Album from './components/general/album'
 import Artist from './components/general/artist'
 import Search from './components/general/search'
-import Sidebar from './components/partials/sidebar'
+import MyTracks from './components/library/tracks'
 
 function App() {
   return (
@@ -26,6 +25,7 @@ function App() {
       <Route path='/login' component={Login} />
       <Route path='/signup' component={Signup} />
       <Route path='/search/:query' component={Search} />
+      <Route path="/my_tracks" component={MyTracks} />
     </div>
   );
 }
