@@ -46,6 +46,10 @@ class Search extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.loggedIn !== this.state.loggedIn) {
+            this.checkLogin()
+            this.setState({ loggedIn: true })
+        }
         if (nextState.url !== nextProps.match.params.query) {
             this.setState({ searchResult: null })
             this.checkLogin()
@@ -63,26 +67,18 @@ class Search extends Component {
     }
 
     checkLogin = async () => {
-        if (!localStorage.getItem('token')) {
+        if (!this.props.loggedIn) {
             return
         }
-        const result = await axios.get(`${config().url}/authenticate`, config().headers)
-        if (result.status !== 200) {
-            return
-        }
-        this.setState({
-            loggedIn: true
-        })
         this.getLikes()
     }
 
     getSearchResult = async (query) => {
-        console.log(query)
         const result = await axios.post(`${config().url}/search`, { searchQuery: query }, config().headers)
         this.setState({
             searchResult: result.data,
         })
-        if (this.state.loggedIn) {
+        if (this.props.loggedIn) {
             let availableTracks = []
             result.data.tracks.forEach(async (cur, index) => {
                 const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: cur.album.id, trackId: cur.id }, config().headers)
@@ -95,7 +91,7 @@ class Search extends Component {
     }
 
     getLikes = async () => {
-        if (!this.state.loggedIn) {
+        if (!this.props.loggedIn) {
             return
         }
         const result = await axios.get(`${config().url}/getlikes`, config().headers)
@@ -219,15 +215,17 @@ class Search extends Component {
     }
 
     render() {
-        const { searchResult, loggedIn, type, path, likes, id, liked, availableTracks } = this.state
-        const { match, history } = this.props
+        const { searchResult, type, path, likes, id, availableTracks } = this.state
+        const { match, history, loggedIn } = this.props
+        const reroute = this.props.location.pathname.split('/')
+        console.log(reroute)
 
         return (
             <div className="main_container">
                 <div className="general_container">
                     {loggedIn ? <Sidebar current="explore" /> : ''}
                     <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
-                        <Nav type="explore" id="" history={history} />
+                        <Nav type={path} id={`${reroute[2]}${reroute[3] ? `/${reroute[3]}` : ''}`} history={history} />
                         {searchResult && (loggedIn ? likes : true) ?
                             <div className="search_container">
                                 <div className="artist_discography search_headers">
@@ -268,8 +266,10 @@ class Search extends Component {
 }
 
 
-function mapStateToProps() {
-    return {}
+function mapStateToProps({ loggedIn }) {
+    return {
+        loggedIn
+    }
 }
 
 function mapDispatchToProps(dispatch) {

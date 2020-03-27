@@ -38,6 +38,14 @@ class Explore extends Component {
         this.props.getLikes()
     }
 
+    shouldComponentUpdate() {
+        if (this.props.loggedIn !== this.state.loggedIn) {
+            this.checkLogin()
+            this.setState({ loggedIn: true })
+        }
+        return true
+    }
+
     getCharts = async () => {
         const result = await axios.get(`${config().url}/explore`, config().headers)
         this.setState({
@@ -45,7 +53,7 @@ class Explore extends Component {
         })
     }
     getLikes = async () => {
-        if (!this.state.loggedIn) {
+        if (!this.props.loggedIn) {
             return
         }
         const result = await axios.get(`${config().url}/getlikes`, config().headers)
@@ -53,17 +61,11 @@ class Explore extends Component {
             likes: result.data
         })
     }
+
     checkLogin = async () => {
-        if (!localStorage.getItem('token')) {
+        if (!this.props.loggedIn) {
             return
         }
-        const result = await axios.get(`${config().url}/authenticate`, config().headers)
-        if (result.status !== 200) {
-            return
-        }
-        this.setState({
-            loggedIn: true
-        })
         this.getLikes()
     }
 
@@ -130,8 +132,8 @@ class Explore extends Component {
     }
 
     render() {
-        const { charts, type, id, loggedIn } = this.state
-        const { history } = this.props
+        const { charts, type, id, likes } = this.state
+        const { history, loggedIn } = this.props
         this.artistLike = []
         this.artistImage = []
         this.albumLike = []
@@ -144,7 +146,7 @@ class Explore extends Component {
                     {loggedIn ? <Sidebar current="explore" /> : ''}
                     <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
                         <Nav type="explore" id="" history={history} />
-                        {charts ?
+                        {charts && (loggedIn ? likes : true) ?
                             <div className="explore_container">
                                 <p className="explore_charts">Charts</p>
                                 <div className="explore_today">
@@ -240,8 +242,10 @@ class Explore extends Component {
     }
 }
 
-function mapStateToProps() {
-    return {}
+function mapStateToProps({ loggedIn }) {
+    return {
+        loggedIn
+    }
 }
 
 function mapDispatchToProps(dispatch) {

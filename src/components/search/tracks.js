@@ -18,15 +18,18 @@ class Tracks extends Component {
         button.style.justifyContent = 'center'
         if (!this.props.loggedIn) {
             icon.style.display = 'block';
+            icon.style.position = 'relative'
             plIcon.style.display = 'none';
             return
         }
         if (this.props.availableTracks[index] !== true) {
             icon.style.display = 'block';
+            icon.style.position = 'relative'
             plIcon.style.display = 'none';
         } else {
             icon.style.display = 'none';
             plIcon.style.display = 'block';
+            plIcon.style.position = 'relative'
         }
     }
 
@@ -106,9 +109,11 @@ class Tracks extends Component {
                                     <div className="add_icon_holder">
                                         <div ref={el => this.addIcon[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.addAlbPl(path, track.album.id, track.id, index) : this.login() }}>
                                             <IoIosAddCircleOutline className="add_icons_play" />
+                                            <span className="tooltiptext">Add to library</span>
                                         </div>
                                         <div ref={el => this.addIconPl[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.removeAlbPl(track.album.id, track.id, index) : this.login() }}>
                                             <IoIosRemoveCircleOutline className="add_icons_play" />
+                                            <span className="tooltiptext">Remove from library</span>
                                         </div>
                                     </div>
                                     <div style={{ width: '10%' }}>

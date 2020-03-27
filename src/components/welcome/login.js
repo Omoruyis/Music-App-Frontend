@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import axios from 'axios'
 import { GoogleLogin } from 'react-google-login'
 import queryString from 'query-string'
 
+import { login } from '../../actions'
 import password from '../../assets/images/password.png'
 import config from '../../config/config'
 
@@ -25,6 +27,7 @@ class Login extends Component {
             .then(result => {
                 localStorage.setItem("token", result.data.token);
                 localStorage.setItem("name", result.data.google.displayName);
+                this.props.login()
                 if (redirect) {
                     this.props.history.push(`/${redirect}`)
                 } else {
@@ -49,6 +52,7 @@ class Login extends Component {
             .then(res => {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("name", res.data.local.userName);
+                this.props.login()
                 if (redirect) {
                     this.props.history.push(`/${redirect}`)
                 } else {
@@ -116,4 +120,14 @@ class Login extends Component {
     }
 }
 
-export default Login;
+function mapStateToProps() {
+    return {}
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        login: () => dispatch(login())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

@@ -1,5 +1,7 @@
 import { getPlaylists, getTracks, getAlbums, getLikes } from '../utils/getAPI'
 
+export const LOGIN = 'LOGIN'
+export const LOGOUT = 'LOGOUT'
 export const ALL_ALBUMS = 'ALL_ALBUMS'
 export const ALL_TRACKS = 'ALL_TRACKS'
 export const ALL_PLAYLISTS = 'ALL_PLAYLISTS'
@@ -7,6 +9,19 @@ export const ALL_LIKES = 'ALL_LIKES'
 export const DELETE_LIKE = 'DELETE_LIKE'
 export const ADD_LIKE = 'ADD_LIKE'
 export const DELETE_TRACK = 'DELETE_TRACK'
+
+
+export function login () {
+    return {
+        type: LOGIN, 
+    }
+}
+
+export function logout () {
+    return {
+        type: LOGOUT, 
+    }
+}
 
 export function getMyAlbums (albums) {
     return {

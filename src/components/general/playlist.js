@@ -53,6 +53,14 @@ class Playlist extends Component {
         this.props.getLikes()
     }
 
+    shouldComponentUpdate() {
+        if (this.props.loggedIn !== this.state.loggedIn) {
+            this.checkLogin()
+            this.setState({ loggedIn: true })
+        }
+        return true
+    }
+
     getPathName = () => {
         const path = this.props.location.pathname.split('/')[1]
         this.setState({
@@ -66,7 +74,7 @@ class Playlist extends Component {
             playlist: result.data,
             displayTracks: result.data.tracks.data
         })
-        if (this.state.loggedIn) {
+        if (this.props.loggedIn) {
             let availableTracks = []
             result.data.tracks.data.forEach(async (cur, index) => {
                 const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: cur.album.id, trackId: cur.id }, config().headers)
@@ -79,7 +87,7 @@ class Playlist extends Component {
     }
 
     getLikes = async () => {
-        if (!this.state.loggedIn) {
+        if (!this.props.loggedIn) {
             return
         }
         const result = await axios.get(`${config().url}/getlikes`, config().headers)
@@ -89,16 +97,9 @@ class Playlist extends Component {
     }
 
     checkLogin = async () => {
-        if (!localStorage.getItem('token')) {
+        if (!this.props.loggedIn) {
             return
         }
-        const result = await axios.get(`${config().url}/authenticate`, config().headers)
-        if (result.status !== 200) {
-            return
-        }
-        this.setState({
-            loggedIn: true
-        })
         this.getLikes()
         this.checkLike(parseInt(this.props.match.params.id), 'playlist')
         this.checkAvailable(parseInt(this.props.match.params.id), 'playlist')
@@ -222,17 +223,20 @@ class Playlist extends Component {
         button.style.display = 'flex'
         button.style.alignItems = 'center'
         button.style.justifyContent = 'center'
-        if (!this.state.loggedIn) {
+        if (!this.props.loggedIn) {
             icon.style.display = 'block';
+            icon.style.position = 'relative'
             plIcon.style.display = 'none';
             return
         }
         if (this.state.availableTracks[index] !== true) {
             icon.style.display = 'block';
+            icon.style.position = 'relative'
             plIcon.style.display = 'none';
         } else {
             icon.style.display = 'none';
             plIcon.style.display = 'block';
+            plIcon.style.position = 'relative'
         }
     }
 
@@ -267,8 +271,8 @@ class Playlist extends Component {
     }
 
     render() {
-        const { loggedIn, playlist, type, id, liked, available, path, _id, displayTracks, likes } = this.state
-        const { match, history } = this.props
+        const { playlist, type, id, liked, available, path, _id, displayTracks, likes } = this.state
+        const { match, history, loggedIn } = this.props
         this.trackLike = []
         this.trackNumber = []
         this.playSong = []
@@ -357,9 +361,11 @@ class Playlist extends Component {
                                                     <div className="add_icon_holder">
                                                         <div ref={el => this.addIcon[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.addAlbPl(path, track.album.id, track.id, index) : this.login() }}>
                                                             <IoIosAddCircleOutline className="add_icons_play" />
+                                                            <span className="tooltiptext">Add to library</span>
                                                         </div>
                                                         <div ref={el => this.addIconPl[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.removeAlbPl(track.album.id, track.id, index) : this.login() }}>
                                                             <IoIosRemoveCircleOutline className="add_icons_play" />
+                                                            <span className="tooltiptext">Remove from library</span>
                                                         </div>
                                                     </div>
                                                     <div style={{ width: '10%' }}>
@@ -395,8 +401,10 @@ class Playlist extends Component {
 
 
 
-function mapStateToProps() {
-    return {}
+function mapStateToProps({ loggedIn }) {
+    return {
+        loggedIn
+    }
 }
 
 function mapDispatchToProps(dispatch) {

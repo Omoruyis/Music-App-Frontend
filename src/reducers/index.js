@@ -1,4 +1,6 @@
 import {
+    LOGIN,
+    LOGOUT,
     ALL_ALBUMS,
     ALL_TRACKS,
     ALL_PLAYLISTS,
@@ -14,9 +16,19 @@ import axios from 'axios'
 import config from '../config/config'
 
 
-function rootReducer (state = {}, action) {
+function rootReducer (state = { loggedIn: false}, action) {
     const { albums, playlists, likes, category, data, tracks, albumId, trackId } = action
     switch (action.type) {
+        case LOGIN:
+            return {
+                ...state,
+                loggedIn: true
+            }
+        case LOGOUT:
+            return {
+                ...state,
+                loggedIn: false
+            }
         case ALL_ALBUMS:
             return {
                 ...state,

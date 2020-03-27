@@ -1292,6 +1292,46 @@
   border-top: 0;
 }
 
+.select_holder {
+  display: flex;
+  justify-content: space-between;
+}
+
+.select_options {
+  width: 200px;
+  height: 45px;
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+
+.no_track {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*****Tooltip***/
+.tooltip {
+  position: relative;
+}
+
+.tooltiptext {
+  visibility: hidden;
+  width: 150px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.add_library_icon:hover .tooltiptext {
+  visibility: visible;
+}
+
 
 /*****Welcome Page ***/ 
 @media (max-width: 850px) {

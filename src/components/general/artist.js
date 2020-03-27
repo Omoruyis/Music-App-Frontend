@@ -49,6 +49,10 @@ class Artist extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.loggedIn !== this.state.loggedIn) {
+            this.checkLogin()
+            this.setState({ loggedIn: true })
+        }
         if (nextState.url !== nextProps.match.params.id) {
             this.setState({ playlist: null })
             this.checkLogin()
@@ -66,16 +70,9 @@ class Artist extends Component {
     }
 
     checkLogin = async () => {
-        if (!localStorage.getItem('token')) {
+        if (!this.props.loggedIn) {
             return
         }
-        const result = await axios.get(`${config().url}/authenticate`, config().headers)
-        if (result.status !== 200) {
-            return
-        }
-        this.setState({
-            loggedIn: true
-        })
         this.getLikes()
         this.checkLike(parseInt(this.props.match.params.id), 'artist')
     }
@@ -86,7 +83,7 @@ class Artist extends Component {
             playlist: result.data,
             // displayTracks: result.data.tracks.data
         })
-        if (this.state.loggedIn) {
+        if (this.props.loggedIn) {
             let availableTracks = []
             result.data.tracklist.forEach(async (cur, index) => {
                 const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: cur.album.id, trackId: cur.id }, config().headers)
@@ -99,7 +96,7 @@ class Artist extends Component {
     }
 
     getLikes = async () => {
-        if (!this.state.loggedIn) {
+        if (!this.props.loggedIn) {
             return
         }
         const result = await axios.get(`${config().url}/getlikes`, config().headers)
@@ -230,15 +227,16 @@ class Artist extends Component {
     }
 
     render() {
-        const { playlist, loggedIn, type, path, likes, id, liked, availableTracks } = this.state
-        const { match, history } = this.props
+        const { playlist, type, path, likes, id, liked, availableTracks } = this.state
+        const { match, history, loggedIn } = this.props
+        const reroute = this.props.location.pathname.split('/')
 
         return (
             <div className="main_container">
                 <div className="general_container">
                     {loggedIn ? <Sidebar current="explore" /> : ''}
                     <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
-                        <Nav type={path} id={match.params.id} history={history} />
+                        <Nav type={path} id={`${reroute[2]}${reroute[3] ? `/${reroute[3]}` : ''}`} history={history} />
                         {playlist && (loggedIn ? likes : true) ?
                             <div className="playlist_container">
                                 <div className="artist_details">
@@ -294,8 +292,10 @@ class Artist extends Component {
     }
 }
 
-function mapStateToProps() {
-    return {}
+function mapStateToProps({ loggedIn }) {
+    return {
+        loggedIn
+    }
 }
 
 function mapDispatchToProps(dispatch) {

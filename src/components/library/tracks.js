@@ -27,6 +27,7 @@ class MyTracks extends Component {
         name: localStorage.name,
         inputValue: '',
         mounted: false,
+        sort: 'Title',
         // path: null,
         // playlist: null,
         displayTracks: null,
@@ -170,6 +171,7 @@ class MyTracks extends Component {
         button.style.alignItems = 'center'
         button.style.justifyContent = 'center'
         plIcon.style.display = 'block';
+        plIcon.style.position = 'relative'
     }
 
     hidePlayButton = (number, button, plIcon) => {
@@ -181,19 +183,34 @@ class MyTracks extends Component {
         plIcon.style.display = 'none'
     }
 
+    sortTracks = (e) => {
+        console.log(e.target.value)
+        this.setState({ sort: e.target.value })
+    }
+
     changeValue = () => {
         this.setState({ inputValue: this.searchTrack.value })
     }
 
     filterTracks = () => {
-        if (!this.searchTrack.value) {
-            return this.props.tracks
+        let display = this.props.tracks
+        if (this.state.sort === 'Artist') {
+            display = display.sort((a, b) => a.information.artist.name < b.information.artist.name ? -1 : a.information.artist.name > b.information.artist.name ? 1 : 0)
+        } else if (this.state.sort === 'Title') {
+            display = display.sort((a, b) => a.information.title < b.information.title ? -1 : a.information.title > b.information.title ? 1 : 0)
+        } else {
+            display = display.sort((a, b) => (b.information.createdAt ? b.information.createdAt : b.createdAt) - (a.information.createdAt ? a.information.createdAt : a.createdAt))
         }
-        const display = this.props.tracks.filter(cur => {
-            const lower = cur.information.title.toLowerCase()
-            const filterLower = this.searchTrack.value.toLowerCase()
-            return lower.includes(filterLower)
-        })
+        if (!this.searchTrack.value) {
+            return display
+        }
+        if (this.searchTrack.value) {
+            display = display.filter(cur => {
+                const lower = cur.information.title.toLowerCase()
+                const filterLower = this.searchTrack.value.toLowerCase()
+                return lower.includes(filterLower)
+            })
+        }
         return display
     }
 
@@ -213,15 +230,25 @@ class MyTracks extends Component {
                     <div className="nav_child_container nav_child_container_margin">
                         <div className="explorenav_container">
                             <div className="explorenav_search">
-                                <input type="search" placeholder="Search" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el}/>
+                                <input type="search" placeholder="Search Tracks" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
                             <div className="explorenav_buttons">
                                 <p className="display_name">{name}</p>
                             </div>
                         </div>
-                        {tracks && trackLikes && mounted ?
-                            <div className="top_search_result search_tracks remove_search_border my_tracks">
-                                <p className="discography_header_text">Tracks</p>
+                        {tracks && trackLikes && mounted ? (!tracks.length ?
+                            <div className="no_track">
+                                <p className="discography_header_text">You don't currently have any tracks added</p>
+                            </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
+                                <div className="select_holder">
+                                    <p className="discography_header_text">Tracks</p>
+                                    <select defaultValue="Sort Tracks" onChange={(e) => this.sortTracks(e)} className="select_options">
+                                        <option disabled>Sort Tracks</option>
+                                        <option>Title</option>
+                                        <option>Artist</option>
+                                        <option>Recently Added</option>
+                                    </select>
+                                </div>
                                 <div my_tracks>
                                     <div className="tracks_header remove_header_border">
                                         <div className="playlist_tracks_header" id="track_number"><p className="u"></p></div>
@@ -240,7 +267,7 @@ class MyTracks extends Component {
                                                     <div className="play_track_button" ref={el => this.playSong[index] = el} onClick={() => { this.play('tracks', track.information.id) }}>
                                                         <MdPlayArrow style={{ fontSize: '25px', color: 'white' }} />
                                                     </div>
-                                                    <div onClick={() => {this.addToLikes(track, this.trackLike[index])}} ref={el => this.trackLike[index] = el} className={`track_like_holder ${this.newLikes(track) ? 'is_liked' : 'is_unliked'}`}>
+                                                    <div onClick={() => { this.addToLikes(track, this.trackLike[index]) }} ref={el => this.trackLike[index] = el} className={`track_like_holder ${this.newLikes(track) ? 'is_liked' : 'is_unliked'}`}>
 
                                                         <IoIosHeart className={this.newLikes(track) ? 'track_liked' : 'hide'} id="liked_track" />
                                                         <IoMdHeartEmpty className={this.newLikes(track) ? 'hide' : 'track_not_liked'} id="unliked_track" />
@@ -251,6 +278,7 @@ class MyTracks extends Component {
                                                     <div className="add_icon_holder">
                                                         <div ref={el => this.addIconPl[index] = el} className="add_library_icon" onClick={() => { deleteTrack(track.albumId, track.information.id) }}>
                                                             <IoIosRemoveCircleOutline className="add_icons_play" />
+                                                            <span className="tooltiptext">Remove from library</span>
                                                         </div>
                                                     </div>
                                                     <div style={{ width: '10%' }}>
@@ -265,7 +293,8 @@ class MyTracks extends Component {
                                         )
                                     })}
                                 </div>
-                            </div> :
+                            </div>)
+                            :
                             <div className="spinner">
                                 <CircularProgress />
                             </div>
