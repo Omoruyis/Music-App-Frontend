@@ -59,8 +59,8 @@ class Artist extends Component {
                                         <FaRegHeart />
                                     </div>
                                 </div>
-                                <Link to={`/${cur.type}/${cur.id}`}>
-                                    <p className="explore_artists_name" style={{cursor: 'pointer', textAlign: 'center'}}>{trimString(cur.name, 17)}</p>
+                                <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none' }}>
+                                    <p className="explore_artists_name turn_red" style={{cursor: 'pointer', textAlign: 'center'}}>{trimString(cur.name, 17)}</p>
                                 </Link>
                             </div>
                         )

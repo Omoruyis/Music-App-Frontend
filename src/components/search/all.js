@@ -131,8 +131,8 @@ class All extends Component {
                         <Link to={`/${topResults.artist.type}/${topResults.artist.id}`}>
                             <img src={topResults.artist.picture_medium} className="top_search_image" alt="artist cover" />
                         </Link>
-                        <Link to={`/${topResults.artist.type}/${topResults.artist.id}`}>
-                            <p className="top_search_image_text">{topResults.artist.name}</p>
+                        <Link to={`/${topResults.artist.type}/${topResults.artist.id}`} style={{ textDecoration: 'none'}}>
+                            <p className="top_search_image_text turn_red">{topResults.artist.name}</p>
                         </Link>
                     </div>
                 </div> : ''}
@@ -143,8 +143,8 @@ class All extends Component {
                         <Link to={`/${topResults.album.type}/${topResults.album.id}`}>
                             <img src={topResults.album.cover_medium} className="top_search_image" alt="artist cover" />
                         </Link>
-                        <Link to={`/${topResults.album.type}/${topResults.album.id}`}>
-                            <p className="top_search_image_text">{topResults.album.title}</p>
+                        <Link to={`/${topResults.album.type}/${topResults.album.id}`} style={{ textDecoration: 'none' }}>
+                            <p className="top_search_image_text turn_red">{topResults.album.title}</p>
                         </Link>
                     </div>
                 </div> : ''}
@@ -186,11 +186,11 @@ class All extends Component {
                                         </div>
                                     </div>
                                     <p className="track_artist">
-                                        <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none' }}>{trimString(track.artist.name, 17)}</Link>
+                                        <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none' }}><p className="turn_red">{trimString(track.artist.name, 17)}</p></Link>
                                     </p>
     
                                     <p className="track_album">
-                                        <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none' }}>{trimString(track.album.title, 17)}</Link>
+                                        <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none' }}><p className="turn_red">{trimString(track.album.title, 17)}</p></Link>
                                     </p>
                                     <p className="track_duration">{trackTime(track.duration)}</p>
                                 </div>
@@ -223,8 +223,8 @@ class All extends Component {
                                             <FaRegHeart />
                                         </div>
                                     </div>
-                                    <Link to={`/${cur.type}/${cur.id}`}>
-                                        <p className="explore_artists_name" style={{textAlign: 'center'}}>{cur.title}</p>
+                                    <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none' }}>
+                                        <p className="explore_artists_name turn_red" style={{textAlign: 'center'}}>{trimString(cur.title, 17)}</p>
                                     </Link>
                                 </div>
                             
@@ -254,8 +254,8 @@ class All extends Component {
                                                 <FaRegHeart />
                                             </div>
                                         </div>
-                                        <Link to={`/${cur.type}/${cur.id}`}>
-                                            <p className="explore_artists_name" style={{cursor: 'pointer', textAlign: 'center'}}>{trimString(cur.name, 17)}</p>
+                                        <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none' }}>
+                                            <p className="explore_artists_name turn_red" style={{cursor: 'pointer', textAlign: 'center'}}>{trimString(cur.name, 17)}</p>
                                         </Link>
                                     </div>
                                 )
@@ -288,8 +288,8 @@ class All extends Component {
                                                 <FaRegHeart />
                                             </div>
                                         </div>
-                                        <Link to={`/${cur.type}/${cur.id}`}>
-                                            <p className="explore_artists_name">{trimString(cur.title, 17)}</p>
+                                        <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none' }}>
+                                            <p className="explore_artists_name turn_red">{trimString(cur.title, 17)}</p>
                                         </Link>
                                     </div>
                                 )

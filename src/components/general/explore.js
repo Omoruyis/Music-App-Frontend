@@ -188,7 +188,7 @@ class Explore extends Component {
                                                             </div>
                                                         </div>
                                                         <Link to={`/${cur.type}/${cur.id}`} style={{textDecoration: 'none', color: 'black' }}>
-                                                        <p className="explore_artists_name">{cur.name}</p>
+                                                        <p className="explore_artists_name turn_red">{cur.name}</p>
                                                         </Link>
                                                     </div>
                                                 )
@@ -220,7 +220,7 @@ class Explore extends Component {
                                                             </div>
                                                         </div>
                                                         <Link to={`/${cur.type}/${cur.id}`} style={{textDecoration: 'none', color: 'black' }}>
-                                                        <p className="explore_artists_name">{cur.title}</p>
+                                                        <p className="explore_artists_name turn_red">{cur.title}</p>
                                                         </Link>
                                                     </div>
                                                 )

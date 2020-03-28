@@ -146,20 +146,10 @@ class Album extends Component {
         })
     }
 
-    likeDownloadAction = (type, obj, action, _id) => {
-        if (action === 'like') {
-            this.setState({ liked: true })
-            axios.post(`${config().url}/like`, { type, data: { id: obj.id }, _id }, config().headers)
-        } else {
-            this.setState({ liked: false })
-            axios.post(`${config().url}/unlike`, { type, _id }, config().headers)
-        }
-    }
-
     likeUndownloadAction = (type, obj, action) => {
         if (action === 'like') {
             this.setState({ liked: true })
-            axios.post(`${config().url}/likeUndownload`, { type, data: { id: obj.id } }, config().headers)
+            axios.post(`${config().url}/likeUndownload`, { type, data: obj }, config().headers)
         } else {
             this.setState({ liked: false })
             axios.post(`${config().url}/unlikeUndownload`, { type, data: { id: obj.id } }, config().headers)
@@ -272,7 +262,7 @@ class Album extends Component {
     }
 
     render() {
-        const { playlist, type, id, liked, available, path, _id, displayTracks, likes } = this.state
+        const { playlist, type, id, liked, available, path, displayTracks, likes } = this.state
         const { match, history, loggedIn } = this.props
         this.trackLike = []
         this.trackNumber = []
@@ -321,11 +311,11 @@ class Album extends Component {
                                             Remove
                                         </button>}
                                         {!liked ?
-                                            <button className="playlist_button" onClick={() => { !loggedIn ? this.login() : (available ? this.likeDownloadAction(path, playlist, 'like', _id) : this.likeUndownloadAction(path, playlist, 'like')) }}>
+                                            <button className="playlist_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist, 'like') }}>
                                                 <IoMdHeartEmpty className="playlist_button_icon" />
                                             Like
                                         </button> :
-                                            <button className="playlist_button" id="unlike_button" onClick={() => { !loggedIn ? this.login() : (_id ? this.likeDownloadAction(path, playlist, 'unlike', _id) : this.likeUndownloadAction(path, playlist, 'unlike')) }}>
+                                            <button className="playlist_button" id="unlike_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist, 'unlike') }}>
                                                 <IoIosHeartDislike className="playlist_button_icon" />
                                         Unlike
                                     </button>

@@ -1322,13 +1322,16 @@
 
 .tooltiptext {
   visibility: hidden;
-  width: 150px;
+  min-width: 120px;
   background-color: black;
+  font-size: 10px;
   color: #fff;
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
+  left: -40px; 
+  top: -25px;
   z-index: 1;
 }
 
@@ -1338,6 +1341,7 @@
 
 .turn_red {
   margin-bottom: 0;
+  color: black;
 }
 
 .turn_red:hover {

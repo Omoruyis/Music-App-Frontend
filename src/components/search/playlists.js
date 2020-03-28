@@ -76,8 +76,8 @@ class Playlists extends Component {
                                                 <FaRegHeart />
                                             </div>
                                         </div>
-                                        <Link to={`/${cur.type}/${cur.id}`}>
-                                            <p className="explore_artists_name">{trimString(cur.title, 17)}</p>
+                                        <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none' }}>
+                                            <p className="explore_artists_name turn_red">{trimString(cur.title, 17)}</p>
                                         </Link>
                                     </div>
                                 )
