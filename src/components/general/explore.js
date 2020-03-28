@@ -187,7 +187,9 @@ class Explore extends Component {
                                                                 <FaRegHeart />
                                                             </div>
                                                         </div>
+                                                        <Link to={`/${cur.type}/${cur.id}`} style={{textDecoration: 'none', color: 'black' }}>
                                                         <p className="explore_artists_name">{cur.name}</p>
+                                                        </Link>
                                                     </div>
                                                 )
                                             } else { return '' }
@@ -217,7 +219,9 @@ class Explore extends Component {
                                                                 <FaRegHeart />
                                                             </div>
                                                         </div>
+                                                        <Link to={`/${cur.type}/${cur.id}`} style={{textDecoration: 'none', color: 'black' }}>
                                                         <p className="explore_artists_name">{cur.title}</p>
+                                                        </Link>
                                                     </div>
                                                 )
                                             } else { return '' }

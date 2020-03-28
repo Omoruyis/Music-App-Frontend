@@ -13,7 +13,7 @@ import { trimString, trackTime } from '../../helper/helper'
 
 import '../../App.css';
 
-class MyTracks extends Component {
+class MyPlaylists extends Component {
     state = {
         name: localStorage.name,
         inputValue: '',
@@ -243,4 +243,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyTracks)
+export default connect(mapStateToProps, mapDispatchToProps)(MyPlaylists)

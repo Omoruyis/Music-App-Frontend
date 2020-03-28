@@ -146,11 +146,11 @@ class TopTracks extends Component {
                                             </div>
                                         </div>
                                         <p className="track_artist">
-                                            <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none' }}>{track.artist.name}</Link>
+                                            <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">{trimString(track.artist.name, 17)}</p></Link>
                                         </p>
 
                                         <p className="track_album">
-                                            <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none' }}>{track.album.title}</Link>
+                                            <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">{trimString(track.album.title, 17)}</p></Link>
                                         </p>
                                         <p className="track_duration">{trackTime(track.duration)}</p>
                                     </div>

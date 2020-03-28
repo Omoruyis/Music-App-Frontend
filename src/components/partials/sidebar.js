@@ -32,7 +32,7 @@ class Sidebar extends Component {
                 <Link to='/my_tracks' style={{textDecoration: 'none' }}>
                         <p className="sidebar_content" id={current === 'songs' ? 'current' : ''}>Songs</p>
                 </Link>
-                <Link to='/playlists' style={{textDecoration: 'none' }}>
+                <Link to='/my_playlists' style={{textDecoration: 'none' }}>
                         <p className="sidebar_content" id={current === 'playlists' ? 'current' : ''}>Playlists</p>
                 </Link>
                 <Link to='/albums' style={{textDecoration: 'none' }}>

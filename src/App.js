@@ -15,6 +15,7 @@ import Album from './components/general/album'
 import Artist from './components/general/artist'
 import Search from './components/general/search'
 import MyTracks from './components/library/tracks'
+import MyPlaylists from './components/library/playlists'
 
 import './App.css';
 
@@ -44,6 +45,7 @@ class App extends Component {
         <Route path='/signup' component={Signup} />
         <Route path='/search/:query' component={Search} />
         <Route path="/my_tracks" component={MyTracks} />
+        <Route path="/my_playlists" component={MyPlaylists} />
       </div>
     );
   }

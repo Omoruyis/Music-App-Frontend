@@ -56,8 +56,8 @@ class SimilarArtist extends Component {
                                     <FaRegHeart />
                                 </div>
                             </div>
-                            <Link to={`/${cur.type}/${cur.id}`}>
-                                <p className="explore_artists_name" style={{cursor: 'pointer'}}>{cur.name}</p>
+                            <Link to={`/${cur.type}/${cur.id}`} style={{ color: 'black', textDecoration: 'none'}}>
+                                <p className="explore_artists_name turn_red" style={{cursor: 'pointer'}}>{cur.name}</p>
                             </Link>
                         </div>
                     )

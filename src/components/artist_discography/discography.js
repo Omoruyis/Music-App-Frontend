@@ -99,14 +99,9 @@ class Discography extends Component {
                                             <div style={{ width: '30%' }}>
                                                 <img src={cur.picture} className="discography_playlist_image" />
                                             </div>
-                                            <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none', width: '60%' }}>
-                                                <p style={{ marginBottom: '0' }}>{trimString(cur.title, 11)}</p>
+                                            <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none', width: '60%', color: 'black' }}>
+                                                <p className="turn_red" style={{ marginBottom: '0' }}>{trimString(cur.title, 11)}</p>
                                             </Link>
-                                            <div onClick={() => loggedIn ? this.addToLikes(cur.type, cur, this.playlistLike[index]) : this.login()} ref={el => this.playlistLike[index] = el} className={`track_like_holder ${loggedIn ? (this.newLikes(cur, 'trackLikes') ? 'is_liked' : 'is_unliked') : ''}`} style={{ width: '10%' }}>
-
-                                                <IoIosHeart className={!loggedIn ? 'hide' : (this.newLikes(cur, 'playlistLikes') ? 'track_liked' : 'hide')} id="liked_track" />
-                                                <IoMdHeartEmpty className={!loggedIn ? 'show' : (this.newLikes(cur, 'playlistLikes') ? 'hide' : 'track_not_liked')} id="unliked_track" />
-                                            </div>
                                         </div>
                                     )
                                 } else { return '' }

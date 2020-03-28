@@ -73,8 +73,8 @@ class ArtistAlbums extends Component {
                                     <FaRegHeart />
                                 </div>
                             </div>
-                            <Link to={`/${cur.type}/${cur.id}`}>
-                                <p className="explore_artists_name">{cur.title}</p>
+                            <Link to={`/${cur.type}/${cur.id}`} style={{ color: 'black', textDecoration: 'none'}}>
+                                <p className="explore_artists_name turn_red">{cur.title}</p>
                             </Link>
                         </div>
                     )
