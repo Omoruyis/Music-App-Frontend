@@ -13,6 +13,10 @@ class Tracks extends Component {
         sort: 'Title'
     }
 
+    componentDidMount() {
+        this.props.clearValue()
+    }
+
     checkAvailable = (value) => { 
         let answer
         for (let i = 0; i < this.props.tracks.length; i++) {
@@ -102,8 +106,7 @@ class Tracks extends Component {
                         <p className="discography_header_text">You don't currently have any favourite tracks added</p>
                     </div> :
                     <div className="top_search_result search_tracks remove_search_border my_tracks">
-                        <div className="select_holder">
-                            <p className="discography_header_text">Tracks</p>
+                        <div className="select_options_holder">
                             <select defaultValue="Sort Tracks" onChange={(e) => this.sortTracks(e)} className="select_options">
                                 <option disabled>Sort Tracks</option>
                                 <option>Title</option>
@@ -123,7 +126,8 @@ class Tracks extends Component {
                                     <div className="tracks_header tracks_header_background" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], track.information.id)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
                                         <div className="track_number">
                                             <div className="u" ref={el => this.trackNumber[index] = el}>
-                                                <p style={{ marginBottom: '0' }}>{index + 1}</p>
+                                                {/* <p style={{ marginBottom: '0' }}>{index + 1}</p> */}
+                                                <img src={track.information.album.picture} alt="small album cover" style={{ width: '30px', height: '30px', borderRadius: '5px' }} />
                                             </div>
                                             <div className="play_track_button" ref={el => this.playSong[index] = el} onClick={() => this.play('tracks', track.information.id)}>
                                                 <MdPlayArrow style={{ fontSize: '25px', color: 'white' }} />
@@ -149,7 +153,6 @@ class Tracks extends Component {
                                             </div>
                                         </div>
                                         <Link to={`/${track.information.artist.type}/${track.information.artist.id}`} className="track_artist" style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">{trimString(track.information.artist.name, 17)}</p></Link>
-                                        {console.log(track)}
                                         <Link to={`/${track.information.album.type}/${track.information.album.id}`} className="track_album" style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">{trimString(track.information.album.title, 17)}</p></Link>
                                         <p className="track_duration">{trackTime(track.information.duration)}</p>
                                     </div>

@@ -1301,6 +1301,11 @@
   justify-content: space-between;
 }
 
+.select_options_holder {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .select_options {
   width: 200px;
   height: 45px;

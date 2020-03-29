@@ -18,6 +18,7 @@ import '../../App.css';
 class Favourites extends Component {
     state = {
         name: localStorage.name,
+        inputValue: '',
         path: null,
         mounted: false,
         searchResult: null,
@@ -95,7 +96,10 @@ class Favourites extends Component {
         clas.style.height = '30px'
     }
 
-    
+    clearValue = () => {
+        this.searchTrack.value = ''
+        this.setState({ inputValue: '' })
+    }
 
     changeValue = () => {
         this.setState({ inputValue: this.searchTrack.value })
@@ -104,7 +108,7 @@ class Favourites extends Component {
 
     render() {
         const { searchResult, type, path, id, availableTracks, name, mounted, inputValue } = this.state
-        const { trackLikes, tracks, deleteLike, deleteTrack, addTrack } = this.props
+        const { trackLikes, artistLikes, albumLikes, playlistLikes, tracks, deleteLike, deleteTrack, addTrack } = this.props
         const reroute = this.props.location.pathname.split('/')
 
         return (
@@ -132,15 +136,13 @@ class Favourites extends Component {
                                     <Link to={`/${path}/playlists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/playlists` ? 'artist_border' : ''}>Playlists</p></Link>
                                 </div>
                                 <div>
-                                    <Route exact path='/favourites' render={(props) => <Tracks {...props} trackLikes={trackLikes} play={this.play} likeUndownloadAction={this.likeUndownloadAction} deleteLike={deleteLike} inputValue={inputValue} tracks={tracks} deleteTrack={deleteTrack} addTrack={addTrack} />}></Route>
+                                    <Route exact path='/favourites' render={(props) => <Tracks {...props} trackLikes={trackLikes} play={this.play} likeUndownloadAction={this.likeUndownloadAction} deleteLike={deleteLike} inputValue={inputValue} tracks={tracks} deleteTrack={deleteTrack} addTrack={addTrack} clearValue={this.clearValue} />}></Route>
 
-                                    <Route path='/favourites/albums' render={(props) => <Albums {...props} searchResult={searchResult} play={this.play} addToLikes={this.addToLikes} newLikes={this.newLikes} availableTracks={availableTracks} path={path} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl} />}></Route>
+                                    <Route path='/favourites/albums' render={(props) => <Albums {...props} albumLikes={albumLikes} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} deleteLike={deleteLike} inputValue={inputValue} clearValue={this.clearValue} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} play={this.play} />}></Route>
 
-                                    <Route path='/favourites/artists' render={(props) => <Artists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} addToLikes2={this.addToLikes2} newLikes={this.newLikes} path={path} />}></Route>
+                                    <Route path='/favourites/artists' render={(props) => <Artists {...props} artistLikes={artistLikes} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} deleteLike={deleteLike} inputValue={inputValue} clearValue={this.clearValue} />}></Route>
 
-                                    <Route path='/favourites/playlists' render={(props) => <Playlists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} path={path} addToLikes2={this.addToLikes2} newLikes={this.newLikes} />}></Route>
-
-                                    <Route path='/search/:query/artists' render={(props) => <Artists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} path={path} addToLikes2={this.addToLikes2} newLikes={this.newLikes} />}></Route>
+                                    <Route path='/favourites/playlists' render={(props) => <Playlists {...props} playlistLikes={playlistLikes} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} deleteLike={deleteLike} inputValue={inputValue} clearValue={this.clearValue} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} play={this.play} />}></Route>
                                 </div>
                             </div> :
                             <div className="spinner">

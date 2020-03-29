@@ -180,7 +180,7 @@ class Artist extends Component {
     likeUndownloadAction = (type, obj, action) => {
         if (action === 'like') {
             this.setState({ liked: true })
-            axios.post(`${config().url}/likeUndownload`, { type, data: { id: obj.id } }, config().headers)
+            axios.post(`${config().url}/likeUndownload`, { type, data: obj }, config().headers)
         } else {
             this.setState({ liked: false })
             axios.post(`${config().url}/unlikeUndownload`, { type, data: { id: obj.id } }, config().headers)
