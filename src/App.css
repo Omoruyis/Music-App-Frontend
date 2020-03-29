@@ -1350,6 +1350,15 @@
 }
 
 
+/****Favourites Page*****/
+.no_favourites {
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 /*****Welcome Page ***/ 
 @media (max-width: 850px) {
   .welcome_page_text {

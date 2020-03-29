@@ -13,7 +13,7 @@ class TopTracks extends Component {
     state = {
         displayTracks: this.props.topTracks
     }
-    
+
     showPlayButton = (number, button, icon, plIcon, index) => {
         number.style.display = 'none'
         button.style.backgroundColor = 'black'
@@ -58,7 +58,7 @@ class TopTracks extends Component {
     newLikes = (value, type) => {
         return this.props.newLikes(value, type)
     }
-    
+
     addAlbPl = (type, id, trackId, index) => {
         this.props.addAlbPl(type, id, trackId, index)
     }
@@ -145,13 +145,9 @@ class TopTracks extends Component {
                                                 {track.explicit_lyrics ? <MdExplicit /> : ''}
                                             </div>
                                         </div>
-                                        <p className="track_artist">
-                                            <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">{trimString(track.artist.name, 17)}</p></Link>
-                                        </p>
+                                        <Link to={`/${track.artist.type}/${track.artist.id}`} className="track_artist" style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">{trimString(track.artist.name, 17)}</p></Link>
 
-                                        <p className="track_album">
-                                            <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">{trimString(track.album.title, 17)}</p></Link>
-                                        </p>
+                                        <Link to={`/${track.album.type}/${track.album.id}`} className="track_album" style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">{trimString(track.album.title, 17)}</p></Link>
                                         <p className="track_duration">{trackTime(track.duration)}</p>
                                     </div>
                                 )

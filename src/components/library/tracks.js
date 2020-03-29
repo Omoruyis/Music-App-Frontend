@@ -30,10 +30,6 @@ class MyTracks extends Component {
         this.props.getLikes()
     }
 
-    shouldComponentUpdate() {
-        return true
-    }
-
     play = (type, id) => {
         this.setState({
             type,

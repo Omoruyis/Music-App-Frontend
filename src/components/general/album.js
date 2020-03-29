@@ -172,7 +172,7 @@ class Album extends Component {
             s.style.color = 'red'
             u.style.display = 'none'
             currentClass.className = "track_like_holder is_liked"
-            axios.post(`${config().url}/likeUndownload`, { type, data: obj }, config().headers)
+            axios.post(`${config().url}/likeUndownload`, { type, data: {...obj, album: {id: this.state.playlist.id, title: this.state.playlist.title, picture: this.state.playlist.cover_medium, type: this.state.playlist.type}} }, config().headers)
         }
     }
 

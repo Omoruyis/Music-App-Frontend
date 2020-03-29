@@ -3,24 +3,23 @@ import { Link } from "react-router-dom";
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import axios from 'axios'
-import All from '../search/all'
-import Tracks from '../search/tracks'
-import Playlists from '../search/playlists'
-import Albums from '../search/albums'
-import Artists from '../search/artists'
+import Tracks from '../favourites/tracks'
+import Albums from '../favourites/albums'
+import Artists from '../favourites/artists'
+import Playlists from '../favourites/playlists'
 import { CircularProgress } from '@material-ui/core';
 
-import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks } from '../../actions'
-import Nav from '../partials/nav'
+import { deleteLike, getAllLikes, getAllTracks, deleteTrack, addTrack } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 
 import '../../App.css';
 
-class Search extends Component {
+class Favourites extends Component {
     state = {
+        name: localStorage.name,
         path: null,
-        loggedIn: false,
+        mounted: false,
         searchResult: null,
         type: null,
         id: 0,
@@ -31,32 +30,9 @@ class Search extends Component {
 
     componentDidMount() {
         this.getPathName()
-        this.checkLogin()
-        this.getSearchResult(this.props.match.params.query)
-    }
-
-    componentWillUnmount() {
-        if(!this.state.loggedIn) {
-            return
-        }
-        this.props.getAlbums()
+        this.setState({ mounted: true })
         this.props.getTracks()
-        this.props.getPlaylists()
         this.props.getLikes()
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.loggedIn !== this.state.loggedIn) {
-            this.checkLogin()
-            this.setState({ loggedIn: true })
-        }
-        if (nextState.url !== nextProps.match.params.query) {
-            this.setState({ searchResult: null })
-            this.checkLogin()
-            this.getSearchResult(nextProps.match.params.query)
-            this.setState({ url: nextProps.match.params.query })
-        }
-        return true
     }
 
     getPathName = () => {
@@ -66,37 +42,10 @@ class Search extends Component {
         })
     }
 
-    checkLogin = async () => {
-        if (!this.props.loggedIn) {
-            return
-        }
-        this.getLikes()
-    }
-
-    getSearchResult = async (query) => {
-        const result = await axios.post(`${config().url}/search`, { searchQuery: query }, config().headers)
+    play = (type, id) => {
         this.setState({
-            searchResult: result.data,
-        })
-        if (this.props.loggedIn) {
-            let availableTracks = []
-            result.data.tracks.forEach(async (cur, index) => {
-                const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: cur.album.id, trackId: cur.id }, config().headers)
-                availableTracks[index] = res.data
-            })
-            this.setState({
-                availableTracks
-            })
-        }
-    }
-
-    getLikes = async () => {
-        if (!this.props.loggedIn) {
-            return
-        }
-        const result = await axios.get(`${config().url}/getlikes`, config().headers)
-        this.setState({
-            likes: result.data
+            type,
+            id
         })
     }
 
@@ -116,63 +65,6 @@ class Search extends Component {
         this.setState({
             availableTracks: newState
         })
-    }
-
-    addToLikes = (type, obj, clas) => {
-        const currentClass = clas
-        const secondClass = currentClass.className.split(' ')
-        const s = clas.querySelector('#liked_track')
-        const u = clas.querySelector('#unliked_track')
-        if (secondClass[1] === 'is_liked') {
-            s.style.display = 'none'
-            u.style.display = 'block'
-            u.style.color = 'black'
-            currentClass.className = "track_like_holder is_unliked"
-            axios.post(`${config().url}/unlikeUndownload`, { type, data: { id: obj.id } }, config().headers)
-        } else {
-            s.style.display = 'block'
-            s.style.color = 'red'
-            u.style.display = 'none'
-            currentClass.className = "track_like_holder is_liked"
-            axios.post(`${config().url}/likeUndownload`, { type, data: obj }, config().headers)
-        }
-        this.getLikes()
-    }
-
-    addToLikes2 = (type, obj, clas, classs) => {
-        const currentClass = clas
-        const secondClass = currentClass.className.split(' ')
-        if (secondClass[1] === 'white_favourite') {
-            currentClass.className = `${classs} red_favourite`
-            axios.post(`${config().url}/likeUndownload`, { type, data: obj }, config().headers)
-        } else {
-            currentClass.className = `${classs} white_favourite`
-            axios.post(`${config().url}/unlikeUndownload`, { type, data: obj }, config().headers)
-        }
-        this.getLikes()
-    }
-
-    newLikes = (value, type) => {
-        let answer
-        for (let i = 0; i < this.state.likes[type].length; i++) {
-            if (this.state.likes[type][i].information.id === value.id && this.state.likes[type][i].type === value.type) {
-                answer = true
-                break
-            } else {
-                answer = false
-            }
-        }
-        return answer
-    }
-
-    likeUndownloadAction = (type, obj, action) => {
-        if (action === 'like') {
-            this.setState({ liked: true })
-            axios.post(`${config().url}/likeUndownload`, { type, data: { id: obj.id } }, config().headers)
-        } else {
-            this.setState({ liked: false })
-            axios.post(`${config().url}/unlikeUndownload`, { type, data: { id: obj.id } }, config().headers)
-        }
     }
 
     showIcon = (clas, secClas) => {
@@ -203,50 +95,52 @@ class Search extends Component {
         clas.style.height = '30px'
     }
 
-    play = (type, id) => {
-        this.setState({
-            type,
-            id
-        })
+    
+
+    changeValue = () => {
+        this.setState({ inputValue: this.searchTrack.value })
     }
 
-    login = () => {
-        this.props.history.push(`/login?redirect_link=${this.state.path}/${this.props.match.params.query}`)
-    }
 
     render() {
-        const { searchResult, type, path, likes, id, availableTracks } = this.state
-        const { match, history, loggedIn } = this.props
+        const { searchResult, type, path, id, availableTracks, name, mounted, inputValue } = this.state
+        const { trackLikes, tracks, deleteLike, deleteTrack, addTrack } = this.props
         const reroute = this.props.location.pathname.split('/')
-        console.log(reroute)
 
         return (
             <div className="main_container">
                 <div className="general_container">
-                    {loggedIn ? <Sidebar current="explore" /> : ''}
-                    <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
-                        <Nav type={path} id={`${reroute[2]}${reroute[3] ? `/${reroute[3]}` : ''}`} history={history} />
-                        {searchResult && (loggedIn ? likes : true) ?
+                    <Sidebar current="favourites" />
+                    <div className='nav_child_container nav_child_container_margin'>
+                        <div className="explorenav_container">
+                            <div className="explorenav_search">
+                                <input type="search" placeholder="Search Tracks" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
+                            </div>
+                            <div className="explorenav_buttons">
+                                <p className="display_name">{name}</p>
+                            </div>
+                        </div>
+                        {tracks && trackLikes && mounted ?
                             <div className="search_container">
                                 <div className="artist_discography search_headers">
-                                    <Link to={`/${path}/${match.params.query}`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}` ? 'artist_border' : ''}>Tracks</p></Link>
+                                    <Link to={`/${path}`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}` ? 'artist_border' : ''}>Tracks</p></Link>
 
-                                    {searchResult.tracks.length ? <Link to={`/${path}/${match.params.query}/tracks`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/tracks` ? 'artist_border' : ''}>Albums</p></Link> : ''}
+                                    <Link to={`/${path}/albums`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/albums` ? 'artist_border' : ''}>Albums</p></Link>
 
-                                    {searchResult.albums.length ? <Link to={`/${path}/${match.params.query}/albums`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/albums` ? 'artist_border' : ''}>Artists</p></Link> : ''}
-                                    
-                                    {searchResult.artists.length ? <Link to={`/${path}/${match.params.query}/artists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/artists` ? 'artist_border' : ''}>Playlists</p></Link> : ''}
+                                    <Link to={`/${path}/artists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/artists` ? 'artist_border' : ''}>Artists</p></Link>
+
+                                    <Link to={`/${path}/playlists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/playlists` ? 'artist_border' : ''}>Playlists</p></Link>
                                 </div>
-                                <div className="search_headers">
-                                    <Route exact path='/search/:query' render={(props) => <All {...props} searchResult={searchResult} play={this.play} path={path} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} likeUndownloadAction={this.likeUndownloadAction} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl} availableTracks={availableTracks} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} addToLikes2={this.addToLikes2} />}></Route>
+                                <div>
+                                    <Route exact path='/favourites' render={(props) => <Tracks {...props} trackLikes={trackLikes} play={this.play} likeUndownloadAction={this.likeUndownloadAction} deleteLike={deleteLike} inputValue={inputValue} tracks={tracks} deleteTrack={deleteTrack} addTrack={addTrack} />}></Route>
 
-                                    <Route path='/search/:query/tracks' render={(props) => <Tracks {...props} searchResult={searchResult} play={this.play} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} availableTracks={availableTracks} path={path} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl}/>}></Route>
+                                    <Route path='/favourites/albums' render={(props) => <Albums {...props} searchResult={searchResult} play={this.play} addToLikes={this.addToLikes} newLikes={this.newLikes} availableTracks={availableTracks} path={path} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl} />}></Route>
 
-                                    <Route path='/search/:query/playlists' render={(props) => <Playlists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes} path={path}/>}></Route>
+                                    <Route path='/favourites/artists' render={(props) => <Artists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} addToLikes2={this.addToLikes2} newLikes={this.newLikes} path={path} />}></Route>
 
-                                    <Route path='/search/:query/albums' render={(props) => <Albums {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} path={path} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
+                                    <Route path='/favourites/playlists' render={(props) => <Playlists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} path={path} addToLikes2={this.addToLikes2} newLikes={this.newLikes} />}></Route>
 
-                                    <Route path='/search/:query/artists' render={(props) => <Artists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} path={path} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
+                                    <Route path='/search/:query/artists' render={(props) => <Artists {...props} searchResult={searchResult} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} path={path} addToLikes2={this.addToLikes2} newLikes={this.newLikes} />}></Route>
                                 </div>
                             </div> :
                             <div className="spinner">
@@ -264,19 +158,34 @@ class Search extends Component {
 }
 
 
-function mapStateToProps({ loggedIn }) {
-    return {
-        loggedIn
+function mapStateToProps(state) {
+    if (state.likes) {
+        return {
+            tracks: state.tracks,
+            trackLikes: state.likes.trackLikes,
+            albumLikes: state.likes.albumLikes,
+            artistLikes: state.likes.artistLikes,
+            playlistLikes: state.likes.playlistLikes
+        }
+    } else {
+        return {
+            tracks: '',
+            trackLikes: '',
+            albumLikes: '',
+            artistLikes: '',
+            playlistLikes: ''
+        }
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getAlbums: () => dispatch(getAllAlbums()),
-        getTracks: () => dispatch(getAllTracks()),
-        getPlaylists: () => dispatch(getAllPlaylists()),
+        deleteLike: (category, data) => dispatch(deleteLike(category, data)),
         getLikes: () => dispatch(getAllLikes()),
+        getTracks: () => dispatch(getAllTracks()),
+        deleteTrack: (albumId, trackId) => dispatch(deleteTrack(albumId, trackId)),
+        addTrack: (data) => dispatch(addTrack(data)),
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search)
+export default connect(mapStateToProps, mapDispatchToProps)(Favourites)

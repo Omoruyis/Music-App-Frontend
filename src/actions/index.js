@@ -9,6 +9,7 @@ export const ALL_LIKES = 'ALL_LIKES'
 export const DELETE_LIKE = 'DELETE_LIKE'
 export const ADD_LIKE = 'ADD_LIKE'
 export const DELETE_TRACK = 'DELETE_TRACK'
+export const ADD_TRACK = 'ADD_TRACK'
 
 
 export function login () {
@@ -72,6 +73,13 @@ export function deleteTrack (albumId, trackId) {
         type: DELETE_TRACK,
         albumId,
         trackId
+    }
+}
+
+export function addTrack (data) {
+    return {
+        type: ADD_TRACK,
+        data
     }
 }
 
