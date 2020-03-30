@@ -97,7 +97,7 @@ class Playlists extends Component {
                                             <Link to={`/${cur.type}/${cur.information.id}`}>
                                                 <img src={cur.information.picture} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_albums_images" />
                                             </Link>
-                                            <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => this.play('album', cur.information.id)} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
+                                            <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => this.play('playlist', cur.information.id)} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
                                                 <MdPlayArrow style={{ fontSize: '25px' }} />
                                             </div>
                                             <div

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import axios from 'axios'
 
 import playButton from '../../assets/images/playbutton.png'
@@ -15,6 +16,14 @@ class Welcome extends Component {
         charts: null,
         type: null,
         id: 0,
+        loggedIn: false
+    }
+
+    componentDidMount() {
+        this.getCharts()
+        if (this.props.loggedIn) {
+            this.props.history.push('/explore')
+        }
     }
 
     getCharts = async () => {
@@ -39,10 +48,6 @@ class Welcome extends Component {
         ()">remove</button>
     </div>`
         parent.insertAdjacentHTML('beforeend', html)
-    }
-
-    componentDidMount() {
-        this.getCharts()
     }
 
     render() {
@@ -140,4 +145,22 @@ class Welcome extends Component {
     }
 }
 
-export default Welcome;
+
+function mapStateToProps({ loggedIn }) {
+    return {
+        loggedIn
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        // getAlbums: () => dispatch(getAllAlbums()),
+        // getTracks: () => dispatch(getAllTracks()),
+        // getPlaylists: () => dispatch(getAllPlaylists()),
+        // getLikes: () => dispatch(getAllLikes()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Welcome)
+
+// export default Welcome;

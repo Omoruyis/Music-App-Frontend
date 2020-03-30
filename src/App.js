@@ -22,33 +22,40 @@ import './App.css';
 
 
 class App extends Component {
-  async componentDidMount() {
-    console.log('app')
+  state= {
+    show: false
+  }
+
+  async componentWillMount() {
     if (!localStorage.getItem('token')) {
-        return
+      return
     }
     const result = await axios.get(`${config().url}/authenticate`, config().headers)
     if (result.status !== 200) {
         return
     }
     this.props.login()
+    this.setState({ show: true })
   }
 
   render() {
     return (
       <div>
-        <Route exact path='/' component={Welcome} />
-        <Route path='/explore' component={Explore} />
-        <Route path='/playlist/:id' component={Playlist} />
-        <Route path='/album/:id' component={Album} />
-        <Route path='/artist/:id' component={Artist} />
-        <Route path='/login' component={Login} />
-        <Route path='/signup' component={Signup} />
-        <Route path='/search/:query' component={Search} />
-        <Route path="/my_tracks" component={MyTracks} />
-        <Route path="/my_playlists" component={MyPlaylists} />
-        <Route path="/favourites" component={Favourites} />
-      </div>
+        {this.state.show ? 
+          <div>
+            <Route exact path='/' component={Welcome} />
+            <Route path='/explore' component={Explore} />
+            <Route path='/playlist/:id' component={Playlist} />
+            <Route path='/album/:id' component={Album} />
+            <Route path='/artist/:id' component={Artist} />
+            <Route path='/login' component={Login} />
+            <Route path='/signup' component={Signup} />
+            <Route path='/search/:query' component={Search} />
+            <Route path="/my_tracks" component={MyTracks} />
+            <Route path="/my_playlists" component={MyPlaylists} />
+            <Route path="/favourites" component={Favourites} /> 
+          </div>: ''}
+        </div>
     );
   }
 }
