@@ -1,66 +1,77 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
 import { connect } from 'react-redux'
+import { Link } from "react-router-dom";
 import { CircularProgress } from '@material-ui/core';
 import { MdPlayArrow } from "react-icons/md";
+import { FaRegHeart } from "react-icons/fa";
 import { MdExplicit } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
-import { IoIosHeart } from "react-icons/io";
+import { IoIosMusicalNotes } from "react-icons/io";
+import { IoMdAdd } from "react-icons/io";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 
-import { deleteLike, addLike, deleteTrack, getAllLikes, getAllTracks } from '../../actions'
+import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import { trimString, trackTime } from '../../helper/helper'
 
 import '../../App.css';
 
-class MyTracks extends Component {
+const customStyles = {
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        zIndex: 200
+    },
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        width: '575px',
+        height: '360px',
+        padding: '30px 50px'
+    }
+};
+
+Modal.setAppElement('#root');
+
+class MyPlaylists extends Component {
     state = {
         name: localStorage.name,
         inputValue: '',
         mounted: false,
         sort: 'Title',
-        displayTracks: null,
+        sortDisplay: 'All',
         type: null,
         id: 0,
+        modalIsOpen: false
     }
 
     componentDidMount() {
         this.setState({ mounted: true })
-        this.props.getTracks()
+        this.props.getPlaylists()
         this.props.getLikes()
     }
 
-    play = (type, id) => {
-        this.setState({
-            type,
-            id
-        })
+    openModal = () => {
+        this.setState({ modalIsOpen: true })
     }
 
-    addToLikes = (obj, clas) => {
-        const currentClass = clas
-        const secondClass = currentClass.className.split(' ')
-        const s = clas.querySelector('#liked_track')
-        const u = clas.querySelector('#unliked_track')
-        if (secondClass[1] === 'is_liked') {
-            s.style.display = 'none'
-            u.style.display = 'block'
-            u.style.color = 'black'
-            currentClass.className = "track_like_holder is_unliked"
-            this.props.deleteLike('trackLikes', obj)
-        } else {
-            s.style.display = 'block'
-            s.style.color = 'red'
-            u.style.display = 'none'
-            currentClass.className = "track_like_holder is_liked"
-            this.props.addLike('trackLikes', obj)
-        }
+    // afterOpenModal = () => {
+    //     this.subtitle.style.color = '#f00';
+    // }
+
+    closeModal = () => {
+        this.setState({ modalIsOpen: false })
     }
 
     newLikes = (value) => {
         let answer
-        for (let i = 0; i < this.props.trackLikes.length; i++) {
-            if (this.props.trackLikes[i].information.id === value.information.id) {
+        for (let i = 0; i < this.props.playlistLikes.length; i++) {
+            if (this.props.playlistLikes[i].information.id === value) {
                 answer = true
                 break
             } else {
@@ -70,42 +81,99 @@ class MyTracks extends Component {
         return answer
     }
 
-    showPlayButton = async (number, button, plIcon, index) => {
-        number.style.display = 'none'
-        button.style.backgroundColor = 'black'
-        button.style.display = 'flex'
-        button.style.alignItems = 'center'
-        button.style.justifyContent = 'center'
-        plIcon.style.display = 'block';
-        plIcon.style.position = 'relative'
+    play = (type, id) => {
+        this.setState({
+            type,
+            id
+        })
     }
 
-    hidePlayButton = (number, button, plIcon) => {
-        number.style.display = 'block'
-        button.style.backgroundColor = 'white'
-        number.style.display = 'flex'
-        number.style.justifyContent = 'center'
-        number.style.width = '30px';
-        plIcon.style.display = 'none'
+    addToLikes = (obj, clas, classs) => {
+        const currentClass = clas
+        const secondClass = currentClass.className.split(' ')
+        if (secondClass[1] === 'white_favourite') {
+            currentClass.className = `${classs} red_favourite`
+            this.props.addLike('playlistLikes', obj)
+        } else {
+            currentClass.className = `${classs} white_favourite`
+            this.props.deleteLike('playlistLikes', obj)
+        }
     }
 
-    sortTracks = (e) => {
-        console.log(e.target.value)
+    showIcon = (clas, secClas) => {
+        if (clas) {
+            clas.style.zIndex = 1
+            clas.style.opacity = 1
+        }
+        secClas.style.opacity = 0.8
+    }
+    hideIcon = (clas, secClas) => {
+        if (clas) {
+            clas.style.zIndex = -1
+            clas.style.opacity = 0
+        }
+        secClas.style.opacity = 1
+    }
+
+    expandPlay = (clas) => {
+        clas.style.width = '35px'
+        clas.style.height = '35px'
+    }
+    shrinkPlay = (clas) => {
+        clas.style.width = '30px'
+        clas.style.height = '30px'
+    }
+    expandLike = (clas) => {
+        clas.style.width = '35px'
+        clas.style.height = '35px'
+    }
+    shrinkLike = (clas) => {
+        clas.style.width = '30px'
+        clas.style.height = '30px'
+    }
+
+    sortPlaylists = (e) => {
         this.setState({ sort: e.target.value })
+    }
+
+    sortDisplayPlaylists = (e) => {
+        this.setState({ sortDisplay: e.target.value })
+    }
+
+    createNewPlaylist = () => {
+        let answer
+        for (let i = 0; i < this.props.playlists.length; i++) {
+            if (this.props.playlists[i].information.title === this.playlistTitle.value) {
+                answer = true
+                break
+            } else {
+                answer = false
+            }
+        }
+        if (answer) {
+            return alert('This playlist already exist')
+        }
+        this.props.createPlaylist(this.playlistTitle.value, this.playlistDescription.value)
+        this.setState({ modalIsOpen: false })
     }
 
     changeValue = () => {
         this.setState({ inputValue: this.searchTrack.value })
     }
 
-    filterTracks = () => {
-        let display = this.props.tracks
-        if (this.state.sort === 'Artist') {
-            display = display.sort((a, b) => a.information.artist.name < b.information.artist.name ? -1 : a.information.artist.name > b.information.artist.name ? 1 : 0)
-        } else if (this.state.sort === 'Title') {
+    filterPlaylists = () => {
+        let display = this.props.playlists
+        if (this.state.sort === 'Title') {
             display = display.sort((a, b) => a.information.title < b.information.title ? -1 : a.information.title > b.information.title ? 1 : 0)
         } else {
             display = display.sort((a, b) => (b.information.createdAt ? b.information.createdAt : b.createdAt) - (a.information.createdAt ? a.information.createdAt : a.createdAt))
+        }
+        if (this.state.sortDisplay === 'All') {
+            display = display
+        } else if (this.state.sortDisplay === 'Own Playlists') {
+            display = display.filter(playlist => playlist.personal === true)
+        } else {
+            display = display.filter(playlist => playlist.personal === false)
         }
         if (!this.searchTrack.value) {
             return display
@@ -121,18 +189,17 @@ class MyTracks extends Component {
     }
 
     render() {
-        const { type, id, name, mounted } = this.state
-        const { tracks, trackLikes, deleteTrack } = this.props
-        this.trackLike = []
-        this.trackNumber = []
-        this.playSong = []
-        this.addIcon = []
-        this.addIconPl = []
+        const { type, id, name, mounted, modalIsOpen } = this.state
+        const { playlistLikes, playlists } = this.props
+        this.playlistLike = []
+        this.playlistNumber = []
+        this.playlistImage = []
+        this.playPlaylist = []
 
         return (
             <div className="main_container">
                 <div className="general_container">
-                    <Sidebar current="songs" />
+                    <Sidebar current="playlists" />
                     <div className="nav_child_container nav_child_container_margin">
                         <div className="explorenav_container">
                             <div className="explorenav_search">
@@ -142,61 +209,79 @@ class MyTracks extends Component {
                                 <p className="display_name">{name}</p>
                             </div>
                         </div>
-                        {tracks && trackLikes && mounted ? (!tracks.length ?
+                        {playlists && playlistLikes && mounted ? (!playlists.length ?
                             <div className="no_track">
                                 <p className="discography_header_text">You don't currently have any tracks added</p>
+                                <div className="create_playlist" onClick={() => this.openModal()}>
+                                    <div className="playlist_add_icon_holder">
+                                        <IoMdAdd className="my_playlist_add_icon" />
+                                    </div>
+                                </div>
                             </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
                                 <div className="select_holder">
-                                    <p className="discography_header_text">Tracks</p>
-                                    <select defaultValue="Sort Tracks" onChange={(e) => this.sortTracks(e)} className="select_options">
-                                        <option disabled>Sort Tracks</option>
-                                        <option>Title</option>
-                                        <option>Artist</option>
-                                        <option>Recently Added</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <div className="tracks_header remove_header_border">
-                                        <div className="playlist_tracks_header" id="track_number"><p className="u"></p></div>
-                                        <p className="playlist_tracks_header" id="track_title" >TRACK</p>
-                                        <p className="playlist_tracks_header track_artist">ARTIST</p>
-                                        <p className="playlist_tracks_header track_artist">ALBUM</p>
-                                        <p className="playlist_tracks_header" id="track_duration">DURATION</p>
+                                    <p className="discography_header_text">{`${this.filterPlaylists().length} ${this.filterPlaylists().length > 1 ? 'Playlists' : 'Playlist'}`}</p>
+                                    <div>
+                                        <select defaultValue="Sort Tracks" style={{ marginRight: '10px' }} onChange={(e) => this.sortDisplayPlaylists(e)} className="select_options">
+                                            <option disabled>Display Playlists</option>
+                                            <option>All</option>
+                                            <option>Own Playlists</option>
+                                            <option>Added Playlists</option>
+                                        </select>
+                                        <select defaultValue="Sort Tracks" onChange={(e) => this.sortPlaylists(e)} className="select_options">
+                                            <option disabled>Sort Playlists</option>
+                                            <option>Title</option>
+                                            <option>Recently Added</option>
+                                        </select>
                                     </div>
-                                    {this.filterTracks().map((track, index) => {
-                                        return (
-                                            <div className="tracks_header tracks_header_background remove_search_border_top" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIconPl[index])}>
-                                                <div className="track_number">
-                                                    <div className="u" ref={el => this.trackNumber[index] = el}>
-                                                        <img src={track.cover} alt="small album cover" style={{ width: '30px', height: '30px', borderRadius: '5px' }} />
-                                                    </div>
-                                                    <div className="play_track_button" ref={el => this.playSong[index] = el} onClick={() => { this.play('tracks', track.information.id) }}>
-                                                        <MdPlayArrow style={{ fontSize: '25px', color: 'white' }} />
-                                                    </div>
-                                                    <div onClick={() => { this.addToLikes(track, this.trackLike[index]) }} ref={el => this.trackLike[index] = el} className={`track_like_holder ${this.newLikes(track) ? 'is_liked' : 'is_unliked'}`}>
-
-                                                        <IoIosHeart className={this.newLikes(track) ? 'track_liked' : 'hide'} id="liked_track" />
-                                                        <IoMdHeartEmpty className={this.newLikes(track) ? 'hide' : 'track_not_liked'} id="unliked_track" />
-                                                    </div>
-                                                </div>
-                                                <div className="track_title">
-                                                    <p style={{ width: '70%' }}>{trimString(track.information.title, 27)}</p>
-                                                    <div className="add_icon_holder">
-                                                        <div ref={el => this.addIconPl[index] = el} className="add_library_icon" onClick={() => { deleteTrack(track.albumId, track.information.id) }}>
-                                                            <IoIosRemoveCircleOutline className="add_icons_play" />
-                                                            <span className="tooltiptext">Remove from library</span>
+                                </div>
+                                <div className="my_playlists_holder">
+                                    <div className="create_playlist" onClick={() => this.openModal()}>
+                                        <div className="playlist_add_icon_holder">
+                                            <IoMdAdd className="my_playlist_add_icon" />
+                                        </div>
+                                    </div>
+                                    {this.filterPlaylists().map((playlist, index) => {
+                                        if (!playlist.personal) {
+                                            return (
+                                                <div className="explore_artist" id="discography_playlist_mapped" key={index}>
+                                                    <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.playlistLike[index], this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistLike[index], this.playlistImage[index])}>
+                                                        <Link to={`/${playlist.information.type}/${playlist.information.id}`}>
+                                                            <img src={playlist.information.picture_medium} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" />
+                                                        </Link>
+                                                        <div className="play_holder" ref={el => this.playPlaylist[index] = el} onClick={() => this.play('playlist', playlist.information.id)} onMouseOver={() => this.expandPlay(this.playPlaylist[index])} onMouseOut={() => this.shrinkPlay(this.playPlaylist[index])}>
+                                                            <MdPlayArrow style={{ fontSize: '25px' }} />
+                                                        </div>
+                                                        <div
+                                                            className={this.newLikes(playlist.information.id) ? 'favourite_album_holder red_favourite' : 'favourite_album_holder white_favourite'}
+                                                            ref={el => this.playlistLike[index] = el}
+                                                            onMouseOver={() => this.expandLike(this.playlistLike[index])} onMouseOut={() => this.shrinkLike(this.playlistLike[index])}
+                                                            onClick={() => this.addToLikes(playlist, this.playlistLike[index], "favourite_album_holder")}
+                                                        >
+                                                            <FaRegHeart />
                                                         </div>
                                                     </div>
-                                                    <div style={{ width: '10%' }}>
-                                                        {track.information.explicit_lyrics ? <MdExplicit /> : ''}
-                                                    </div>
+                                                    <Link to={`/${playlist.type}/${playlist.information.id}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                                        <p className="explore_artists_name turn_red">{playlist.information.title}</p>
+                                                    </Link>
                                                 </div>
-                                                <p className="track_artist">{trimString(track.information.artist.name, 17)}</p>
-
-                                                <p className="track_album">{trimString(track.albumTitle, 17)}</p>
-                                                <p className="track_duration">{trackTime(track.information.duration)}</p>
-                                            </div>
-                                        )
+                                            )
+                                        } else {
+                                            return (
+                                                <div className="explore_artist" id="discography_playlist_mapped" key={index}>
+                                                    <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(undefined, this.playlistImage[index])} onMouseOut={() => this.hideIcon(undefined, this.playlistImage[index])}>
+                                                        <Link to={`/${playlist.information.type}/${playlist.information.id}`}>
+                                                            {playlist.information.tracks.data.length ? <img src={playlist.information.picture_medium} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" /> :
+                                                                <div className="empty_playlist_image" ref={el => this.playlistImage[index] = el}>
+                                                                    <IoIosMusicalNotes className="empty_playlist_music_icon" />
+                                                                </div>}
+                                                        </Link>
+                                                    </div>
+                                                    <Link to={`/${playlist.type}/${playlist.information.id}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                                        <p className="explore_artists_name turn_red">{playlist.information.title}</p>
+                                                    </Link>
+                                                </div>
+                                            )
+                                        }
                                     })}
                                 </div>
                             </div>)
@@ -210,21 +295,46 @@ class MyTracks extends Component {
                 {type ? <div className="iframe_container">
                     <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
                 </div> : ''}
+
+
+                <Modal
+                    isOpen={modalIsOpen}
+                    onAfterOpen={this.afterOpenModal}
+                    onRequestClose={this.closeModal}
+                    style={customStyles}
+                // contentLabel="Example Modal"
+                >
+                    <p className="modal_create_playlist">Create a playlist</p>
+                    <div className="modal_playlist_title">
+                        <p>What should we call your playlist?</p>
+                        <input type="text" placeholder="Playlist name" ref={el => this.playlistTitle = el} />
+                    </div>
+                    <div className="modal_playlist_title">
+                        <p>Give some information about your playlist</p>
+                        <input type="text" placeholder="Enter a description for playlist (optional)" ref={el => this.playlistDescription = el} />
+                    </div>
+                    <div className="modal_buttons">
+                        <button onClick={this.closeModal} className="modal_cancel_button">Cancel</button>
+                        <button className="modal_save_button" onClick={() => this.createNewPlaylist()}>Create</button>
+                    </div>
+                </Modal>
+
+
             </div>
         )
     }
 }
 
 function mapStateToProps(state) {
-    if (state.tracks && state.likes) {
+    if (state.playlists && state.likes) {
         return {
-            tracks: state.tracks,
-            trackLikes: state.likes.trackLikes
+            playlists: state.playlists,
+            playlistLikes: state.likes.playlistLikes
         }
     } else {
         return {
-            tracks: '',
-            trackLikes: ''
+            playlists: '',
+            playlistLikes: ''
         }
     }
 }
@@ -233,10 +343,10 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteLike: (category, data) => dispatch(deleteLike(category, data)),
         addLike: (category, data) => dispatch(addLike(category, data)),
-        deleteTrack: (albumId, trackId) => dispatch(deleteTrack(albumId, trackId)),
-        getTracks: () => dispatch(getAllTracks()),
+        getPlaylists: () => dispatch(getAllPlaylists()),
         getLikes: () => dispatch(getAllLikes()),
+        createPlaylist: (title, description) => dispatch(createPlaylist(title, description))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyTracks)
+export default connect(mapStateToProps, mapDispatchToProps)(MyPlaylists)

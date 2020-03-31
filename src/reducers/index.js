@@ -8,7 +8,8 @@ import {
     DELETE_LIKE,
     ADD_LIKE, 
     DELETE_TRACK,
-    ADD_TRACK
+    ADD_TRACK,
+    CREATE_PLAYLIST
 } from '../actions'
 import { combineReducers } from 'redux'
 import { getPlaylists, getTracks, getAlbums, getLikes } from '../utils/getAPI'
@@ -18,7 +19,7 @@ import config from '../config/config'
 
 
 function rootReducer (state = { loggedIn: false}, action) {
-    const { albums, playlists, likes, category, data, tracks, albumId, trackId } = action
+    const { albums, playlists, likes, category, data, tracks, albumId, trackId, title, description } = action
     switch (action.type) {
         case LOGIN:
             return {
@@ -79,6 +80,12 @@ function rootReducer (state = { loggedIn: false}, action) {
             return {
                 ...state,
                 tracks: [...state.tracks, {...data, albumTitle: data.information.album.title, albumId: data.information.album.id, cover: data.information.album.picture }]
+            }
+        case CREATE_PLAYLIST:
+            axios.post(`${config().url}/createplaylist`, { title, description }, config().headers)
+            return {
+                ...state,
+                playlists: [...state.playlists, {information: { title, description, tracks: { data: [] } }, personal: true, createdAt: new Date().getTime() }]
             }
         default:
             return state

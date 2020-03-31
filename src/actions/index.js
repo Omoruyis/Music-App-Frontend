@@ -10,6 +10,7 @@ export const DELETE_LIKE = 'DELETE_LIKE'
 export const ADD_LIKE = 'ADD_LIKE'
 export const DELETE_TRACK = 'DELETE_TRACK'
 export const ADD_TRACK = 'ADD_TRACK'
+export const CREATE_PLAYLIST = 'CREATE_PLAYLIST'
 
 
 export function login () {
@@ -80,6 +81,14 @@ export function addTrack (data) {
     return {
         type: ADD_TRACK,
         data
+    }
+}
+
+export function createPlaylist (title, description) {
+    return {
+        type: CREATE_PLAYLIST,
+        title, 
+        description
     }
 }
 

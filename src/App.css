@@ -1299,6 +1299,7 @@
 .select_holder {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .select_options_holder {
@@ -1361,6 +1362,110 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+
+/*****My playlists page****/
+.my_playlist_add_icon {
+  color: white;
+  font-size: 20px;
+}
+
+.playlist_add_icon_holder {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: rgb(240, 82, 82);
+}
+
+.create_playlist {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+  width: 200px;
+  border-radius: 5px;
+  border: 2px dotted rgb(240, 82, 82);
+  margin-right: 30px;
+  cursor: pointer;
+}
+
+.create_playlist:hover {
+  background-color: rgb(226, 217, 217);
+}
+
+.my_playlists_holder {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.empty_playlist_image {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(209, 201, 201);
+  border-radius: 5px;
+}
+
+.empty_playlist_music_icon {
+  font-size: 120px;
+  color: rgb(153, 151, 151)
+}
+
+
+/****Playlist modal***/
+.modal_create_playlist {
+ text-align: center;
+ width: 100%;
+ font-size: 25px;
+ font-weight: bold;
+}
+
+.modal_playlist_title {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.modal_playlist_title > p {
+  color: black;
+  font-size: 17px;
+  margin-bottom: 5px;
+  font-weight: 300;
+}
+
+.modal_playlist_title > input {
+  width: 100%;
+  padding: 10px 20px;
+  height: 40px;
+  border-radius: 5px;
+  outline: none;
+  font-size: 15px;
+}
+
+.modal_buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.modal_cancel_button {
+  background-color: rgb(247, 241, 241);
+  padding: 7px 15px;
+  border-radius: 5px;
+  color: black;
+}
+
+.modal_save_button {
+  background-color: rgb(240, 82, 82);
+  padding: 7px 15px;
+  border-radius: 5px;
+  color: white;
 }
 
 

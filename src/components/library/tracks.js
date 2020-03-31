@@ -19,7 +19,7 @@ class MyTracks extends Component {
         inputValue: '',
         mounted: false,
         sort: 'Title',
-        displayTracks: null,
+        // displayTracks: null,
         type: null,
         id: 0,
     }
@@ -136,7 +136,7 @@ class MyTracks extends Component {
                     <div className="nav_child_container nav_child_container_margin">
                         <div className="explorenav_container">
                             <div className="explorenav_search">
-                                <input type="search" placeholder="Search Tracks" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
+                                <input type="search" placeholder="Search Songs" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
                             <div className="explorenav_buttons">
                                 <p className="display_name">{name}</p>
@@ -147,9 +147,9 @@ class MyTracks extends Component {
                                 <p className="discography_header_text">You don't currently have any tracks added</p>
                             </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
                                 <div className="select_holder">
-                                    <p className="discography_header_text">Tracks</p>
-                                    <select defaultValue="Sort Tracks" onChange={(e) => this.sortTracks(e)} className="select_options">
-                                        <option disabled>Sort Tracks</option>
+                                    <p className="discography_header_text">{`${this.filterTracks().length} ${this.filterTracks().length > 1 ? 'Songs' : 'Song'}`}</p>
+                                    <select defaultValue="Sort Songs" onChange={(e) => this.sortTracks(e)} className="select_options">
+                                        <option disabled>Sort Songs</option>
                                         <option>Title</option>
                                         <option>Artist</option>
                                         <option>Recently Added</option>
