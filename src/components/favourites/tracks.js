@@ -77,8 +77,10 @@ class Tracks extends Component {
         let display = this.props.trackLikes
         if (this.state.sort === 'Artist') {
             display = display.sort((a, b) => a.information.artist.name < b.information.artist.name ? -1 : a.information.artist.name > b.information.artist.name ? 1 : 0)
-        } else {
+        } else if (this.state.sort === 'Title') {
             display = display.sort((a, b) => a.information.title < b.information.title ? -1 : a.information.title > b.information.title ? 1 : 0)
+        } else {
+            display = display.sort((a, b) => b.createdAt - a.createdAt)
         }
         if (!this.props.inputValue) {
             return display
@@ -111,6 +113,7 @@ class Tracks extends Component {
                                 <option disabled>Sort Tracks</option>
                                 <option>Title</option>
                                 <option>Artist</option>
+                                <option>Recently Liked</option>
                             </select>
                         </div>
                         <div>

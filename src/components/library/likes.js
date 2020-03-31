@@ -186,7 +186,7 @@ function mapDispatchToProps(dispatch) {
         getLikes: () => dispatch(getAllLikes()),
         getTracks: () => dispatch(getAllTracks()),
         deleteTrack: (albumId, trackId) => dispatch(deleteTrack(albumId, trackId)),
-        addTrack: (data) => dispatch(addTrack(data)),
+        addTrack: (data) => dispatch(addTrack(data))
     }
 }
 

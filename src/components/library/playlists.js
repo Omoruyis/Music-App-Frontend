@@ -6,15 +6,11 @@ import { Link } from "react-router-dom";
 import { CircularProgress } from '@material-ui/core';
 import { MdPlayArrow } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
-import { MdExplicit } from "react-icons/md";
-import { IoMdHeartEmpty } from "react-icons/io";
 import { IoIosMusicalNotes } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
-import { IoIosRemoveCircleOutline } from "react-icons/io";
 
 import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists } from '../../actions'
 import Sidebar from '../partials/sidebar'
-import { trimString, trackTime } from '../../helper/helper'
 
 import '../../App.css';
 
@@ -245,7 +241,7 @@ class MyPlaylists extends Component {
                                             return (
                                                 <div className="explore_artist" id="discography_playlist_mapped" key={index}>
                                                     <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.playlistLike[index], this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistLike[index], this.playlistImage[index])}>
-                                                        <Link to={`/${playlist.information.type}/${playlist.information.id}`}>
+                                                        <Link to={`/myplaylists/${playlist.information.title}`}>
                                                             <img src={playlist.information.picture_medium} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" />
                                                         </Link>
                                                         <div className="play_holder" ref={el => this.playPlaylist[index] = el} onClick={() => this.play('playlist', playlist.information.id)} onMouseOver={() => this.expandPlay(this.playPlaylist[index])} onMouseOut={() => this.shrinkPlay(this.playPlaylist[index])}>
@@ -260,7 +256,7 @@ class MyPlaylists extends Component {
                                                             <FaRegHeart />
                                                         </div>
                                                     </div>
-                                                    <Link to={`/${playlist.type}/${playlist.information.id}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                                    <Link to={`/myplaylists/${playlist.information.title}`} style={{ color: 'black', textDecoration: 'none' }}>
                                                         <p className="explore_artists_name turn_red">{playlist.information.title}</p>
                                                     </Link>
                                                 </div>

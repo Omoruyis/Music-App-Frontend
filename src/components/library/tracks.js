@@ -90,7 +90,6 @@ class MyTracks extends Component {
     }
 
     sortTracks = (e) => {
-        console.log(e.target.value)
         this.setState({ sort: e.target.value })
     }
 
