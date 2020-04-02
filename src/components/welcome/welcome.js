@@ -68,7 +68,7 @@ class Welcome extends Component {
                     <div className="welcome_page_details">
                         <h3 className="welcome_page_text">A New Way To Enjoy Music</h3>
                         <Link to='/explore' style={{ textDecoration: 'none' }}>
-                            <buttton className="checkout_button">Explore<span style={{ paddingLeft: 10 }}><img src={playButton} alt="play button" /></span></buttton>
+                            <button className="checkout_button">Explore<span style={{ paddingLeft: 10 }}><img src={playButton} alt="play button" /></span></button>
                         </Link>
                     </div>
                 </div>

@@ -20,7 +20,7 @@ import '../../App.css';
 class Search extends Component {
     state = {
         path: null,
-        loggedIn: false,
+        // loggedIn: false,
         searchResult: null,
         type: null,
         id: 0,
@@ -36,7 +36,7 @@ class Search extends Component {
     }
 
     componentWillUnmount() {
-        if(!this.state.loggedIn) {
+        if(!this.props.loggedIn) {
             return
         }
         this.props.getAlbums()
@@ -46,10 +46,12 @@ class Search extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.loggedIn !== this.state.loggedIn) {
-            this.checkLogin()
-            this.setState({ loggedIn: true })
-        }
+        // if (this.props.loggedIn !== this.state.loggedIn) {
+        // if (this.props.loggedIn !== nextProps.loggedIn) {
+        //     console.log('v')
+        //     this.checkLogin()
+        //     this.setState({ loggedIn: true })
+        // }
         if (nextState.url !== nextProps.match.params.query) {
             this.setState({ searchResult: null })
             this.checkLogin()
@@ -134,7 +136,7 @@ class Search extends Component {
             s.style.color = 'red'
             u.style.display = 'none'
             currentClass.className = "track_like_holder is_liked"
-            axios.post(`${config().url}/likeUndownload`, { type, data: obj }, config().headers)
+            axios.post(`${config().url}/likeUndownload`, { type, data: {...obj, album: {id: obj.album.id, title: obj.album.title, picture: obj.album.cover_medium, type: obj.album.type}} }, config().headers)
         }
         this.getLikes()
     }
@@ -218,7 +220,6 @@ class Search extends Component {
         const { searchResult, type, path, likes, id, availableTracks } = this.state
         const { match, history, loggedIn } = this.props
         const reroute = this.props.location.pathname.split('/')
-        console.log(reroute)
 
         return (
             <div className="main_container">

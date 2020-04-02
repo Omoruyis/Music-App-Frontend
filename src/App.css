@@ -947,6 +947,10 @@
   padding-right: 20px;
 }
 
+#add_icon_holder {
+  width: 25%;
+}
+
 #track_number {
   width: 12%;
 }
@@ -1321,6 +1325,14 @@
   justify-content: center;
 }
 
+.no_playlist {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 /*****Tooltip***/
 .tooltip {
   position: relative;
@@ -1356,6 +1368,54 @@
 }
 
 
+/****Track Page***/
+.add_playlist_icon {
+  width: 22px;
+  height: 22px;
+  color: black; 
+  
+}
+.add_playlist_icon:hover {
+  cursor: pointer;
+  color: rgb(75, 72, 72);
+}
+
+.show_playlist_icon {
+  display: block;
+  position: relative;
+  background-color: white;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.show_play_button {
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hide_play_button {
+  background-color: white;
+}
+
+.show_number {
+  display: block;
+  display: flex;
+  justify-content: center;
+  width: '30px'
+}
+
+.delete_track_button {
+  display: block;
+  position: relative;
+}
+
 /****Favourites Page*****/
 .no_favourites {
   height: 60vh;
@@ -1380,6 +1440,11 @@
   border-radius: 5px;
   background-color: rgb(240, 82, 82);
 }
+
+.make_column {
+  flex-direction: column;
+}
+
 
 .create_playlist {
   display: flex;
@@ -1468,6 +1533,48 @@
   color: white;
 }
 
+/***Track page modal***/
+.add_playlist_search {
+  width: 100%;
+  padding: 10px 20px;
+  height: 40px;
+  border-radius: 5px;
+  outline: none;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.search_text_holder {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.search_text_holder:hover {
+  background-color: rgb(187, 173, 173);
+  cursor: pointer;
+}
+
+.modal_add_playlist_text {
+  font-size: 15px;
+  margin-bottom: 0;
+}
+
+.search_momdal_add_icon_holder {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  background-color: rgb(240, 82, 82);
+}
+
+.modal_margin_left {
+  margin-left: 10px;
+}
 
 /*****Welcome Page ***/ 
 @media (max-width: 850px) {

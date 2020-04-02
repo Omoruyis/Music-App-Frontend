@@ -26,7 +26,7 @@ class Album extends Component {
         path: null,
         playlist: null,
         displayTracks: null,
-        loggedIn: false,
+        // loggedIn: false,
         type: null,
         id: 0,
         liked: false,
@@ -53,13 +53,13 @@ class Album extends Component {
         this.props.getLikes()
     }
 
-    shouldComponentUpdate() {
-        if (this.props.loggedIn !== this.state.loggedIn) {
-            this.checkLogin()
-            this.setState({ loggedIn: true })
-        }
-        return true
-    }
+    // shouldComponentUpdate() {
+    //     if (this.props.loggedIn !== this.state.loggedIn) {
+    //         this.checkLogin()
+    //         this.setState({ loggedIn: true })
+    //     }
+    //     return true
+    // }
 
     getPathName = () => {
         const path = this.props.location.pathname.split('/')[1]

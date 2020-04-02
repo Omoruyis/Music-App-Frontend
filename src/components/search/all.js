@@ -102,7 +102,7 @@ class All extends Component {
 
     topArtist = (artist) => {
         const artistLower = artist.toLowerCase()
-        const query =this.props.match.params.query.toLowerCase()
+        const query = this.props.match.params.query.toLowerCase()
         return artistLower === query || artistLower.includes(query)
     }
 
@@ -131,7 +131,7 @@ class All extends Component {
                         <Link to={`/${topResults.artist.type}/${topResults.artist.id}`}>
                             <img src={topResults.artist.picture_medium} className="top_search_image" alt="artist cover" />
                         </Link>
-                        <Link to={`/${topResults.artist.type}/${topResults.artist.id}`} style={{ textDecoration: 'none'}}>
+                        <Link to={`/${topResults.artist.type}/${topResults.artist.id}`} style={{ textDecoration: 'none' }}>
                             <p className="top_search_image_text turn_red">{topResults.artist.name}</p>
                         </Link>
                     </div>
@@ -153,18 +153,18 @@ class All extends Component {
                     <p className="discography_header_text">Tracks</p>
                     {tracks.map((track, index) => {
                         if (index < 6) {
-                            return (    
+                            return (
                                 <div className="tracks_header tracks_header_background remove_search_border_top" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
                                     <div className="track_number">
                                         <div className="u" ref={el => this.trackNumber[index] = el}>
                                             {/* <p style={{ marginBottom: '0' }}>{index + 1}</p> */}
-                                            <img src={track.album.cover} alt="small album cover" style={{width: '30px', height: '30px', borderRadius: '5px'}}/>
+                                            <img src={track.album.cover} alt="small album cover" style={{ width: '30px', height: '30px', borderRadius: '5px' }} />
                                         </div>
                                         <div className="play_track_button" ref={el => this.playSong[index] = el} onClick={() => { loggedIn ? this.play('tracks', track.id) : this.login() }}>
                                             <MdPlayArrow style={{ fontSize: '25px', color: 'white' }} />
                                         </div>
                                         <div onClick={() => loggedIn ? this.addToLikes(track.type, track, this.trackLike[index]) : this.login()} ref={el => this.trackLike[index] = el} className={`track_like_holder ${loggedIn ? (this.newLikes(track, 'trackLikes') ? 'is_liked' : 'is_unliked') : ''}`}>
-    
+
                                             <IoIosHeart className={!loggedIn ? 'hide' : (this.newLikes(track, 'trackLikes') ? 'track_liked' : 'hide')} id="liked_track" />
                                             <IoMdHeartEmpty className={!loggedIn ? 'show' : (this.newLikes(track, 'trackLikes') ? 'hide' : 'track_not_liked')} id="unliked_track" />
                                         </div>
@@ -185,65 +185,61 @@ class All extends Component {
                                             {track.explicit_lyrics ? <MdExplicit /> : ''}
                                         </div>
                                     </div>
-                                    <p className="track_artist">
-                                        <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none' }}><p className="turn_red">{trimString(track.artist.name, 17)}</p></Link>
-                                    </p>
-    
-                                    <p className="track_album">
-                                        <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none' }}><p className="turn_red">{trimString(track.album.title, 17)}</p></Link>
-                                    </p>
+                                    <Link to={`/${track.artist.type}/${track.artist.id}`} className="track_artist" style={{ textDecoration: 'none' }}><p className="turn_red">{trimString(track.artist.name, 17)}</p></Link>
+
+                                    <Link to={`/${track.album.type}/${track.album.id}`} className="track_album" style={{ textDecoration: 'none' }}><p className="turn_red">{trimString(track.album.title, 17)}</p></Link>
                                     <p className="track_duration">{trackTime(track.duration)}</p>
                                 </div>
                             )
-                        } else {return ''}
+                        } else { return '' }
                     })}
                 </div> : ''}
-                
+
 
                 {albums.length ? <div className="top_search_result search_tracks remove_search_border">
                     <p className="discography_header_text">Albums</p>
-                    <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                    {albums.map((cur, index) => {
-                        if (index < 5) {
-                            return (
-                                <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                                    <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
-                                        <Link to={`/${cur.type}/${cur.id}`}>
-                                            <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" />
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                        {albums.map((cur, index) => {
+                            if (index < 5) {
+                                return (
+                                    <div className="explore_artist" id="discography_playlist_mapped" key={index}>
+                                        <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
+                                            <Link to={`/${cur.type}/${cur.id}`}>
+                                                <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" />
+                                            </Link>
+                                            <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { loggedIn ? this.play('album', cur.id) : this.login() }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
+                                                <MdPlayArrow style={{ fontSize: '25px' }} />
+                                            </div>
+                                            <div
+                                                className={!loggedIn ? 'favourite_album_holder white_favourite' : (this.newLikes(cur, 'albumLikes') ? 'favourite_album_holder red_favourite' : 'favourite_album_holder white_favourite')}
+                                                ref={el => this.albumLike[index] = el}
+                                                onMouseOver={() => this.expandLike(this.albumLike[index])} onMouseOut={() => this.shrinkLike(this.albumLike[index])}
+                                                onClick={() => loggedIn ? this.addToLikes2(cur.type, cur, this.albumLike[index], "favourite_album_holder") : this.login()}
+                                            >
+                                                <FaRegHeart />
+                                            </div>
+                                        </div>
+                                        <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none' }}>
+                                            <p className="explore_artists_name turn_red" style={{ textAlign: 'center' }}>{trimString(cur.title, 17)}</p>
                                         </Link>
-                                        <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { loggedIn ? this.play('album', cur.id) : this.login() }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
-                                            <MdPlayArrow style={{ fontSize: '25px' }} />
-                                        </div>
-                                        <div
-                                            className={!loggedIn ? 'favourite_album_holder white_favourite' : (this.newLikes(cur, 'albumLikes') ? 'favourite_album_holder red_favourite' : 'favourite_album_holder white_favourite')}
-                                            ref={el => this.albumLike[index] = el}
-                                            onMouseOver={() => this.expandLike(this.albumLike[index])} onMouseOut={() => this.shrinkLike(this.albumLike[index])}
-                                            onClick={() => loggedIn ? this.addToLikes2(cur.type, cur, this.albumLike[index], "favourite_album_holder") : this.login()}
-                                        >
-                                            <FaRegHeart />
-                                        </div>
                                     </div>
-                                    <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none' }}>
-                                        <p className="explore_artists_name turn_red" style={{textAlign: 'center'}}>{trimString(cur.title, 17)}</p>
-                                    </Link>
-                                </div>
-                            
-                            )
-                        } else {return ''}
-                    })}
+
+                                )
+                            } else { return '' }
+                        })}
                     </div>
                 </div> : ''}
 
                 {artists.length ? <div className="top_search_result search_tracks remove_search_border">
                     <p className="discography_header_text">Artists</p>
-                    <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                         {artists.map((cur, index) => {
                             if (index < 5) {
                                 return (
                                     <div className="explore_artist" id="discography_playlist_mapped" key={index}>
                                         <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
                                             <Link to={`/${cur.type}/${cur.id}`}>
-                                                <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images"/>
+                                                <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images" />
                                             </Link>
                                             <div
                                                 className={!loggedIn ? 'favourite_holder white_favourite' : (this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite')}
@@ -255,11 +251,11 @@ class All extends Component {
                                             </div>
                                         </div>
                                         <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none' }}>
-                                            <p className="explore_artists_name turn_red" style={{cursor: 'pointer', textAlign: 'center'}}>{trimString(cur.name, 17)}</p>
+                                            <p className="explore_artists_name turn_red" style={{ cursor: 'pointer', textAlign: 'center' }}>{trimString(cur.name, 17)}</p>
                                         </Link>
                                     </div>
                                 )
-                        } else {return ''}
+                            } else { return '' }
                         })}
                     </div>
                 </div> : ''}
@@ -267,7 +263,7 @@ class All extends Component {
 
                 {playlists.length ? <div className="top_search_result search_tracks remove_search_border">
                     <p className="discography_header_text">Playlists</p>
-                    <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                         {playlists.map((cur, index) => {
                             if (index < 5) {
                                 return (
@@ -293,7 +289,7 @@ class All extends Component {
                                         </Link>
                                     </div>
                                 )
-                            } else {return ''}
+                            } else { return '' }
                         })}
                     </div>
                 </div> : ''}

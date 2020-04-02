@@ -27,7 +27,7 @@ class Playlist extends Component {
         path: null,
         playlist: null,
         displayTracks: null,
-        loggedIn: false,
+        // loggedIn: false,
         type: null,
         id: 0,
         liked: false,
@@ -44,7 +44,7 @@ class Playlist extends Component {
     }
 
     componentWillUnmount() {
-        if(!this.state.loggedIn) {
+        if (!this.state.loggedIn) {
             return
         }
         this.props.getAlbums()
@@ -53,13 +53,14 @@ class Playlist extends Component {
         this.props.getLikes()
     }
 
-    shouldComponentUpdate() {
-        if (this.props.loggedIn !== this.state.loggedIn) {
-            this.checkLogin()
-            this.setState({ loggedIn: true })
-        }
-        return true
-    }
+    // shouldComponentUpdate(nextProps) {
+    //     if (this.props.loggedIn !== this.state.loggedIn) {
+        // if (this.props.loggedIn !== nextProps.loggedIn) {
+    //         this.checkLogin()
+    //         this.setState({ loggedIn: true })
+    //     }
+    //     return true
+    // }
 
     getPathName = () => {
         const path = this.props.location.pathname.split('/')[1]
@@ -172,7 +173,7 @@ class Playlist extends Component {
             s.style.color = 'red'
             u.style.display = 'none'
             currentClass.className = "track_like_holder is_liked"
-            axios.post(`${config().url}/likeUndownload`, { type, data: {...obj, album: {id: obj.album.id, title: obj.album.title, picture: obj.album.cover_medium, type: obj.album.type}} }, config().headers)
+            axios.post(`${config().url}/likeUndownload`, { type, data: { ...obj, album: { id: obj.album.id, title: obj.album.title, picture: obj.album.cover_medium, type: obj.album.type } } }, config().headers)
         }
     }
 
@@ -362,13 +363,9 @@ class Playlist extends Component {
                                                         {track.explicit_lyrics ? <MdExplicit /> : ''}
                                                     </div>
                                                 </div>
-                                                <p className="track_artist">
-                                                    <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">{trimString(track.artist.name, 17)}</p></Link>
-                                                </p>
+                                                <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none', color: 'black' }} className="track_artist"><p className="turn_red">{trimString(track.artist.name, 17)}</p></Link>
 
-                                                <p className="track_album">
-                                                    <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">{trimString(track.album.title, 17)}</p></Link>
-                                                </p>
+                                                <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none', color: 'black' }} className="track_album"><p className="turn_red">{trimString(track.album.title, 17)}</p></Link>
                                                 <p className="track_duration">{trackTime(track.duration)}</p>
                                             </div>
                                         )

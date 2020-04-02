@@ -27,12 +27,14 @@ class App extends Component {
     show: false
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     if (!localStorage.getItem('token')) {
+      this.setState({ show: true })
       return
     }
     const result = await axios.get(`${config().url}/authenticate`, config().headers)
     if (result.status !== 200) {
+      this.setState({ show: true })
         return
     }
     this.props.login()

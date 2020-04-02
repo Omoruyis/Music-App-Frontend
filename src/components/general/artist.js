@@ -22,7 +22,7 @@ import '../../App.css';
 class Artist extends Component {
     state = {
         path: null,
-        loggedIn: false,
+        // loggedIn: false,
         playlist: null,
         liked: false,
         type: null,
@@ -49,10 +49,10 @@ class Artist extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.loggedIn !== this.state.loggedIn) {
-            this.checkLogin()
-            this.setState({ loggedIn: true })
-        }
+        // if (this.props.loggedIn !== this.state.loggedIn) {
+        //     this.checkLogin()
+        //     this.setState({ loggedIn: true })
+        // }
         if (nextState.url !== nextProps.match.params.id) {
             this.setState({ playlist: null })
             this.checkLogin()
@@ -146,7 +146,7 @@ class Artist extends Component {
             s.style.color = 'red'
             u.style.display = 'none'
             currentClass.className = "track_like_holder is_liked"
-            axios.post(`${config().url}/likeUndownload`, { type, data: obj }, config().headers)
+            axios.post(`${config().url}/likeUndownload`, { type, data: {...obj, album: {id: obj.album.id, title: obj.album.title, picture: obj.album.cover_medium, type: obj.album.type}} }, config().headers)
         }
         this.getLikes()
     }

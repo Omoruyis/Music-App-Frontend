@@ -138,6 +138,9 @@ class MyPlaylists extends Component {
 
     createNewPlaylist = () => {
         let answer
+        if(!this.playlistTitle.value) {
+            return alert('Please add a title')
+        }
         for (let i = 0; i < this.props.playlists.length; i++) {
             if (this.props.playlists[i].information.title === this.playlistTitle.value) {
                 answer = true
@@ -160,7 +163,7 @@ class MyPlaylists extends Component {
     filterPlaylists = () => {
         let display = this.props.playlists
         if (this.state.sort === 'Title') {
-            display = display.sort((a, b) => a.information.title < b.information.title ? -1 : a.information.title > b.information.title ? 1 : 0)
+            display = display.sort((a, b) => a.information.title.toLowerCase() < b.information.title.toLowerCase() ? -1 : a.information.title.toLowerCase() > b.information.title.toLowerCase() ? 1 : 0)
         } else {
             display = display.sort((a, b) => (b.information.createdAt ? b.information.createdAt : b.createdAt) - (a.information.createdAt ? a.information.createdAt : a.createdAt))
         }
@@ -206,12 +209,13 @@ class MyPlaylists extends Component {
                             </div>
                         </div>
                         {playlists && playlistLikes && mounted ? (!playlists.length ?
-                            <div className="no_track">
-                                <p className="discography_header_text">You don't currently have any tracks added</p>
-                                <div className="create_playlist" onClick={() => this.openModal()}>
+                            <div className="no_playlist">
+                                <p className="discography_header_text">You don't currently have any playlist added</p>
+                                <div className="create_playlist make_column" onClick={() => this.openModal()}>
                                     <div className="playlist_add_icon_holder">
                                         <IoMdAdd className="my_playlist_add_icon" />
                                     </div>
+                                    <p style={{marginTop: '30px'}}>Create a playlist</p>
                                 </div>
                             </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
                                 <div className="select_holder">
@@ -265,14 +269,14 @@ class MyPlaylists extends Component {
                                             return (
                                                 <div className="explore_artist" id="discography_playlist_mapped" key={index}>
                                                     <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(undefined, this.playlistImage[index])} onMouseOut={() => this.hideIcon(undefined, this.playlistImage[index])}>
-                                                        <Link to={`/${playlist.information.type}/${playlist.information.id}`}>
-                                                            {playlist.information.tracks.data.length ? <img src={playlist.information.picture_medium} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" /> :
+                                                    <Link to={`/myplaylists/${playlist.information.title}`}>
+                                                            {playlist.information.tracks.data.length ? <img src={playlist.information.tracks.data[0].album.picture} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" /> :
                                                                 <div className="empty_playlist_image" ref={el => this.playlistImage[index] = el}>
                                                                     <IoIosMusicalNotes className="empty_playlist_music_icon" />
                                                                 </div>}
                                                         </Link>
                                                     </div>
-                                                    <Link to={`/${playlist.type}/${playlist.information.id}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                                    <Link to={`/myplaylists/${playlist.information.title}`} style={{ color: 'black', textDecoration: 'none' }}>
                                                         <p className="explore_artists_name turn_red">{playlist.information.title}</p>
                                                     </Link>
                                                 </div>

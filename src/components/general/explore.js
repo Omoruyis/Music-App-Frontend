@@ -38,13 +38,13 @@ class Explore extends Component {
         this.props.getLikes()
     }
 
-    shouldComponentUpdate() {
-        if (this.props.loggedIn !== this.state.loggedIn) {
-            this.checkLogin()
-            this.setState({ loggedIn: true })
-        }
-        return true
-    }
+    // shouldComponentUpdate() {
+    //     if (this.props.loggedIn !== this.state.loggedIn) {
+    //         this.checkLogin()
+    //         this.setState({ loggedIn: true })
+    //     }
+    //     return true
+    // }
 
     getCharts = async () => {
         const result = await axios.get(`${config().url}/explore`, config().headers)
