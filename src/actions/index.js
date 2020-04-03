@@ -11,6 +11,8 @@ export const ADD_LIKE = 'ADD_LIKE'
 export const DELETE_TRACK = 'DELETE_TRACK'
 export const ADD_TRACK = 'ADD_TRACK'
 export const CREATE_PLAYLIST = 'CREATE_PLAYLIST'
+export const DELETE_PLAYLIST = 'DELETE_PLAYLIST'
+export const DELETE_FROM_PLAYLIST = 'DELETE_FROM_PLAYLIST'
 
 
 export function login () {
@@ -89,6 +91,21 @@ export function createPlaylist (title, description) {
         type: CREATE_PLAYLIST,
         title, 
         description
+    }
+}
+
+export function deletePlaylist (id) {
+    return {
+        type: DELETE_PLAYLIST,
+        id
+    }
+}
+
+export function deleteFromPlaylist (id, title) {
+    return {
+        type: DELETE_FROM_PLAYLIST,
+        id,
+        title, 
     }
 }
 

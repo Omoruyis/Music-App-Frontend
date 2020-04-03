@@ -68,7 +68,7 @@ class MyTracks extends Component {
         type: null,
         id: 0,
         addedTrack: '',
-        modalIsOpen: false, 
+        modalIsOpen: false,
         modalIsOpen2: false
     }
 
@@ -81,19 +81,15 @@ class MyTracks extends Component {
 
     openModal = (number) => {
         if (number) {
-            this.setState({ modalIsOpen2: true})
+            this.setState({ modalIsOpen2: true })
         } else {
             this.setState({ modalIsOpen: true })
         }
     }
 
-    // afterOpenModal = () => {
-    //     this.subtitle.style.color = '#f00';
-    // }
-
     closeModal = (number) => {
         if (number) {
-            this.setState({ modalIsOpen2: false})
+            this.setState({ modalIsOpen2: false })
         } else {
             this.setState({ modalIsOpen: false })
         }
@@ -166,7 +162,7 @@ class MyTracks extends Component {
     }
 
     addTrackToPlaylist = async (title) => {
-        const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: {...this.state.addedTrack.information, album: {id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' }} }, config().headers)
+        const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
         if (result.data === 'This song is already in this playlist') {
             return alert(result.data)
         }
@@ -175,7 +171,7 @@ class MyTracks extends Component {
 
     createNewPlaylist = async () => {
         let answer
-        if(!this.playlistTitle.value) {
+        if (!this.playlistTitle.value) {
             return alert('Please add a title')
         }
         for (let i = 0; i < this.props.playlists.length; i++) {
@@ -191,7 +187,7 @@ class MyTracks extends Component {
         }
         const result = await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
 
-        const newTrack = await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: {...this.state.addedTrack.information, album: {id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' }} }, config().headers)
+        const newTrack = await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
         this.props.history.push(`/myplaylists/${this.playlistTitle.value}`)
         this.setState({ modalIsOpen2: false })
     }
@@ -224,6 +220,7 @@ class MyTracks extends Component {
     }
 
     filterTracks = () => {
+        console.log(this.props.tracks.length)
         let display = this.props.tracks
         if (this.state.sort === 'Artist') {
             display = display.sort((a, b) => a.information.artist.name.toLowerCase() < b.information.artist.name.toLowerCase() ? -1 : a.information.artist.name.toLowerCase() > b.information.artist.name.toLowerCase() ? 1 : 0)
@@ -253,6 +250,7 @@ class MyTracks extends Component {
         this.playSong = []
         this.addIconPl = []
         this.addPl = []
+        { console.log(tracks.length) }
 
 
         return (
@@ -348,7 +346,7 @@ class MyTracks extends Component {
                     style={customStyles}
                 // contentLabel="Example Modal"
                 >
-                    <input placeholder="Search" className="search_modal_playlist" className="add_playlist_search" ref={el => this.modalSearch = el} onInput={this.changeInput}/>
+                    <input placeholder="Search" className="search_modal_playlist" className="add_playlist_search" ref={el => this.modalSearch = el} onInput={this.changeInput} />
                     <div className="search_text_holder">
                         <p className="modal_add_playlist_text">Select</p>
                     </div>
@@ -362,12 +360,12 @@ class MyTracks extends Component {
                         <p className="modal_add_playlist_text modal_margin_left">New Playlist</p>
                     </div>
                     {this.filterPlaylists() ? this.filterPlaylists().map((playlist, index) => {
-                            return (
-                                <div key={index}  className="search_text_holder" onClick={() => this.addTrackToPlaylist(playlist.information.title)}>
-                                    <MdQueueMusic style={{fontSize: '25px'}}/>
-                                    <p className="modal_add_playlist_text modal_margin_left">{playlist.information.title}</p>
-                                </div>
-                            )
+                        return (
+                            <div key={index} className="search_text_holder" onClick={() => this.addTrackToPlaylist(playlist.information.title)}>
+                                <MdQueueMusic style={{ fontSize: '25px' }} />
+                                <p className="modal_add_playlist_text modal_margin_left">{playlist.information.title}</p>
+                            </div>
+                        )
                     }) : ''}
                 </Modal>
 

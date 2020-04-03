@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { CircularProgress } from '@material-ui/core';
@@ -144,6 +145,7 @@ class Album extends Component {
         this.setState({
             _id: action === 'add' ? result.data._id : 0
         })
+        this.getPlaylist()
     }
 
     likeUndownloadAction = (type, obj, action) => {
@@ -189,22 +191,24 @@ class Album extends Component {
         return answer
     }
 
-    addAlbPl = (type, id, index) => {
-        axios.post(`${config().url}/addAlbPlayTrack`, { type, id, index }, config().headers)
+    addAlbPl = async (type, id, index) => {
         let newState = this.state.availableTracks
         newState[index] = true
         this.setState({
             availableTracks: newState
         })
+        const res = await axios.post(`${config().url}/addAlbPlayTrack`, { type, id, index }, config().headers)
+        this.checkAvailable(parseInt(this.props.match.params.id), 'album')
     }
 
-    removeAlbPl = (id, trackId, index) => {
-        axios.post(`${config().url}/removeAlbPlayTrack`, { id, trackId }, config().headers)
+    removeAlbPl = async (id, trackId, index) => {
         let newState = this.state.availableTracks
         newState[index] = false
         this.setState({
             availableTracks: newState
         })
+        const res = await axios.post(`${config().url}/removeAlbPlayTrack`, { id, trackId }, config().headers)
+        this.checkAvailable(parseInt(this.props.match.params.id), 'album')
     }
 
     showPlayButton = async (number, button, icon, plIcon, index) => {
@@ -279,12 +283,16 @@ class Album extends Component {
                         {playlist && (loggedIn ? likes : true) ?
                             <div className="playlist_container">
                                 <div className="playlist_header" id={loggedIn ? "playlist_header" : ''}>
-                                    <img src={playlist.cover_medium} alt="album-cover" className="playlist_image" />
+                                    <img src={playlist.cover_medium} alt="albu
+                                    m-cover" className="playlist_image" />
                                     <div className="playlist_details_holder">
                                         <p className="playlist_title">{playlist.title}</p>
+                                        <Link to={`/${playlist.artist.type}/${playlist.artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                            <p className="explore_artists_name turn_red">{playlist.artist.name}</p>
+                                        </Link>
                                         {available ? <p className="playlist_duration">In Library</p> : ''}
                                         <div className="playlist_duration">
-                                            <p>{playlist.nb_tracks} {playlist.nb_tracks !== 1 ? 'tracks' : 'track'}</p>
+                                            <p className="dura">{playlist.nb_tracks} {playlist.nb_tracks !== 1 ? 'tracks' : 'track'}</p>
                                             <p className="playlist_time">{time(playlist.duration)}</p>
                                         </div>
                                     </div>

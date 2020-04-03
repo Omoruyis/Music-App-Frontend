@@ -834,19 +834,20 @@
 }
 
 #playlist_header {
-  width: 55%; 
+  width: 60%; 
 }
 
 .playlist_header {
   display: flex;
   position: relative;
   width: 50%; 
-  height: 250px;
+  height: 200px;
 }
 
 .playlist_image {
-  height: 100%;
-  width: 40%;
+  height: 200px;
+  width: 200px;
+  border-radius: 5px;
 }
 .playlist_image:hover {
   opacity: 0.8
@@ -872,6 +873,11 @@
 
 .playlist_time {
   margin-left: 20px;
+  margin-bottom: 0;
+}
+
+.dura {
+  margin-bottom: 0;
 }
 
 .playlist_actions_holder {
@@ -1024,6 +1030,7 @@
   color: rgb(199, 184, 184);
   width: 20%;
   padding-right: 55px;
+  position: relative;
 }
 
 .play_track_button {

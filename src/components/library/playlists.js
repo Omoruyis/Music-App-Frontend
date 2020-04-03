@@ -52,6 +52,15 @@ class MyPlaylists extends Component {
         this.props.getLikes()
     }
 
+    shouldComponentUpdate(nextProps) {
+        console.log(this.props.playlists.length)
+        console.log(nextProps.playlists.length)
+        if (this.props.playlists && this.props.playlists.length === nextProps.length) {
+            return false
+        }
+        return true
+    }
+
     openModal = () => {
         this.setState({ modalIsOpen: true })
     }

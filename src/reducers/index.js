@@ -9,7 +9,9 @@ import {
     ADD_LIKE, 
     DELETE_TRACK,
     ADD_TRACK,
-    CREATE_PLAYLIST
+    CREATE_PLAYLIST,
+    DELETE_PLAYLIST,
+    DELETE_FROM_PLAYLIST
 } from '../actions'
 import { combineReducers } from 'redux'
 import { getPlaylists, getTracks, getAlbums, getLikes } from '../utils/getAPI'
@@ -19,7 +21,7 @@ import config from '../config/config'
 
 
 function rootReducer (state = { loggedIn: false}, action) {
-    const { albums, playlists, likes, category, data, tracks, albumId, trackId, title, description } = action
+    const { albums, playlists, likes, category, data, tracks, albumId, trackId, title, description, id } = action
     switch (action.type) {
         case LOGIN:
             return {
@@ -79,13 +81,29 @@ function rootReducer (state = { loggedIn: false}, action) {
             axios.post(`${config().url}/addAlbPlayTrack`, { type: 'track', id: data.information.album.id, trackId: data.information.id }, config().headers)
             return {
                 ...state,
-                tracks: [...state.tracks, {...data, albumTitle: data.information.album.title, albumId: data.information.album.id, cover: data.information.album.picture }]
+                tracks: [...state.tracks, {...data, albumTitle: data.information.album.title, albumId: data.information.album.id, cover: data.information.album.picture ? data.information.album.picture : data.information.album.cover, createdAt:  new Date().getTime() }]
             }
         case CREATE_PLAYLIST:
             axios.post(`${config().url}/createplaylist`, { title, description }, config().headers)
             return {
                 ...state,
                 playlists: [...state.playlists, {information: { title, description, tracks: { data: [] } }, personal: true, createdAt: new Date().getTime() }]
+            }
+        case DELETE_PLAYLIST:
+            axios.post(`${config().url}/delete`, { id, type: 'playlist' }, config().headers)
+            return {
+                ...state,
+                playlists: state.playlists.filter(cur => cur.information.id !== id)
+            }
+        case DELETE_FROM_PLAYLIST:
+            axios.post(`${config().url}/deletefromplaylist`, { id, title }, config().headers)
+            const updated = state.playlists.findIndex(cur => cur.personal === true && cur.information.title === title)
+            const newPlaylist = state.playlists
+            const newArray = state.playlists[updated].information.tracks.data.filter(track => track.id !== id)
+            newPlaylist[updated].information.tracks.data = newArray
+            return {
+                ...state,
+                playlists: [...newPlaylist]
             }
         default:
             return state

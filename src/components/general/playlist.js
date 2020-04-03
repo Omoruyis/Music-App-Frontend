@@ -284,7 +284,7 @@ class Playlist extends Component {
                                         <p className="playlist_title">{playlist.title}</p>
                                         {available ? <p className="playlist_duration">In Library</p> : ''}
                                         <div className="playlist_duration">
-                                            <p>{playlist.nb_tracks} {playlist.nb_tracks !== 1 ? 'tracks' : 'track'}</p>
+                                            <p className="dura">{playlist.nb_tracks} {playlist.nb_tracks !== 1 ? 'tracks' : 'track'}</p>
                                             <p className="playlist_time">{time(playlist.duration)}</p>
                                         </div>
                                     </div>
@@ -317,8 +317,8 @@ class Playlist extends Component {
                                         </button> :
                                             <button className="playlist_button" id="unlike_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist, 'unlike') }}>
                                                 <IoIosHeartDislike className="playlist_button_icon" />
-                                        Unlike
-                                    </button>
+                                            Unlike
+                                        </button>
                                         }
                                     </div>
                                     <input type="search" className="search_track" placeholder="Search within tracks" onInput={() => this.filterTracks()} ref={el => this.searchTrack = el} />
