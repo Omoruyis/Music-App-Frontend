@@ -109,7 +109,6 @@ class Favourites extends Component {
     render() {
         const { type, path, id, name, mounted, inputValue } = this.state
         const { trackLikes, artistLikes, albumLikes, playlistLikes, tracks, deleteLike, deleteTrack, addTrack } = this.props
-        const reroute = this.props.location.pathname.split('/')
 
         return (
             <div className="main_container">

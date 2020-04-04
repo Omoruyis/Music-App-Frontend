@@ -13,6 +13,8 @@ export const ADD_TRACK = 'ADD_TRACK'
 export const CREATE_PLAYLIST = 'CREATE_PLAYLIST'
 export const DELETE_PLAYLIST = 'DELETE_PLAYLIST'
 export const DELETE_FROM_PLAYLIST = 'DELETE_FROM_PLAYLIST'
+export const DELETE_PERSONAL_PLAYLIST = 'DELETE_PERSONAL_PLAYLIST'
+export const EDIT_PLAYLIST = 'EDIT_PLAYLIST'
 
 
 export function login () {
@@ -106,6 +108,22 @@ export function deleteFromPlaylist (id, title) {
         type: DELETE_FROM_PLAYLIST,
         id,
         title, 
+    }
+}
+
+export function deletePersonalPlaylist (_id) {
+    return {
+        type: DELETE_PERSONAL_PLAYLIST,
+        _id
+    }
+}
+
+export function editPlaylist (_id, title, description) {
+    return {
+        type: EDIT_PLAYLIST,
+        _id,
+        title,
+        description
     }
 }
 

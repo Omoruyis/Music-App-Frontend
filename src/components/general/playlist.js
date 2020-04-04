@@ -281,7 +281,7 @@ class Playlist extends Component {
                                 <div className="playlist_header" id={loggedIn ? "playlist_header" : ''}>
                                     <img src={playlist.picture_medium} alt="playlist-cover" className="playlist_image" />
                                     <div className="playlist_details_holder">
-                                        <p className="playlist_title">{playlist.title}</p>
+                                        <p className="playlist_title">{trimString(playlist.title, 17)}</p>
                                         {available ? <p className="playlist_duration">In Library</p> : ''}
                                         <div className="playlist_duration">
                                             <p className="dura">{playlist.nb_tracks} {playlist.nb_tracks !== 1 ? 'tracks' : 'track'}</p>

@@ -197,7 +197,7 @@ class Album extends Component {
         this.setState({
             availableTracks: newState
         })
-        const res = await axios.post(`${config().url}/addAlbPlayTrack`, { type, id, index }, config().headers)
+        await axios.post(`${config().url}/addAlbPlayTrack`, { type, id, index }, config().headers)
         this.checkAvailable(parseInt(this.props.match.params.id), 'album')
     }
 
@@ -207,7 +207,7 @@ class Album extends Component {
         this.setState({
             availableTracks: newState
         })
-        const res = await axios.post(`${config().url}/removeAlbPlayTrack`, { id, trackId }, config().headers)
+        await axios.post(`${config().url}/removeAlbPlayTrack`, { id, trackId }, config().headers)
         this.checkAvailable(parseInt(this.props.match.params.id), 'album')
     }
 
@@ -286,7 +286,7 @@ class Album extends Component {
                                     <img src={playlist.cover_medium} alt="albu
                                     m-cover" className="playlist_image" />
                                     <div className="playlist_details_holder">
-                                        <p className="playlist_title">{playlist.title}</p>
+                                        <p className="playlist_title">{trimString(playlist.title, 17)}</p>
                                         <Link to={`/${playlist.artist.type}/${playlist.artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>
                                             <p className="explore_artists_name turn_red">{playlist.artist.name}</p>
                                         </Link>

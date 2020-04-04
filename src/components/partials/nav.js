@@ -25,7 +25,7 @@ class Nav extends Component {
 
 
     render() {
-        const { inputValue, name } = this.state
+        const { name } = this.state
         const { type, id } = this.props
         return (
             <div className="explorenav_container">

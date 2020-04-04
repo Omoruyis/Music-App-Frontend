@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
@@ -55,19 +54,17 @@ class MyPlaylists extends Component {
     shouldComponentUpdate(nextProps) {
         console.log(this.props.playlists.length)
         console.log(nextProps.playlists.length)
-        if (this.props.playlists && this.props.playlists.length === nextProps.length) {
-            return false
-        }
+        // if (this.props.playlists && this.props.playlists.length !== nextProps.length) {
+        //     console.log('yeepee')
+        //     nextProps.playlists = this.props.playlists
+        //     return false
+        // }
         return true
     }
 
     openModal = () => {
         this.setState({ modalIsOpen: true })
     }
-
-    // afterOpenModal = () => {
-    //     this.subtitle.style.color = '#f00';
-    // }
 
     closeModal = () => {
         this.setState({ modalIsOpen: false })
@@ -244,17 +241,18 @@ class MyPlaylists extends Component {
                                     </div>
                                 </div>
                                 <div className="my_playlists_holder">
-                                    <div className="create_playlist" onClick={() => this.openModal()}>
+                                    <div className="create_playlist make_column" onClick={() => this.openModal()}>
                                         <div className="playlist_add_icon_holder">
                                             <IoMdAdd className="my_playlist_add_icon" />
                                         </div>
+                                        <p style={{marginTop: '30px'}}>Create a playlist</p>
                                     </div>
                                     {this.filterPlaylists().map((playlist, index) => {
                                         if (!playlist.personal) {
                                             return (
                                                 <div className="explore_artist" id="discography_playlist_mapped" key={index}>
                                                     <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.playlistLike[index], this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistLike[index], this.playlistImage[index])}>
-                                                        <Link to={`/myplaylists/${playlist.information.title}`}>
+                                                        <Link to={`/myplaylists/${playlist._id}`}>
                                                             <img src={playlist.information.picture_medium} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" />
                                                         </Link>
                                                         <div className="play_holder" ref={el => this.playPlaylist[index] = el} onClick={() => this.play('playlist', playlist.information.id)} onMouseOver={() => this.expandPlay(this.playPlaylist[index])} onMouseOut={() => this.shrinkPlay(this.playPlaylist[index])}>
@@ -269,7 +267,7 @@ class MyPlaylists extends Component {
                                                             <FaRegHeart />
                                                         </div>
                                                     </div>
-                                                    <Link to={`/myplaylists/${playlist.information.title}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                                    <Link to={`/myplaylists/${playlist._id}`} style={{ color: 'black', textDecoration: 'none' }}>
                                                         <p className="explore_artists_name turn_red">{playlist.information.title}</p>
                                                     </Link>
                                                 </div>
@@ -278,14 +276,14 @@ class MyPlaylists extends Component {
                                             return (
                                                 <div className="explore_artist" id="discography_playlist_mapped" key={index}>
                                                     <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(undefined, this.playlistImage[index])} onMouseOut={() => this.hideIcon(undefined, this.playlistImage[index])}>
-                                                    <Link to={`/myplaylists/${playlist.information.title}`}>
+                                                    <Link to={`/myplaylists/${playlist._id}`}>
                                                             {playlist.information.tracks.data.length ? <img src={playlist.information.tracks.data[0].album.picture} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" /> :
                                                                 <div className="empty_playlist_image" ref={el => this.playlistImage[index] = el}>
                                                                     <IoIosMusicalNotes className="empty_playlist_music_icon" />
                                                                 </div>}
                                                         </Link>
                                                     </div>
-                                                    <Link to={`/myplaylists/${playlist.information.title}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                                    <Link to={`/myplaylists/${playlist._id}`} style={{ color: 'black', textDecoration: 'none' }}>
                                                         <p className="explore_artists_name turn_red">{playlist.information.title}</p>
                                                     </Link>
                                                 </div>

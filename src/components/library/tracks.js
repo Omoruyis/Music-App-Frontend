@@ -18,7 +18,6 @@ import config from '../../config/config'
 import { trimString, trackTime } from '../../helper/helper'
 
 import '../../App.css';
-import playlist from '../library_tracks/playlist';
 
 const customStyles = {
     overlay: {
@@ -185,9 +184,9 @@ class MyTracks extends Component {
         if (answer) {
             return alert('This playlist already exist')
         }
-        const result = await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
+        await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
 
-        const newTrack = await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
+        await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
         this.props.history.push(`/myplaylists/${this.playlistTitle.value}`)
         this.setState({ modalIsOpen2: false })
     }
@@ -250,8 +249,6 @@ class MyTracks extends Component {
         this.playSong = []
         this.addIconPl = []
         this.addPl = []
-        { console.log(tracks.length) }
-
 
         return (
             <div className="main_container">
@@ -346,7 +343,7 @@ class MyTracks extends Component {
                     style={customStyles}
                 // contentLabel="Example Modal"
                 >
-                    <input placeholder="Search" className="search_modal_playlist" className="add_playlist_search" ref={el => this.modalSearch = el} onInput={this.changeInput} />
+                    <input placeholder="Search" className="add_playlist_search" ref={el => this.modalSearch = el} onInput={this.changeInput} />
                     <div className="search_text_holder">
                         <p className="modal_add_playlist_text">Select</p>
                     </div>

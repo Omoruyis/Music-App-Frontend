@@ -11,17 +11,17 @@ import {
     ADD_TRACK,
     CREATE_PLAYLIST,
     DELETE_PLAYLIST,
-    DELETE_FROM_PLAYLIST
+    DELETE_FROM_PLAYLIST,
+    DELETE_PERSONAL_PLAYLIST,
+    EDIT_PLAYLIST
 } from '../actions'
-import { combineReducers } from 'redux'
-import { getPlaylists, getTracks, getAlbums, getLikes } from '../utils/getAPI'
 
 import axios from 'axios'
 import config from '../config/config'
 
 
 function rootReducer (state = { loggedIn: false}, action) {
-    const { albums, playlists, likes, category, data, tracks, albumId, trackId, title, description, id } = action
+    const { albums, playlists, likes, category, data, tracks, albumId, trackId, title, description, id, _id } = action
     switch (action.type) {
         case LOGIN:
             return {
@@ -104,6 +104,22 @@ function rootReducer (state = { loggedIn: false}, action) {
             return {
                 ...state,
                 playlists: [...newPlaylist]
+            }
+        case DELETE_PERSONAL_PLAYLIST:
+            axios.post(`${config().url}/deleteplaylist`, { _id }, config().headers)
+            return {
+                ...state,
+                playlists: state.playlists.filter(cur => cur._id !== _id)
+            }
+        case EDIT_PLAYLIST:
+            axios.patch(`${config().url}/editplaylist`, { _id, title, description }, config().headers)
+            const index = state.playlists.findIndex(cur => cur.personal === true && cur._id === _id)
+            let latestPlaylist = state.playlists
+            latestPlaylist[index].information.title = title
+            latestPlaylist[index].information.description = description
+            return {
+                ...state,
+                playlists: [...latestPlaylist]
             }
         default:
             return state

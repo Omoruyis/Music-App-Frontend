@@ -97,7 +97,7 @@ class Discography extends Component {
                                     return (
                                         <div className="discography_playlist" key={index}>
                                             <div style={{ width: '30%' }}>
-                                                <img src={cur.picture} className="discography_playlist_image" />
+                                                <img src={cur.picture} alt="artist cover" className="discography_playlist_image" />
                                             </div>
                                             <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none', width: '60%', color: 'black' }}>
                                                 <p className="turn_red" style={{ marginBottom: '0' }}>{trimString(cur.title, 11)}</p>

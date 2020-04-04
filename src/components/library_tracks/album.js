@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
-import Modal from 'react-modal';
 import { CircularProgress } from '@material-ui/core';
 import { MdPlayArrow } from "react-icons/md";
 import { MdPlayCircleOutline } from "react-icons/md";
@@ -14,31 +13,11 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
 
-import { deleteLike, addLike, deleteTrack, getAllLikes, getAllTracks, getAllPlaylists, addTrack, deleteFromPlaylist, deletePlaylist, deletePersonalPlaylist, editPlaylist } from '../../actions'
+import { deleteLike, addLike, deleteTrack, getAllLikes, getAllTracks, getAllPlaylists, addTrack, deleteFromPlaylist, deletePlaylist } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import { trimString, trackTime, time } from '../../helper/helper'
 
 import '../../App.css';
-
-const customStyles = {
-    overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.75)',
-        zIndex: 200
-    },
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        width: '575px',
-        height: '360px',
-        padding: '30px 50px'
-    }
-};
-
-Modal.setAppElement('#root');
 
 class PlaylistTracks extends Component {
     state = {
@@ -49,7 +28,6 @@ class PlaylistTracks extends Component {
         type: null,
         id: 0,
         playlist: '',
-        modalIsOpen: false
     }
 
     componentDidMount() {
@@ -61,17 +39,9 @@ class PlaylistTracks extends Component {
 
     shouldComponentUpdate(nextProps) {
         if (this.props.playlists !== nextProps.playlists) {
-            this.setState({ playlist: nextProps.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0] })
+            this.setState({ playlist: nextProps.playlists.filter(playlist => playlist.information.title === this.props.match.params.query)[0] })
         }
         return true
-    }
-
-    openModal = () => {
-        this.setState({ modalIsOpen: true })
-    }
-
-    closeModal = () => {
-        this.setState({ modalIsOpen: false })
     }
 
     play = (type, id) => {
@@ -197,14 +167,6 @@ class PlaylistTracks extends Component {
         }
     }
 
-    addToLikes = (obj, clas) => {
-        if (clas === 'like') {
-            this.props.addLike('playlistLikes', obj)
-        } else {
-            this.props.deleteLike('playlistLikes', obj)
-        }
-    }
-
     calculateTime = (playlist) => {
         if (!playlist.information.tracks.data.length) {
             return 0
@@ -224,22 +186,12 @@ class PlaylistTracks extends Component {
         this.props.deleteFromPlaylist(id, title)
     }
 
-    deletePersonalPlaylist = (_id) => {
-        this.props.deletePersonalPlaylist(_id)
-        this.props.history.push('/my_playlists')
-    }
-
-    editPlaylist = (_id, title, description) => {
-        this.props.editPlaylist(_id, title, description)
-        this.closeModal()
-    }
-
     changeValue = () => {
         this.setState({ inputValue: this.searchTrack.value })
     }
 
     filterTracks = () => {
-        let display = this.props.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0].information.tracks.data
+        let display = this.props.playlists.filter(playlist => playlist.information.title === this.props.match.params.query)[0].information.tracks.data
         if (!this.searchTrack.value) {
             return display
         }
@@ -254,8 +206,8 @@ class PlaylistTracks extends Component {
     }
 
     render() {
-        const { type, id, name, mounted, playlist, modalIsOpen } = this.state
-        const { trackLikes } = this.props
+        const { type, id, name, mounted, playlist, setPlaylist } = this.state
+        const { trackLikes, deleteTrack, playlists } = this.props
         this.trackLike = []
         this.trackNumber = []
         this.playSong = []
@@ -283,9 +235,9 @@ class PlaylistTracks extends Component {
                                             <IoIosMusicalNotes className="empty_playlist_music_icon" />
                                         </div>)}
                                         <div className="playlist_details_holder">
-                                            <p className="playlist_title">{trimString(playlist.information.title, 15)}</p>
+                                            <p className="playlist_title">{playlist.information.title}</p>
                                             {playlist.personal ?
-                                                <p>{trimString(playlist.information.description, 16)}</p> : ''}
+                                                <p>{playlist.information.description}</p> : ''}
                                             <div className="playlist_duration">
                                                 {!playlist.personal ?
                                                     <p className="dura">{playlist.nb_tracks} {playlist.information.nb_tracks !== 1 ? 'tracks' : 'track'}</p> :
@@ -310,20 +262,16 @@ class PlaylistTracks extends Component {
                                                 Remove
                                             </button>
                                                 {!this.liked() ?
-                                                    <button className="playlist_button" onClick={() => this.addToLikes(playlist, 'like')}>
+                                                    <button className="playlist_button" >
                                                         <IoMdHeartEmpty className="playlist_button_icon" />
                                                 Like
                                             </button> :
-                                                    <button className="playlist_button" id="unlike_button" onClick={() => this.addToLikes(playlist, 'unlike')}>
+                                                    <button className="playlist_button" id="unlike_button" >
                                                         <IoIosHeartDislike className="playlist_button_icon" />
                                                 Unlike
                                             </button>}
                                         </div> : 
-                                        <div className="playlist_button_holder">
-                                            <button className="playlist_button" onClick={() => this.openModal()}>
-                                                <IoMdRemove className="playlist_button_icon" />
-                                                Edit
-                                            </button>
+                                        <div>
                                         </div>}
                                     </div>
                                     <div className="select_holder">
@@ -407,27 +355,6 @@ class PlaylistTracks extends Component {
                         <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
                     </div> : ''}
                 </div>
-
-                <Modal
-                    isOpen={modalIsOpen}
-                    onAfterOpen={this.afterOpenModal}
-                    onRequestClose={this.closeModal}
-                    style={customStyles}
-                >
-                    <p className="modal_create_playlist">Create a playlist</p>
-                    <div className="modal_playlist_title">
-                        <p>What should we call your playlist?</p>
-                        <input type="text" defaultValue={playlist ? playlist.information.title : ''} placeholder="Playlist name" ref={el => this.playlistTitle = el} />
-                    </div>
-                    <div className="modal_playlist_title">
-                        <p>Give some information about your playlist</p>
-                        <input type="text" defaultValue={playlist ? playlist.information.description : ''} placeholder="Enter a description for playlist (optional)" ref={el => this.playlistDescription = el} />
-                    </div>
-                    <div className="modal_buttons">
-                        <button onClick={() => this.deletePersonalPlaylist(playlist._id)} className="modal_cancel_button">Delete Playlist</button>
-                        <button className="modal_save_button" onClick={() => this.editPlaylist(playlist._id, this.playlistTitle.value, this.playlistDescription.value)}>Save</button>
-                    </div>
-                </Modal>
             </div>
         )
     }
@@ -460,8 +387,6 @@ function mapDispatchToProps(dispatch) {
         deleteFromPlaylist: (id, title) => dispatch(deleteFromPlaylist(id, title)),
         deletePlaylist: (id) => dispatch(deletePlaylist(id)),
         getPlaylists: () => dispatch(getAllPlaylists()),
-        deletePersonalPlaylist: (_id) => dispatch(deletePersonalPlaylist(_id)),
-        editPlaylist: (_id, title, description) => dispatch(editPlaylist(_id, title, description)),
         getLikes: () => dispatch(getAllLikes()),
         getTracks: () => dispatch(getAllTracks()),
     }
