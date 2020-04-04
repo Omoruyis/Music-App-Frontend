@@ -13,13 +13,13 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
 
-import { deleteLike, addLike, deleteTrack, getAllLikes, getAllTracks, getAllPlaylists, addTrack, deleteFromPlaylist, deletePlaylist } from '../../actions'
+import { deleteLike, addLike, deleteTrack, getAllLikes, getAllAlbums, deletePlaylist } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import { trimString, trackTime, time } from '../../helper/helper'
 
 import '../../App.css';
 
-class PlaylistTracks extends Component {
+class AlbumTracks extends Component {
     state = {
         name: localStorage.name,
         inputValue: '',
@@ -27,19 +27,18 @@ class PlaylistTracks extends Component {
         sort: 'Title',
         type: null,
         id: 0,
-        playlist: '',
+        album: '',
     }
 
     componentDidMount() {
         this.setState({ mounted: true })
-        this.props.getTracks()
-        this.props.getPlaylists()
+        this.props.getAlbums()
         this.props.getLikes()
     }
 
     shouldComponentUpdate(nextProps) {
-        if (this.props.playlists !== nextProps.playlists) {
-            this.setState({ playlist: nextProps.playlists.filter(playlist => playlist.information.title === this.props.match.params.query)[0] })
+        if (this.props.albums !== nextProps.albums) {
+            this.setState({ album: nextProps.albums.filter(album => album._id === this.props.match.params.id)[0] })
         }
         return true
     }
@@ -61,7 +60,7 @@ class PlaylistTracks extends Component {
         clas.style.height = '30px'
     }
 
-    addToLikes = (obj, clas, personal) => {
+    addToLikes = (obj, clas) => {
         const currentClass = clas
         const secondClass = currentClass.className.split(' ')
         const s = clas.querySelector('#liked_track')
@@ -77,7 +76,7 @@ class PlaylistTracks extends Component {
             s.style.color = 'red'
             u.style.display = 'none'
             currentClass.className = "track_like_holder is_liked"
-            this.props.addLike('trackLikes', { information: obj, albumId: obj.album.id, albumTitle: obj.album.title, cover: !personal ? obj.album.cover : obj.album.picture })
+            this.props.addLike('trackLikes', { information: obj, albumId: obj.album.id, albumTitle: obj.album.title, cover: obj.album.picture })
         }
     }
 
@@ -94,25 +93,8 @@ class PlaylistTracks extends Component {
         return answer
     }
 
-    addAlbPl = (data) => {
-        this.props.addTrack({ information: data })
-    }
-
     removeAlbPl = (albumId, trackId) => {
         this.props.deleteTrack(albumId, trackId)
-    }
-
-    checkAvailable = (value) => {
-        let answer
-        for (let i = 0; i < this.props.tracks.length; i++) {
-            if (this.props.tracks[i].information.id === value) {
-                answer = true
-                break
-            } else {
-                answer = false
-            }
-        }
-        return answer
     }
 
     liked = () => {
@@ -178,12 +160,8 @@ class PlaylistTracks extends Component {
     }
 
     deletePlaylist = (id) => {
-        this.props.deletePlaylist(id)
-        this.props.history.push('/my_playlists')
-    }
-
-    deleteFromPlaylist = (id, title) => {
-        this.props.deleteFromPlaylist(id, title)
+        this.props.deletePlaylist(id, 'albums')
+        this.props.history.push('/my_albums')
     }
 
     changeValue = () => {
@@ -191,7 +169,7 @@ class PlaylistTracks extends Component {
     }
 
     filterTracks = () => {
-        let display = this.props.playlists.filter(playlist => playlist.information.title === this.props.match.params.query)[0].information.tracks.data
+        let display = this.props.albums.filter(album => album._id === this.props.match.params.id)[0].information.tracks.data.sort((a, b) => a.number - b.number)
         if (!this.searchTrack.value) {
             return display
         }
@@ -206,8 +184,8 @@ class PlaylistTracks extends Component {
     }
 
     render() {
-        const { type, id, name, mounted, playlist, setPlaylist } = this.state
-        const { trackLikes, deleteTrack, playlists } = this.props
+        const { type, id, name, mounted, album } = this.state
+        const { trackLikes, deleteTrack, albums } = this.props
         this.trackLike = []
         this.trackNumber = []
         this.playSong = []
@@ -218,7 +196,7 @@ class PlaylistTracks extends Component {
             <div>
                 <div className="main_container">
                     <div className="general_container">
-                        <Sidebar current="playlists" />
+                        <Sidebar current="albums" />
                         <div className="nav_child_container nav_child_container_margin">
                             <div className="explorenav_container">
                                 <div className="explorenav_search">
@@ -228,110 +206,76 @@ class PlaylistTracks extends Component {
                                     <p className="display_name">{name}</p>
                                 </div>
                             </div>
-                            {playlist && trackLikes && mounted ? <div>
+                            {album && trackLikes && mounted ? <div>
                                 <div className="top_search_result search_tracks remove_search_border my_tracks">
                                     <div className="playlist_header" style={{ marginBottom: '30px' }} id="playlist_header">
-                                        {!playlist.personal ? <img src={playlist.information.picture_medium} alt="playlist-cover" className="playlist_image" /> : (playlist.information.tracks.data.length ? <img src={playlist.information.tracks.data[0].album.picture} alt="playlist-cover" className="playlist_image" /> : <div className="empty_playlist_image">
-                                            <IoIosMusicalNotes className="empty_playlist_music_icon" />
-                                        </div>)}
+                                        <img src={album.information.cover_medium} alt="playlist-cover" className="playlist_image" />
                                         <div className="playlist_details_holder">
-                                            <p className="playlist_title">{playlist.information.title}</p>
-                                            {playlist.personal ?
-                                                <p>{playlist.information.description}</p> : ''}
+                                            <p className="playlist_title">{album.information.title}</p>
+                                            <Link to={`/${album.information.artist.type}/${album.information.artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                                <p className="explore_artists_name turn_red">{album.information.artist.name}</p>
+                                            </Link>
                                             <div className="playlist_duration">
-                                                {!playlist.personal ?
-                                                    <p className="dura">{playlist.nb_tracks} {playlist.information.nb_tracks !== 1 ? 'tracks' : 'track'}</p> :
-                                                    <p className="dura">{playlist.information.tracks.data.length} {playlist.information.tracks.data.length !== 1 ? 'tracks' : 'track'}</p>}
-                                                {!playlist.personal ?
-                                                    <p className="playlist_time">{time(playlist.information.duration)}</p> :
-                                                    <p className="playlist_time">{time(this.calculateTime(playlist))}</p>}
+                                                <p className="dura">{album.information.tracks.data.length} {album.information.nb_tracks !== 1 ? 'tracks' : 'track'}</p>
+                                                <p className="playlist_time">{time(album.information.duration)}</p>
                                             </div>
                                         </div>
-                                        {!playlist.personal ? <div className="play_holder" ref={el => this.playTop = el} onClick={() => this.play('playlist', playlist.information.id)} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
-                                            <MdPlayArrow style={{ fontSize: '25px' }} />
-                                        </div> : ''}
                                     </div>
                                     <div className="playlist_actions_holder">
-                                        {!playlist.personal ? <div className="playlist_button_holder">
-                                            <button className="playlist_button" id="playlist_listen" onClick={() => this.play('playlist', playlist.information.id)}>
-                                                <MdPlayCircleOutline className="playlist_button_icon" />
-                                                Listen
-                                            </button>
-                                            <button className="playlist_button" onClick={() => this.deletePlaylist(playlist.information.id)}>
+                                        <div className="playlist_button_holder">
+                                            <button className="playlist_button" onClick={() => this.deletePlaylist(album.information.id)}>
                                                 <IoMdRemove className="playlist_button_icon" />
                                                 Remove
                                             </button>
-                                                {!this.liked() ?
-                                                    <button className="playlist_button" >
-                                                        <IoMdHeartEmpty className="playlist_button_icon" />
+                                            {!this.liked() ?
+                                                <button className="playlist_button" >
+                                                    <IoMdHeartEmpty className="playlist_button_icon" />
                                                 Like
                                             </button> :
-                                                    <button className="playlist_button" id="unlike_button" >
-                                                        <IoIosHeartDislike className="playlist_button_icon" />
+                                                <button className="playlist_button" id="unlike_button" >
+                                                    <IoIosHeartDislike className="playlist_button_icon" />
                                                 Unlike
                                             </button>}
-                                        </div> : 
-                                        <div>
-                                        </div>}
+                                        </div>
                                     </div>
                                     <div className="select_holder">
                                         <p className="discography_header_text">{`${this.filterTracks().length} ${this.filterTracks().length !== 1 ? 'Songs' : 'Song'}`}</p>
                                     </div>
                                     <div>
-                                        <div className="tracks_header remove_header_border">
-                                            <div className="playlist_tracks_header" id="track_number"><p className="u"></p></div>
-                                            <p className="playlist_tracks_header" id="track_title" >TRACK</p>
-                                            <p className="playlist_tracks_header track_artist">ARTIST</p>
-                                            <p className="playlist_tracks_header track_artist">ALBUM</p>
-                                            <p className="playlist_tracks_header" id="track_duration">DURATION</p>
-                                        </div>
+                                    <div className="tracks_header">
+                                        <div className="playlist_tracks_header" id="track_album_number"><p className="u">#</p></div>
+                                        <p className="playlist_tracks_header" id="track_album_title" >TRACK</p>
+                                        <p className="playlist_tracks_header" id="track_album_duration">DURATION</p>
+                                    </div>
                                         {this.filterTracks().map((track, index) => {
                                             if (track) {
                                                 return (
-                                                    <div className="tracks_header tracks_header_background remove_search_border_top" key={index} onMouseOver={() => {
-                                                        !playlist.personal ? this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], track.id) : this.showPlayButton(this.trackNumber[index], this.playSong[index], undefined, this.addIconPl[index])
-                                                    }} onMouseOut={() => {
-                                                        !playlist.personal ? this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index]) : this.hidePlayButton(this.trackNumber[index], this.playSong[index], undefined, this.addIconPl[index])
-                                                    }}>
+                                                    <div className="tracks_header tracks_header_background remove_search_border_top" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], track.id)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
                                                         <div className="track_number">
                                                             <div className="u" ref={el => this.trackNumber[index] = el}>
-                                                                <img src={!playlist.personal ? track.album.cover : track.album.picture} alt="small album cover" style={{ width: '30px', height: '30px', borderRadius: '5px' }} />
+                                                                {track.number}
                                                             </div>
                                                             <div className="play_track_button" ref={el => this.playSong[index] = el} onClick={() => { this.play('tracks', track.id) }}>
                                                                 <MdPlayArrow style={{ fontSize: '25px', color: 'white' }} />
                                                             </div>
-                                                            <div onClick={() => { this.addToLikes(track, this.trackLike[index], playlist.personal) }} ref={el => this.trackLike[index] = el} className={`track_like_holder ${this.newLikes(track.id) ? 'is_liked' : 'is_unliked'}`}>
+                                                            <div onClick={() => { this.addToLikes(track, this.trackLike[index]) }} ref={el => this.trackLike[index] = el} className={`track_like_holder ${this.newLikes(track.id) ? 'is_liked' : 'is_unliked'}`}>
 
                                                                 <IoIosHeart className={this.newLikes(track.id) ? 'track_liked' : 'hide'} id="liked_track" />
                                                                 <IoMdHeartEmpty className={this.newLikes(track.id) ? 'hide' : 'track_not_liked'} id="unliked_track" />
                                                             </div>
                                                         </div>
-                                                        <div className="track_title">
+                                                        <div className="track_album_title">
                                                             <p style={{ width: '70%' }}>{trimString(track.title, 27)}</p>
-                                                            {!playlist.personal ?
-                                                                <div className="add_icon_holder">
-                                                                    <div ref={el => this.addIcon[index] = el} className="add_library_icon" onClick={() => { this.addAlbPl(track) }}>
-                                                                        <IoIosAddCircleOutline className="add_icons_play" />
-                                                                        <span className="tooltiptext">Add to library</span>
-                                                                    </div>
-                                                                    <div ref={el => this.addIconPl[index] = el} className="add_library_icon" onClick={() => { this.removeAlbPl(track.album.id, track.id) }}>
-                                                                        <IoIosRemoveCircleOutline className="add_icons_play" />
-                                                                        <span className="tooltiptext">Remove from library</span>
-                                                                    </div>
-                                                                </div> :
-                                                                <div className="add_icon_holder">
-                                                                    <div ref={el => this.addIconPl[index] = el} className="add_library_icon" onClick={() => { this.deleteFromPlaylist(track.id, playlist.information.title) }}>
-                                                                        <IoIosRemoveCircleOutline className="add_icons_play" />
-                                                                        <span className="tooltiptext">Remove from playlist</span>
-                                                                    </div>
-                                                                </div>}
+                                                            <div className="add_icon_holder">
+                                                                <div ref={el => this.addIconPl[index] = el} className="add_library_icon" onClick={() => { this.removeAlbPl(track.album.id, track.id) }}>
+                                                                    <IoIosRemoveCircleOutline className="add_icons_play" />
+                                                                    <span className="tooltiptext">Remove from library</span>
+                                                                </div>
+                                                            </div>
                                                             <div style={{ width: '10%' }}>
                                                                 {track.explicit_lyrics ? <MdExplicit /> : ''}
                                                             </div>
                                                         </div>
-                                                        <Link to={`/${track.artist.type}/${track.artist.id}`} style={{ textDecoration: 'none', color: 'black' }} className="track_artist"><p className="turn_red">{trimString(track.artist.name, 17)}</p></Link>
-
-                                                        <Link to={`/${track.album.type}/${track.album.id}`} style={{ textDecoration: 'none', color: 'black' }} className="track_album"><p className="turn_red">{trimString(track.album.title, 17)}</p></Link>
                                                         <p className="track_duration">{trackTime(track.duration)}</p>
                                                     </div>
                                                 )
@@ -361,19 +305,17 @@ class PlaylistTracks extends Component {
 }
 
 function mapStateToProps(state) {
-    if (state.playlists && state.likes) {
+    if (state.albums && state.likes) {
         return {
-            tracks: state.tracks,
-            playlists: state.playlists,
+            albums: state.albums,
             trackLikes: state.likes.trackLikes,
-            playlistLikes: state.likes.playlistLikes
+            albumLikes: state.likes.albumLikes
         }
     } else {
         return {
-            tracks: '',
-            playlists: '',
+            albums: '',
             trackLikes: '',
-            playlistLikes: ''
+            albumLikes: ''
         }
     }
 }
@@ -382,14 +324,11 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteLike: (category, data) => dispatch(deleteLike(category, data)),
         addLike: (category, data) => dispatch(addLike(category, data)),
-        addTrack: (data) => dispatch(addTrack(data)),
         deleteTrack: (albumId, trackId) => dispatch(deleteTrack(albumId, trackId)),
-        deleteFromPlaylist: (id, title) => dispatch(deleteFromPlaylist(id, title)),
-        deletePlaylist: (id) => dispatch(deletePlaylist(id)),
-        getPlaylists: () => dispatch(getAllPlaylists()),
+        deletePlaylist: (id, category) => dispatch(deletePlaylist(id, category)),
+        getAlbums: () => dispatch(getAllAlbums()),
         getLikes: () => dispatch(getAllLikes()),
-        getTracks: () => dispatch(getAllTracks()),
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlaylistTracks)
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumTracks)

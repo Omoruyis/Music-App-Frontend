@@ -16,8 +16,10 @@ import Artist from './components/general/artist'
 import Search from './components/general/search'
 import MyTracks from './components/library/tracks'
 import MyPlaylists from './components/library/playlists'
+import MyAlbums from './components/library/album'
 import Favourites from './components/library/likes'
 import PlaylistTracks from './components/library_tracks/playlist'
+import AlbumTracks from './components/library_tracks/album'
 
 import './App.css';
 
@@ -56,8 +58,10 @@ class App extends Component {
             <Route path='/search/:query' component={Search} />
             <Route path="/my_tracks" component={MyTracks} />
             <Route path="/my_playlists" component={MyPlaylists} />
+            <Route path="/my_albums" component={MyAlbums} />
             <Route path="/favourites" component={Favourites} /> 
             <Route path="/myplaylists/:id" component={PlaylistTracks} /> 
+            <Route path="/myalbums/:id" component={AlbumTracks} /> 
           </div>: ''}
         </div>
     );

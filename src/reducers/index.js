@@ -10,7 +10,7 @@ import {
     DELETE_TRACK,
     ADD_TRACK,
     CREATE_PLAYLIST,
-    DELETE_PLAYLIST,
+    DELETE,
     DELETE_FROM_PLAYLIST,
     DELETE_PERSONAL_PLAYLIST,
     EDIT_PLAYLIST
@@ -89,11 +89,11 @@ function rootReducer (state = { loggedIn: false}, action) {
                 ...state,
                 playlists: [...state.playlists, {information: { title, description, tracks: { data: [] } }, personal: true, createdAt: new Date().getTime() }]
             }
-        case DELETE_PLAYLIST:
-            axios.post(`${config().url}/delete`, { id, type: 'playlist' }, config().headers)
+        case DELETE:
+            axios.post(`${config().url}/delete`, { id, type: category === 'playlists' ? 'playlist' : 'album' }, config().headers)
             return {
                 ...state,
-                playlists: state.playlists.filter(cur => cur.information.id !== id)
+                [category]: state[category].filter(cur => cur.information.id !== id)
             }
         case DELETE_FROM_PLAYLIST:
             axios.post(`${config().url}/deletefromplaylist`, { id, title }, config().headers)

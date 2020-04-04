@@ -173,11 +173,9 @@ class MyPlaylists extends Component {
         } else {
             display = display.sort((a, b) => (b.information.createdAt ? b.information.createdAt : b.createdAt) - (a.information.createdAt ? a.information.createdAt : a.createdAt))
         }
-        if (this.state.sortDisplay === 'All') {
-            display = display
-        } else if (this.state.sortDisplay === 'Own Playlists') {
+        if (this.state.sortDisplay === 'Own Playlists') {
             display = display.filter(playlist => playlist.personal === true)
-        } else {
+        } else if (this.state.sortDisplay === 'Added Playlists') {
             display = display.filter(playlist => playlist.personal === false)
         }
         if (!this.searchTrack.value) {
@@ -225,7 +223,7 @@ class MyPlaylists extends Component {
                                 </div>
                             </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
                                 <div className="select_holder">
-                                    <p className="discography_header_text">{`${this.filterPlaylists().length} ${this.filterPlaylists().length > 1 ? 'Playlists' : 'Playlist'}`}</p>
+                                    <p className="discography_header_text">{`${this.filterPlaylists().length} ${this.filterPlaylists().length !== 1 ? 'Playlists' : 'Playlist'}`}</p>
                                     <div>
                                         <select defaultValue="Sort Tracks" style={{ marginRight: '10px' }} onChange={(e) => this.sortDisplayPlaylists(e)} className="select_options">
                                             <option disabled>Display Playlists</option>

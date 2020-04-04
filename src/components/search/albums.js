@@ -47,7 +47,7 @@ class Albums extends Component {
     }
 
     render () {
-        const { loggedIn, path } = this.props
+        const { loggedIn } = this.props
         const { albums } = this.props.searchResult
         this.albumLike = []
         this.albumImage = []

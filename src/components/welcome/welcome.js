@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 
 import playButton from '../../assets/images/playbutton.png'
-import play from '../../assets/images/play.png'
-import star from '../../assets/images/star.png'
 import cd from '../../assets/images/cd.png'
 import config from '../../config/config'
 
@@ -51,7 +49,6 @@ class Welcome extends Component {
     }
 
     render() {
-        const { charts, id, type } = this.state
 
         return (
             <div className="welcome_container">
@@ -72,64 +69,6 @@ class Welcome extends Component {
                         </Link>
                     </div>
                 </div>
-                {/* <div className="charts">
-                    <div className="charts_songs_container">
-                        <div className="charts_songs_title">
-                            <p className="charts_songs_title_p">Top Songs</p>
-                            <div className="iframe_container">
-                                <div className="chart_songs_head">
-                                    <p className="more_width">#</p>
-                                    <p className="more_width">Track/Artist</p>
-                                    <p>Album</p>
-                                    <p>Time</p>
-                                    <p>Add</p>
-                                    <p onClick={this.appendIframe}>Like</p>
-                                </div>
-
-                            </div> */}
-                {/* {charts && charts.tracks.map((track, index) => {
-                                if (index < 4) {
-                                    return <div className="charts_songs" key={index}>
-                                        <div className="charts_songs_images">
-                                            <p className="chart_song_number">{track.position}</p>
-                                            <img src={track.album.cover} className="chart_song_cover" alt="track-cover" />
-                                            <img src={play} className="chart_song_play_image" alt="play" onClick={() => {
-                                                this.play(track.id, track.type)
-                                            }} />
-                                        </div>
-                                        <div className="charts_songs_track">
-                                            <p className="song">{track.title}</p>
-                                            <p className="artist">{track.artist.name}</p>
-                                        </div>
-                                        <p>Album</p>
-                                        <p>Time</p>
-                                        <p>Add</p>
-                                        <img src={star} alt="like" className="charts_like" />
-                                    </div>
-                                } else { return '' }
-                            })}
-                            <div id="charts_songs_button">
-                                <button className="charts_songs_button">Show More</button>
-                            </div> */}
-                {/* </div>
-                    </div>
-                    <div className="charts_albums_container">
-                        <div className="chart_albums_title">
-                            <p className="charts_songs_title_p">Top Albums</p>
-                        </div>
-                        <div className="charts_albums_albums">
-                            {charts && charts.chartAlbums.map((album, index) => {
-                                if (index < 4) {
-                                    return <div className="charts_albums" key={index}>
-                                        <img src={album.cover_big} className="chart_albums_image" alt="album cover" />
-                                        <p className="chart_album_title">{album.title}</p>
-                                        <p className="chart_album_artist_name">{album.artist.name}</p>
-                                    </div>
-                                } else { return '' }
-                            })}
-                        </div>
-                    </div>
-                </div> */}
                 <div className="advert_container">
                     <img src={cd} alt="cd" className="cd_image" />
                     <div className="advert_content">

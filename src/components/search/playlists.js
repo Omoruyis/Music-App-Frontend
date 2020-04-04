@@ -47,7 +47,7 @@ class Playlists extends Component {
     }
 
     render () {
-        const { loggedIn, path } = this.props
+        const { loggedIn } = this.props
         const { playlists } = this.props.searchResult
         this.playlistLike = []
         this.playlistImage = []

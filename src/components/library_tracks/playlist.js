@@ -216,7 +216,7 @@ class PlaylistTracks extends Component {
     }
 
     deletePlaylist = (id) => {
-        this.props.deletePlaylist(id)
+        this.props.deletePlaylist(id, 'playlists')
         this.props.history.push('/my_playlists')
     }
 
@@ -285,7 +285,7 @@ class PlaylistTracks extends Component {
                                         <div className="playlist_details_holder">
                                             <p className="playlist_title">{trimString(playlist.information.title, 15)}</p>
                                             {playlist.personal ?
-                                                <p>{trimString(playlist.information.description, 16)}</p> : ''}
+                                                <p>{trimString(playlist.information.description, 30)}</p> : ''}
                                             <div className="playlist_duration">
                                                 {!playlist.personal ?
                                                     <p className="dura">{playlist.nb_tracks} {playlist.information.nb_tracks !== 1 ? 'tracks' : 'track'}</p> :
@@ -458,7 +458,7 @@ function mapDispatchToProps(dispatch) {
         addTrack: (data) => dispatch(addTrack(data)),
         deleteTrack: (albumId, trackId) => dispatch(deleteTrack(albumId, trackId)),
         deleteFromPlaylist: (id, title) => dispatch(deleteFromPlaylist(id, title)),
-        deletePlaylist: (id) => dispatch(deletePlaylist(id)),
+        deletePlaylist: (id, category) => dispatch(deletePlaylist(id, category)),
         getPlaylists: () => dispatch(getAllPlaylists()),
         deletePersonalPlaylist: (_id) => dispatch(deletePersonalPlaylist(_id)),
         editPlaylist: (_id, title, description) => dispatch(editPlaylist(_id, title, description)),

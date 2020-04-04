@@ -34,7 +34,7 @@ class Artist extends Component {
     }
 
     render () {
-        const { loggedIn, path } = this.props
+        const { loggedIn } = this.props
         const { artists } = this.props.searchResult
         this.artistLike = []
         this.artistImage = []

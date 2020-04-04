@@ -11,7 +11,7 @@ export const ADD_LIKE = 'ADD_LIKE'
 export const DELETE_TRACK = 'DELETE_TRACK'
 export const ADD_TRACK = 'ADD_TRACK'
 export const CREATE_PLAYLIST = 'CREATE_PLAYLIST'
-export const DELETE_PLAYLIST = 'DELETE_PLAYLIST'
+export const DELETE = 'DELETE'
 export const DELETE_FROM_PLAYLIST = 'DELETE_FROM_PLAYLIST'
 export const DELETE_PERSONAL_PLAYLIST = 'DELETE_PERSONAL_PLAYLIST'
 export const EDIT_PLAYLIST = 'EDIT_PLAYLIST'
@@ -96,10 +96,11 @@ export function createPlaylist (title, description) {
     }
 }
 
-export function deletePlaylist (id) {
+export function deletePlaylist (id, category) {
     return {
-        type: DELETE_PLAYLIST,
-        id
+        type: DELETE,
+        id, 
+        category
     }
 }
 
