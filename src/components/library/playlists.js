@@ -8,7 +8,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { IoIosMusicalNotes } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
-import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists } from '../../actions'
+import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists, getAllTracks, getAllAlbums } from '../../actions'
 import Sidebar from '../partials/sidebar'
 
 import '../../App.css';
@@ -47,19 +47,19 @@ class MyPlaylists extends Component {
 
     componentDidMount() {
         this.setState({ mounted: true })
-        this.props.getPlaylists()
-        this.props.getLikes()
+        if (!this.props.playlists) {
+            this.props.getPlaylists()
+        }
+        if (!this.props.likes) {
+            this.props.getLikes()
+        }
     }
 
-    shouldComponentUpdate(nextProps) {
-        console.log(this.props.playlists.length)
-        console.log(nextProps.playlists.length)
-        // if (this.props.playlists && this.props.playlists.length !== nextProps.length) {
-        //     console.log('yeepee')
-        //     nextProps.playlists = this.props.playlists
-        //     return false
-        // }
-        return true
+    componentWillUnmount() {
+        this.props.getAlbums()
+        this.props.getTracks()
+        this.props.getPlaylists()
+        this.props.getLikes()
     }
 
     openModal = () => {
@@ -206,7 +206,7 @@ class MyPlaylists extends Component {
                     <div className="nav_child_container nav_child_container_margin">
                         <div className="explorenav_container">
                             <div className="explorenav_search">
-                                <input type="search" placeholder="Search Tracks" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
+                                <input type="search" placeholder="Search Playlists" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
                             <div className="explorenav_buttons">
                                 <p className="display_name">{name}</p>
@@ -350,6 +350,8 @@ function mapDispatchToProps(dispatch) {
         addLike: (category, data) => dispatch(addLike(category, data)),
         getPlaylists: () => dispatch(getAllPlaylists()),
         getLikes: () => dispatch(getAllLikes()),
+        getAlbums: () => dispatch(getAllAlbums()),
+        getTracks: () => dispatch(getAllTracks()),
         createPlaylist: (title, description) => dispatch(createPlaylist(title, description))
     }
 }

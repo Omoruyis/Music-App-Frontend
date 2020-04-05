@@ -12,7 +12,7 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosMore } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
-import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllTracks, getAllPlaylists } from '../../actions'
+import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllAlbums, getAllTracks, getAllPlaylists } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import { trimString, trackTime } from '../../helper/helper'
@@ -78,6 +78,13 @@ class MyTracks extends Component {
         this.props.getPlaylists()
     }
 
+    componentWillUnmount() {
+        this.props.getAlbums()
+        this.props.getTracks()
+        this.props.getPlaylists()
+        this.props.getLikes()
+    }
+
     openModal = (number) => {
         if (number) {
             this.setState({ modalIsOpen2: true })
@@ -134,7 +141,7 @@ class MyTracks extends Component {
         return answer
     }
 
-    showPlayButton = async (number, button, plIcon, pl, index) => {
+    showPlayButton = async (number, button, plIcon, pl) => {
         number.style.display = 'none'
         button.style.backgroundColor = 'black'
         button.style.display = 'flex'
@@ -186,8 +193,8 @@ class MyTracks extends Component {
         }
         await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
 
-        await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
-        this.props.history.push(`/myplaylists/${this.playlistTitle.value}`)
+        const res = await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
+        this.props.history.push(`/myplaylists/${res.data._id}`)
         this.setState({ modalIsOpen2: false })
     }
 
@@ -341,7 +348,6 @@ class MyTracks extends Component {
                     onAfterOpen={this.afterOpenModal}
                     onRequestClose={() => this.closeModal()}
                     style={customStyles}
-                // contentLabel="Example Modal"
                 >
                     <input placeholder="Search" className="add_playlist_search" ref={el => this.modalSearch = el} onInput={this.changeInput} />
                     <div className="search_text_holder">
@@ -372,7 +378,6 @@ class MyTracks extends Component {
                     onAfterOpen={this.afterOpenModal}
                     onRequestClose={() => this.closeModal(2)}
                     style={customStyles2}
-                // contentLabel="Example Modal"
                 >
                     <p className="modal_create_playlist">Create a playlist</p>
                     <div className="modal_playlist_title">
@@ -418,6 +423,7 @@ function mapDispatchToProps(dispatch) {
         getTracks: () => dispatch(getAllTracks()),
         getLikes: () => dispatch(getAllLikes()),
         getPlaylists: () => dispatch(getAllPlaylists()),
+        getAlbums: () => dispatch(getAllAlbums()),
         createPlaylist: (title, description) => dispatch(createPlaylist(title, description))
     }
 }

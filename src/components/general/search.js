@@ -20,7 +20,6 @@ import '../../App.css';
 class Search extends Component {
     state = {
         path: null,
-        // loggedIn: false,
         searchResult: null,
         type: null,
         id: 0,

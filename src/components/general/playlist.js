@@ -27,7 +27,6 @@ class Playlist extends Component {
         path: null,
         playlist: null,
         displayTracks: null,
-        // loggedIn: false,
         type: null,
         id: 0,
         liked: false,
@@ -44,7 +43,7 @@ class Playlist extends Component {
     }
 
     componentWillUnmount() {
-        if (!this.state.loggedIn) {
+        if (!this.props.loggedIn) {
             return
         }
         this.props.getAlbums()

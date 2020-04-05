@@ -39,7 +39,7 @@ class Sidebar extends Component {
                 <Link to='/my_albums' style={{textDecoration: 'none' }}>
                         <p className="sidebar_content" id={current === 'albums' ? 'current' : ''}>Albums</p>
                 </Link>
-                <Link to='/artists' style={{textDecoration: 'none' }}>
+                <Link to='/my_artists' style={{textDecoration: 'none' }}>
                         <p className="sidebar_content" id={current === 'artists' ? 'current' : ''}>Artists</p>
                 </Link>
             </div>

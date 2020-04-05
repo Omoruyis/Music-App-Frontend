@@ -29,7 +29,7 @@ class Explore extends Component {
     }
 
     componentWillUnmount() {
-        if(!this.state.loggedIn) {
+        if(!this.props.loggedIn) {
             return
         }
         this.props.getAlbums()

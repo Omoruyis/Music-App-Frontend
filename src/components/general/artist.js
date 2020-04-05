@@ -22,7 +22,6 @@ import '../../App.css';
 class Artist extends Component {
     state = {
         path: null,
-        // loggedIn: false,
         playlist: null,
         liked: false,
         type: null,
@@ -39,7 +38,7 @@ class Artist extends Component {
     }
 
     componentWillUnmount() {
-        if(!this.state.loggedIn) {
+        if(!this.props.loggedIn) {
             return
         }
         this.props.getAlbums()

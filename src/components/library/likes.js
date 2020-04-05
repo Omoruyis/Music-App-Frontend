@@ -9,7 +9,7 @@ import Artists from '../favourites/artists'
 import Playlists from '../favourites/playlists'
 import { CircularProgress } from '@material-ui/core';
 
-import { deleteLike, getAllLikes, getAllTracks, deleteTrack, addTrack } from '../../actions'
+import { deleteLike, getAllLikes, getAllTracks, deleteTrack, addTrack, getAllAlbums, getAllPlaylists } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 
@@ -33,6 +33,13 @@ class Favourites extends Component {
         this.getPathName()
         this.setState({ mounted: true })
         this.props.getTracks()
+        this.props.getLikes()
+    }
+
+    componentWillUnmount() {
+        this.props.getAlbums()
+        this.props.getTracks()
+        this.props.getPlaylists()
         this.props.getLikes()
     }
 
@@ -117,7 +124,7 @@ class Favourites extends Component {
                     <div className='nav_child_container nav_child_container_margin'>
                         <div className="explorenav_container">
                             <div className="explorenav_search">
-                                <input type="search" placeholder="Search Tracks" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
+                                <input type="search" placeholder="Search Likes" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
                             <div className="explorenav_buttons">
                                 <p className="display_name">{name}</p>
@@ -184,6 +191,8 @@ function mapDispatchToProps(dispatch) {
         deleteLike: (category, data) => dispatch(deleteLike(category, data)),
         getLikes: () => dispatch(getAllLikes()),
         getTracks: () => dispatch(getAllTracks()),
+        getAlbums: () => dispatch(getAllAlbums()),
+        getPlaylists: () => dispatch(getAllPlaylists()),
         deleteTrack: (albumId, trackId) => dispatch(deleteTrack(albumId, trackId)),
         addTrack: (data) => dispatch(addTrack(data))
     }

@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import Modal from 'react-modal';
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
 import { CircularProgress } from '@material-ui/core';
-import { MdPlayArrow } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
-import { IoIosMusicalNotes } from "react-icons/io";
-import { IoMdAdd } from "react-icons/io";
 
-import { createPlaylist, deleteLike, addLike, getAllLikes, getAllAlbums } from '../../actions'
+import { deleteLike, addLike, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks } from '../../actions'
 import Sidebar from '../partials/sidebar'
 
 import '../../App.css';
@@ -27,20 +23,20 @@ class MyAlbums extends Component {
 
     componentDidMount() {
         this.setState({ mounted: true })
-        this.props.getAlbums()
-        this.props.getLikes()
+        if (!this.props.albums) {
+            this.props.getAlbums()
+        }
+        if (!this.props.likes) {
+            this.props.getLikes()
+        }
     }
 
-    // shouldComponentUpdate(nextProps) {
-    //     console.log(this.props.playlists.length)
-    //     console.log(nextProps.playlists.length)
-    //     // if (this.props.playlists && this.props.playlists.length !== nextProps.length) {
-    //     //     console.log('yeepee')
-    //     //     nextProps.playlists = this.props.playlists
-    //     //     return false
-    //     // }
-    //     return true
-    // }
+    componentWillUnmount() {
+        this.props.getAlbums()
+        this.props.getTracks()
+        this.props.getPlaylists()
+        this.props.getLikes()
+    }
 
     newLikes = (value) => {
         let answer
@@ -142,7 +138,7 @@ class MyAlbums extends Component {
                     <div className="nav_child_container nav_child_container_margin">
                         <div className="explorenav_container">
                             <div className="explorenav_search">
-                                <input type="search" placeholder="Search Tracks" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
+                                <input type="search" placeholder="Search Albums" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
                             <div className="explorenav_buttons">
                                 <p className="display_name">{name}</p>
@@ -222,7 +218,8 @@ function mapDispatchToProps(dispatch) {
         addLike: (category, data) => dispatch(addLike(category, data)),
         getAlbums: () => dispatch(getAllAlbums()),
         getLikes: () => dispatch(getAllLikes()),
-        createPlaylist: (title, description) => dispatch(createPlaylist(title, description))
+        getPlaylists: () => dispatch(getAllPlaylists()),
+        getTracks: () => dispatch(getAllTracks()),
     }
 }
 

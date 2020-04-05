@@ -17,8 +17,18 @@ const getPlaylists = async () => {
     return result.data
 }
 
+const getRecent = async () => {
+    const result = await axios.get(`${config().url}/recentlyAdded`, config().headers)
+    return result.data
+}
+
 const getLikes = async () => {
     const result = await axios.get(`${config().url}/getlikes`, config().headers)
+    return result.data
+}
+
+const getArtists = async () => {
+    const result = await axios.get(`${config().url}/allartists`, config().headers)
     return result.data
 }
 
@@ -26,5 +36,7 @@ export {
     getAlbums, 
     getTracks,
     getPlaylists,
-    getLikes
+    getRecent,
+    getLikes,
+    getArtists
 }

@@ -27,7 +27,6 @@ class Album extends Component {
         path: null,
         playlist: null,
         displayTracks: null,
-        // loggedIn: false,
         type: null,
         id: 0,
         liked: false,
@@ -288,7 +287,7 @@ class Album extends Component {
                                     <div className="playlist_details_holder">
                                         <p className="playlist_title">{trimString(playlist.title, 17)}</p>
                                         <Link to={`/${playlist.artist.type}/${playlist.artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>
-                                            <p className="explore_artists_name turn_red">{playlist.artist.name}</p>
+                                            <p className="explore_artists_name turn_red">{trimString(playlist.artist.name, 20)}</p>
                                         </Link>
                                         {available ? <p className="playlist_duration">In Library</p> : ''}
                                         <div className="playlist_duration">

@@ -4,7 +4,9 @@ import {
     ALL_ALBUMS,
     ALL_TRACKS,
     ALL_PLAYLISTS,
+    ALL_RECENT,
     ALL_LIKES,
+    ALL_ARTISTS,
     DELETE_LIKE,
     ADD_LIKE, 
     DELETE_TRACK,
@@ -12,8 +14,10 @@ import {
     CREATE_PLAYLIST,
     DELETE,
     DELETE_FROM_PLAYLIST,
+    DELETE_TRACK_FROM_ALBUM,
+    DELETE_EMPTY_ALBUM,
     DELETE_PERSONAL_PLAYLIST,
-    EDIT_PLAYLIST
+    EDIT_PLAYLIST,
 } from '../actions'
 
 import axios from 'axios'
@@ -21,7 +25,7 @@ import config from '../config/config'
 
 
 function rootReducer (state = { loggedIn: false}, action) {
-    const { albums, playlists, likes, category, data, tracks, albumId, trackId, title, description, id, _id } = action
+    const { albums, playlists, recent, likes, artists, category, data, tracks, albumId, trackId, title, description, id, _id } = action
     switch (action.type) {
         case LOGIN:
             return {
@@ -48,10 +52,20 @@ function rootReducer (state = { loggedIn: false}, action) {
                 ...state,
                 playlists
             }
+        case ALL_RECENT:
+            return {
+                ...state,
+                recent
+            }
         case ALL_LIKES:
             return {
                 ...state,
                 likes
+            }
+        case ALL_ARTISTS:
+            return {
+                ...state,
+                artists
             }
         case DELETE_LIKE:
             axios.post(`${config().url}/unlikeUndownload`, { type: data.information.type, data: {id: data.information.id} }, config().headers)
@@ -104,6 +118,25 @@ function rootReducer (state = { loggedIn: false}, action) {
             return {
                 ...state,
                 playlists: [...newPlaylist]
+            }
+        case DELETE_TRACK_FROM_ALBUM:
+            axios.post(`${config().url}/removeAlbPlayTrack`, { id: albumId, trackId }, config().headers)
+            const albumIndex = state.albums.findIndex(cur => cur.information.id === albumId)
+            let newAlbum = state.albums
+            const newAlbumArray = state.albums[albumIndex].information.tracks.data.filter(track => track.id !== trackId)
+            newAlbum[albumIndex].information.tracks.data = newAlbumArray
+            return {
+                ...state,
+                albums: [...newAlbum]
+            }
+        case DELETE_EMPTY_ALBUM:
+            const emptyAlbumIndex = state.albums.findIndex(cur => cur.information.id === albumId)
+            let newEmptyAlbum = state.albums
+            newEmptyAlbum.splice(emptyAlbumIndex, 1)
+            console.log('djdjdjdjdjdjdjdjdjdj')
+            return {
+                ...state,
+                albums: [...newEmptyAlbum]
             }
         case DELETE_PERSONAL_PLAYLIST:
             axios.post(`${config().url}/deleteplaylist`, { _id }, config().headers)

@@ -125,7 +125,7 @@ class All extends Component {
 
         return (
             <div>
-                {this.topArtist(topResults.artist.name) ? <div className="top_search_result">
+                {topResults.length && this.topArtist(topResults.artist.name) ? <div className="top_search_result">
                     <p className="discography_header_text">Top Results</p>
                     <div className="top_search_image_holder">
                         <Link to={`/${topResults.artist.type}/${topResults.artist.id}`}>
@@ -137,7 +137,7 @@ class All extends Component {
                     </div>
                 </div> : ''}
 
-                {this.topArtist(topResults.album.title) ? <div className="top_search_result">
+                {topResults.length && this.topArtist(topResults.album.title) ? <div className="top_search_result">
                     <p className="discography_header_text">Top Results</p>
                     <div className="top_search_image_holder">
                         <Link to={`/${topResults.album.type}/${topResults.album.id}`}>

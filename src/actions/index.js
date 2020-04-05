@@ -1,11 +1,13 @@
-import { getPlaylists, getTracks, getAlbums, getLikes } from '../utils/getAPI'
+import { getPlaylists, getTracks, getAlbums, getRecent, getLikes, getArtists } from '../utils/getAPI'
 
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const ALL_ALBUMS = 'ALL_ALBUMS'
 export const ALL_TRACKS = 'ALL_TRACKS'
 export const ALL_PLAYLISTS = 'ALL_PLAYLISTS'
+export const ALL_RECENT = 'ALL_RECENT'
 export const ALL_LIKES = 'ALL_LIKES'
+export const ALL_ARTISTS = 'ALL_ARTISTS'
 export const DELETE_LIKE = 'DELETE_LIKE'
 export const ADD_LIKE = 'ADD_LIKE'
 export const DELETE_TRACK = 'DELETE_TRACK'
@@ -13,6 +15,8 @@ export const ADD_TRACK = 'ADD_TRACK'
 export const CREATE_PLAYLIST = 'CREATE_PLAYLIST'
 export const DELETE = 'DELETE'
 export const DELETE_FROM_PLAYLIST = 'DELETE_FROM_PLAYLIST'
+export const DELETE_TRACK_FROM_ALBUM = 'DELETE_TRACK_FROM_ALBUM'
+export const DELETE_EMPTY_ALBUM = 'DELETE_EMPTY_ALBUM'
 export const DELETE_PERSONAL_PLAYLIST = 'DELETE_PERSONAL_PLAYLIST'
 export const EDIT_PLAYLIST = 'EDIT_PLAYLIST'
 
@@ -50,10 +54,24 @@ export function getMyPlaylists (playlists) {
     }
 }
 
+export function getMyRecent (recent) {
+    return {
+        type: ALL_RECENT,
+        recent 
+    }
+}
+
 export function getMyLikes (likes) {
     return {
         type: ALL_LIKES,
         likes
+    }
+}
+
+export function getMyArtists (artists) {
+    return {
+        type: ALL_ARTISTS,
+        artists
     }
 }
 
@@ -112,6 +130,21 @@ export function deleteFromPlaylist (id, title) {
     }
 }
 
+export function deleteTrackFromAlbum (albumId, trackId) {
+    return {
+        type: DELETE_TRACK_FROM_ALBUM,
+        albumId,
+        trackId
+    }
+}
+
+export function deleteEmptyAlbum (albumId) {
+    return {
+        type: DELETE_EMPTY_ALBUM,
+        albumId
+    }
+}
+
 export function deletePersonalPlaylist (_id) {
     return {
         type: DELETE_PERSONAL_PLAYLIST,
@@ -153,9 +186,23 @@ export const getAllPlaylists = () => dispatch => (
         })
 )
 
+export const getAllRecent = () => dispatch => (
+    getRecent()
+        .then(recent => {
+            dispatch(getMyRecent(recent))
+        })
+)
+
 export const getAllLikes = () => dispatch => (
     getLikes()
         .then(likes => {
             dispatch(getMyLikes(likes))
+        })
+)
+
+export const getAllArtists = () => dispatch => (
+    getArtists()
+        .then(artists => {
+            dispatch(getMyArtists(artists))
         })
 )

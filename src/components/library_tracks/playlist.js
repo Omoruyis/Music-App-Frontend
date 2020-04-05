@@ -101,7 +101,7 @@ class PlaylistTracks extends Component {
             u.style.display = 'block'
             u.style.color = 'black'
             currentClass.className = "track_like_holder is_unliked"
-            this.props.deleteLike('trackLikes', obj)
+            this.props.deleteLike('trackLikes',  { information: obj, albumId: obj.album.id, albumTitle: obj.album.title, cover: !personal ? obj.album.cover : obj.album.picture })
         } else {
             s.style.display = 'block'
             s.style.color = 'red'
@@ -197,7 +197,7 @@ class PlaylistTracks extends Component {
         }
     }
 
-    addToLikes = (obj, clas) => {
+    addPlaylistToLikes = (obj, clas) => {
         if (clas === 'like') {
             this.props.addLike('playlistLikes', obj)
         } else {
@@ -283,7 +283,7 @@ class PlaylistTracks extends Component {
                                             <IoIosMusicalNotes className="empty_playlist_music_icon" />
                                         </div>)}
                                         <div className="playlist_details_holder">
-                                            <p className="playlist_title">{trimString(playlist.information.title, 15)}</p>
+                                            <p className="playlist_title">{trimString(playlist.information.title, 17)}</p>
                                             {playlist.personal ?
                                                 <p>{trimString(playlist.information.description, 30)}</p> : ''}
                                             <div className="playlist_duration">
@@ -310,11 +310,11 @@ class PlaylistTracks extends Component {
                                                 Remove
                                             </button>
                                                 {!this.liked() ?
-                                                    <button className="playlist_button" onClick={() => this.addToLikes(playlist, 'like')}>
+                                                    <button className="playlist_button" onClick={() => this.addPlaylistToLikes(playlist, 'like')}>
                                                         <IoMdHeartEmpty className="playlist_button_icon" />
                                                 Like
                                             </button> :
-                                                    <button className="playlist_button" id="unlike_button" onClick={() => this.addToLikes(playlist, 'unlike')}>
+                                                    <button className="playlist_button" id="unlike_button" onClick={() => this.addPlaylistToLikes(playlist, 'unlike')}>
                                                         <IoIosHeartDislike className="playlist_button_icon" />
                                                 Unlike
                                             </button>}
