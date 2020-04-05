@@ -10,6 +10,8 @@ import { IoMdAdd } from "react-icons/io";
 
 import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists, getAllTracks, getAllAlbums } from '../../actions'
 import Sidebar from '../partials/sidebar'
+import LibraryNav from '../partials/librarynav'
+
 
 import '../../App.css';
 
@@ -192,8 +194,8 @@ class MyPlaylists extends Component {
     }
 
     render() {
-        const { type, id, name, mounted, modalIsOpen } = this.state
-        const { playlistLikes, playlists } = this.props
+        const { type, id, mounted, modalIsOpen } = this.state
+        const { playlistLikes, playlists, history } = this.props
         this.playlistLike = []
         this.playlistNumber = []
         this.playlistImage = []
@@ -208,9 +210,7 @@ class MyPlaylists extends Component {
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Playlists" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
-                            <div className="explorenav_buttons">
-                                <p className="display_name">{name}</p>
-                            </div>
+                            <LibraryNav history={history}/>
                         </div>
                         {playlists && playlistLikes && mounted ? (!playlists.length ?
                             <div className="no_playlist">

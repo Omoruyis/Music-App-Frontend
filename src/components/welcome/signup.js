@@ -38,12 +38,14 @@ class Signup extends Component {
         axios.post(`${config().url}/signup`, request, config().headers)
             .then(response => {
                 if (response.data === 'User already exists') {
+                    alert(response.data)
                     this.name.value = ''
                     this.email.value = ''
                     this.password.value = ''
-                    return alert('User already exists man')
+                    return 
                 }
                 localStorage.setItem("token", response.data.token);
+                this.props.history.push('/')
             })
             .catch(e => console.log('this is the error', e))
     }
@@ -74,11 +76,9 @@ class Signup extends Component {
                                 <img src={password} alt="show password" className="signup_password_image" onClick={this.show} />
                             </div>
                         </form>
-                        <Link to='/' style={{ textDecoration: 'none' }}>
-                            <button type="submit" className="signup_button" onClick={this.submitForm}>
-                                SIGN UP
-                        </button>
-                        </Link>
+                        <div type="submit" className="login_button" onClick={this.submitForm} style={{width: '70%'}}>
+                            SIGN UP
+                        </div>
                     </div>
                 </div>
             </div>

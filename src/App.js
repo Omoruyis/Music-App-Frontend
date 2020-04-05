@@ -22,6 +22,7 @@ import Recent from './components/library/recent'
 import MyArtists from './components/library/artists'
 import PlaylistTracks from './components/library_tracks/playlist'
 import AlbumTracks from './components/library_tracks/album'
+import ArtistAlbums from './components/library_tracks/artist'
 
 import './App.css';
 
@@ -66,6 +67,7 @@ class App extends Component {
             <Route path="/my_artists" component={MyArtists} /> 
             <Route path="/myplaylists/:id" component={PlaylistTracks} /> 
             <Route path="/myalbums/:id" component={AlbumTracks} /> 
+            <Route path="/myartists/:id" component={ArtistAlbums} /> 
           </div>: ''}
         </div>
     );

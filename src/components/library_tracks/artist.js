@@ -11,7 +11,7 @@ import LibraryNav from '../partials/librarynav'
 import '../../App.css';
 
 
-class MyAlbums extends Component {
+class ArtistAlbums extends Component {
     state = {
         name: localStorage.name,
         inputValue: '',
@@ -105,7 +105,7 @@ class MyAlbums extends Component {
     }
 
     filterPlaylists = () => {
-        let display = this.props.albums
+        let display = this.props.albums.filter(album => album.information.artist.id === parseFloat(this.props.match.params.id))
         if (this.state.sort === 'Title') {
             display = display.sort((a, b) => a.information.title.toLowerCase() < b.information.title.toLowerCase() ? -1 : a.information.title.toLowerCase() > b.information.title.toLowerCase() ? 1 : 0)
         } else {
@@ -135,7 +135,7 @@ class MyAlbums extends Component {
         return (
             <div className="main_container">
                 <div className="general_container">
-                    <Sidebar current="albums" />
+                    <Sidebar current="artists" />
                     <div className="nav_child_container nav_child_container_margin">
                         <div className="explorenav_container">
                             <div className="explorenav_search">
@@ -222,4 +222,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyAlbums)
+export default connect(mapStateToProps, mapDispatchToProps)(ArtistAlbums)

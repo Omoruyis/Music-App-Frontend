@@ -5,6 +5,7 @@ import { CircularProgress } from '@material-ui/core';
 
 import { getAllRecent, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks, getAllArtists } from '../../actions'
 import Sidebar from '../partials/sidebar'
+import LibraryNav from '../partials/librarynav'
 
 import '../../App.css';
 
@@ -55,8 +56,8 @@ class MyArtists extends Component {
     }
 
     render() {
-        const { name, mounted } = this.state
-        const { artists } = this.props
+        const { mounted } = this.state
+        const { artists, history } = this.props
         this.playlistImage = []
 
         return (
@@ -68,9 +69,7 @@ class MyArtists extends Component {
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Recent" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
-                            <div className="explorenav_buttons">
-                                <p className="display_name">{name}</p>
-                            </div>
+                            <LibraryNav history={history}/>
                         </div>
                         {artists && mounted ? (!artists.length ?
                             <div className="no_playlist">
@@ -81,11 +80,11 @@ class MyArtists extends Component {
                                         return (
                                             <div className="explore_artist" id="discography_playlist_mapped" key={index}>
                                                 <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistImage[index])}>
-                                                    <Link to={`/myalbums/${artist.id}`}>
+                                                    <Link to={`/myartists/${artist.id}`}>
                                                         <img src={artist.picture} ref={el => this.playlistImage[index] = el} alt="album cover" className="explore_artists_images" />
                                                     </Link>
                                                 </div>
-                                                <Link to={`/myalbums/${artist._id}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                                <Link to={`/myartists/${artist._id}`} style={{ color: 'black', textDecoration: 'none' }}>
                                                     <p className="explore_artists_name turn_red">{artist.name}</p>
                                                 </Link>
                                             </div>

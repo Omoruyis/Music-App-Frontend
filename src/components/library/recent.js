@@ -5,6 +5,7 @@ import { CircularProgress } from '@material-ui/core';
 
 import { getAllRecent, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks } from '../../actions'
 import Sidebar from '../partials/sidebar'
+import LibraryNav from '../partials/librarynav'
 
 import '../../App.css';
 
@@ -55,8 +56,8 @@ class Recent extends Component {
     }
 
     render() {
-        const { name, mounted } = this.state
-        const { recent } = this.props
+        const { mounted } = this.state
+        const { recent, history } = this.props
         this.playlistImage = []
 
         return (
@@ -68,9 +69,7 @@ class Recent extends Component {
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Recent" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
-                            <div className="explorenav_buttons">
-                                <p className="display_name">{name}</p>
-                            </div>
+                            <LibraryNav history={history}/>
                         </div>
                         {recent && mounted ? (!recent.length ?
                             <div className="no_playlist">

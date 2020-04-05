@@ -110,8 +110,8 @@ class Login extends Component {
                     />
                     <div className="login_create_account">
                         <p className="login_text">Don't have an account?</p>
-                        <Link to={`/signup?redirect_link=${redirect}`} style={{ textDecoration: 'none' }}>
-                            <button className="login_button">SIGN UP</button>
+                        <Link to={`/signup${redirect ? `?redirect_link=${redirect}` : ''}`} style={{ textDecoration: 'none' }} className="login_button">
+                            SIGN UP
                         </Link>
                     </div>
                 </div>

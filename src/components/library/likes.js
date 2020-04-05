@@ -11,6 +11,7 @@ import { CircularProgress } from '@material-ui/core';
 
 import { deleteLike, getAllLikes, getAllTracks, deleteTrack, addTrack, getAllAlbums, getAllPlaylists } from '../../actions'
 import Sidebar from '../partials/sidebar'
+import LibraryNav from '../partials/librarynav'
 import config from '../../config/config'
 
 import '../../App.css';
@@ -114,8 +115,8 @@ class Favourites extends Component {
 
 
     render() {
-        const { type, path, id, name, mounted, inputValue } = this.state
-        const { trackLikes, artistLikes, albumLikes, playlistLikes, tracks, deleteLike, deleteTrack, addTrack } = this.props
+        const { type, path, id, mounted, inputValue } = this.state
+        const { history, trackLikes, artistLikes, albumLikes, playlistLikes, tracks, deleteLike, deleteTrack, addTrack } = this.props
 
         return (
             <div className="main_container">
@@ -126,9 +127,7 @@ class Favourites extends Component {
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Likes" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
-                            <div className="explorenav_buttons">
-                                <p className="display_name">{name}</p>
-                            </div>
+                            <LibraryNav history={history}/>
                         </div>
                         {tracks && trackLikes && mounted ?
                             <div className="search_container">

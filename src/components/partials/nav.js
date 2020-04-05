@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+
+import config from '../../config/config'
+import { logout } from '../../actions'
 
 import '../../App.css';
 
@@ -23,6 +28,14 @@ class Nav extends Component {
         this.checkInput()
     }
 
+    logout = async () => {
+        await axios.get(`${config().url}/logout`, config().headers) 
+        this.props.dispatch(logout())
+        this.props.history.push('/')
+        localStorage.removeItem('token')
+        localStorage.removeItem('name')
+    }
+
 
     render() {
         const { name } = this.state
@@ -36,6 +49,7 @@ class Nav extends Component {
                 {name ?
                     <div className="explorenav_buttons">
                         <p className="display_name">{name}</p>
+                        <button className="logout_button" onClick={this.logout}>Log out</button>
                     </div> :
                     <div className="explorenav_buttons">
                         <Link to={`/login?redirect_link=${type}/${id}`} style={{textDecoration: 'none' }} >
@@ -52,5 +66,5 @@ class Nav extends Component {
     }
 }
 
-export default Nav
+export default connect()(Nav)
 

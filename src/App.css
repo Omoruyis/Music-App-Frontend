@@ -275,8 +275,8 @@
 .signup_image_container {
   background-image: url('./assets/images/signup.png');
   background-size: cover;
-  min-height: 100vh;
-  padding: 100px 100px 100px 150px;
+  height: 100vh;
+  padding: 40px 100px 40px 100px;
 }
 
 .signup_container {
@@ -454,6 +454,11 @@
   color: #FFFFFF;
   font-size: 20px;
   font-weight: 600;
+}
+
+.login_button:hover {
+  background-color: rgb(168, 160, 160);
+  color: #203051;
 }
 
 .login_create_account {
@@ -1581,6 +1586,19 @@
 
 .modal_margin_left {
   margin-left: 10px;
+}
+
+/****Logout ***/
+.logout_button {
+  background-color: rgb(240, 82, 82);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: 20px;
+}
+
+.logout_button:hover {
+  background-color: red;
 }
 
 /*****Welcome Page ***/ 
