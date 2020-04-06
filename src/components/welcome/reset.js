@@ -41,8 +41,16 @@ class Reset extends Component {
             this.email.value = ''
             this.password.value = ''
             this.newPassword.value = ''
-            this.createNotification('error', 'Invalid email address')
-            return 
+            return this.createNotification('error', 'Invalid email address')
+        }
+        if (this.password.value === this.newPassword.value) {
+            return this.createNotification('error', 'Please put a new password different from the old one')
+        }
+        if (this.password.value.length < 6) {
+            return this.createNotification('error', 'Please put a password with more than 6 characters')
+        }
+        if (this.newPassword.value.length < 6) {
+            return this.createNotification('error', 'Please put a new password with more than 6 characters')
         }
         const request = {
             email: this.email.value,
@@ -94,8 +102,10 @@ class Reset extends Component {
                             <input type="password" placeholder="New Password" minLength="6" className="login_details_password" ref={el => this.newPassword = el} required={true} />
                             {show2 ? <IoMdEyeOff className="password_image" onClick={() => this.show(2)}/> : <IoIosEye className="password_image" onClick={() => this.show(2)}/>}
                         </div>
+                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                            <button type="submit" className="login_button" onClick={this.update}>RESET</button>
+                        </div>
                     </form>
-                    <button type="submit" className="login_button" onClick={this.update}>RESET</button>
                     
                     <div className="login_create_account">
                         <Link to={`/login${redirect ? `?redirect_link=${redirect}` : ''}`} style={{ textDecoration: 'none' }}>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { IoIosMusicalNotes } from "react-icons/io";
 import { IoIosHeart } from "react-icons/io";
+import { IoMdApps } from "react-icons/io";
 import { Link } from 'react-router-dom'
 import { IoMdHeartEmpty } from "react-icons/io";
 
@@ -30,7 +31,7 @@ class Sidebar extends Component {
                 </Link>
                 <Link to='/recentlyAdded' style={{textDecoration: 'none' }}>
                     <div className="sidebar_content_div" id={current === 'recent' ? 'current' : ''}>
-                        <IoIosMusicalNotes className="sidebar_content_icon"/> 
+                        <IoMdApps className="sidebar_content_icon"/> 
                         <p>Recently Added</p>
                     </div>
                 </Link>

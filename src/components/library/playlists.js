@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
 import { CircularProgress } from '@material-ui/core';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { MdPlayArrow } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
 import { IoIosMusicalNotes } from "react-icons/io";
@@ -146,10 +147,21 @@ class MyPlaylists extends Component {
         this.setState({ sortDisplay: e.target.value })
     }
 
+    createNotification = (type, message) => {
+        switch (type) {
+          case 'success':
+            NotificationManager.success('Successfully created playlist', '', 2000);
+            break;
+          case 'error':
+            NotificationManager.error(message, '', 2000);
+            break;
+        }
+    }
+
     createNewPlaylist = () => {
         let answer
         if(!this.playlistTitle.value) {
-            return alert('Please add a title')
+            return this.createNotification('error', 'Please input a title')
         }
         for (let i = 0; i < this.props.playlists.length; i++) {
             if (this.props.playlists[i].information.title === this.playlistTitle.value) {
@@ -160,9 +172,10 @@ class MyPlaylists extends Component {
             }
         }
         if (answer) {
-            return alert('This playlist already exist')
+            return this.createNotification('error', 'This playlist already exist')
         }
         this.props.createPlaylist(this.playlistTitle.value, this.playlistDescription.value)
+        this.createNotification('success', 'Successfully created playlist')
         this.setState({ modalIsOpen: false })
     }
 
@@ -224,6 +237,7 @@ class MyPlaylists extends Component {
                                     <p style={{marginTop: '30px'}}>Create a playlist</p>
                                 </div>
                             </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
+                                <NotificationContainer />
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterPlaylists().length} ${this.filterPlaylists().length !== 1 ? 'Playlists' : 'Playlist'}`}</p>
                                     <div>

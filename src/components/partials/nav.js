@@ -52,10 +52,10 @@ class Nav extends Component {
                         <button className="logout_button" onClick={this.logout}>Log out</button>
                     </div> :
                     <div className="explorenav_buttons">
-                        <Link to={`/login?redirect_link=${type}/${id}`} style={{textDecoration: 'none' }} >
+                        <Link to={`/login?redirect_link=${type}${id ? `/${id}` : ''}`} style={{textDecoration: 'none' }} >
                         <button className="explorenav_login">Login</button>
                         </Link>
-                        <Link to={`/signup?redirect_link=${type}/${id}`} style={{textDecoration: 'none' }}>
+                        <Link to={`/signup?redirect_link=${type}${id ? `/${id}` : ''}`} style={{textDecoration: 'none' }}>
                         <button className="explorenav_signup">Sign up</button>
                         </Link>
                     </div>

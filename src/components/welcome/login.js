@@ -106,8 +106,11 @@ class Login extends Component {
                             <input type="password" placeholder="Password" minLength="6" className="login_details_password" ref={el => this.password = el} required={true} />
                             {show ? <IoMdEyeOff className="password_image" onClick={this.show}/> : <IoIosEye className="password_image" onClick={this.show}/>}
                         </div>
+                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                            <button type="submit" className="login_button" onClick={this.login}>LOGIN</button>
+                        </div>
                     </form>
-                    <button type="submit" className="login_button" onClick={this.login}>LOGIN</button>
+                    
                     <Link to={`/reset${redirect ? `?redirect_link=${redirect}` : ''}`} style={{ textDecoration: 'none', marginTop: '10px' }}>
                             Reset Password
                         </Link>
