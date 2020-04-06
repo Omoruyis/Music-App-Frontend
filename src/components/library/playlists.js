@@ -8,7 +8,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { IoIosMusicalNotes } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
-import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists, getAllTracks, getAllAlbums } from '../../actions'
+import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists, getAllTracks, getAllAlbums, getAllRecent, getAllArtists } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
 
@@ -62,6 +62,8 @@ class MyPlaylists extends Component {
         this.props.getTracks()
         this.props.getPlaylists()
         this.props.getLikes()
+        this.props.getAllRecent()
+        this.props.getArtists()
     }
 
     openModal = () => {
@@ -352,6 +354,8 @@ function mapDispatchToProps(dispatch) {
         getLikes: () => dispatch(getAllLikes()),
         getAlbums: () => dispatch(getAllAlbums()),
         getTracks: () => dispatch(getAllTracks()),
+        getAllRecent: () => dispatch(getAllRecent()),
+        getArtists: () => dispatch(getAllArtists()),
         createPlaylist: (title, description) => dispatch(createPlaylist(title, description))
     }
 }

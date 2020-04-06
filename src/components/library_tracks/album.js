@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import axios from 'axios'
 import Modal from 'react-modal';
 import { CircularProgress } from '@material-ui/core';
@@ -22,6 +23,7 @@ import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
 import { trimString, trackTime, time } from '../../helper/helper'
 
+import 'react-notifications/lib/notifications.css';
 import '../../App.css';
 
 const customStyles = {
@@ -233,12 +235,25 @@ class AlbumTracks extends Component {
         this.setState({ addedTrack: track, modalIsOpen: true })
     }
 
+    createNotification = (type) => {
+        switch (type) {
+          case 'success':
+            NotificationManager.success('Successfully added track to playlist', '', 2000);
+            break;
+          case 'error':
+            NotificationManager.error('This song already exists in this playlist', '', 2000);
+            break;
+        }
+  }
+
     addTrackToPlaylist = async (title) => {
         const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: { ...this.state.addedTrack, album: { id: this.state.album.information.id, title: this.state.album.information.title, picture: this.state.album.information.cover_small, type: 'album' } } }, config().headers)
         if (result.data === 'This song is already in this playlist') {
-            return alert(result.data)
+            this.createNotification('error')
+            return
         }
         this.closeModal()
+        this.createNotification('success')
     }
 
     changeInput = () => {
@@ -325,6 +340,7 @@ class AlbumTracks extends Component {
                                 <LibraryNav history={history}/>
                             </div>
                             {album && trackLikes && mounted ? <div>
+                                <NotificationContainer />
                                 <div className="top_search_result search_tracks remove_search_border my_tracks">
                                     <div className="playlist_header" style={{ marginBottom: '30px' }} id="playlist_header">
                                         <img src={album.information.cover_medium} alt="playlist-cover" className="playlist_image" />

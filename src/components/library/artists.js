@@ -27,6 +27,8 @@ class MyArtists extends Component {
         this.props.getTracks()
         this.props.getPlaylists()
         this.props.getLikes()
+        this.props.getAllRecent()
+        this.props.getArtists()
     }
 
     showIcon = (secClas) => {

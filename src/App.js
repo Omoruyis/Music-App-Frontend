@@ -8,6 +8,7 @@ import { login } from './actions/index'
 import config from './config/config'
 import Signup from './components/welcome/signup'
 import Login from './components/welcome/login'
+import Reset from './components/welcome/reset'
 import Welcome from './components/welcome/welcome'
 import Explore from './components/general/explore'
 import Playlist from './components/general/playlist'
@@ -58,6 +59,7 @@ class App extends Component {
             <Route path='/artist/:id' component={Artist} />
             <Route path='/login' component={Login} />
             <Route path='/signup' component={Signup} />
+            <Route path='/reset' component={Reset} />
             <Route path='/search/:query' component={Search} />
             <Route path="/my_tracks" component={MyTracks} />
             <Route path="/my_playlists" component={MyPlaylists} />

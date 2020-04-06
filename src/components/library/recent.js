@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
 import { CircularProgress } from '@material-ui/core';
 
-import { getAllRecent, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks } from '../../actions'
+import { getAllRecent, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks, getAllArtists } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
 
@@ -27,6 +27,8 @@ class Recent extends Component {
         this.props.getTracks()
         this.props.getPlaylists()
         this.props.getLikes()
+        this.props.getAllRecent()
+        this.props.getArtists()
     }
 
     showIcon = (secClas) => {
@@ -122,7 +124,8 @@ function mapDispatchToProps(dispatch) {
         getAlbums: () => dispatch(getAllAlbums()),
         getLikes: () => dispatch(getAllLikes()),
         getPlaylists: () => dispatch(getAllPlaylists()),
-        getTracks: () => dispatch(getAllTracks())
+        getTracks: () => dispatch(getAllTracks()),
+        getArtists: () => dispatch(getAllArtists())
     }
 }
 

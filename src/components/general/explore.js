@@ -6,7 +6,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { MdPlayArrow } from "react-icons/md";
 import { Link } from 'react-router-dom'
 
-import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks } from '../../actions'
+import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, getAllArtists } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import signup from '../../assets/images/signup.png'
@@ -36,6 +36,8 @@ class Explore extends Component {
         this.props.getTracks()
         this.props.getPlaylists()
         this.props.getLikes()
+        this.props.getAllRecent()
+        this.props.getArtists()
     }
 
     // shouldComponentUpdate() {
@@ -147,7 +149,7 @@ class Explore extends Component {
                     <div className={`nav_child_container ${loggedIn ? 'nav_child_container_margin' : ''}`}>
                         <Nav type="explore" id="" history={history} />
                         {charts && (loggedIn ? likes : true) ?
-                            <div className="explore_container">
+                            <div className={loggedIn ? 'explore_container_logged_in' : 'explore_container'}>
                                 <p className="explore_charts">Charts</p>
                                 <div className="explore_today">
                                     <p className="explore_top">Today's top tracks</p>
@@ -258,6 +260,8 @@ function mapDispatchToProps(dispatch) {
         getTracks: () => dispatch(getAllTracks()),
         getPlaylists: () => dispatch(getAllPlaylists()),
         getLikes: () => dispatch(getAllLikes()),
+        getAllRecent: () => dispatch(getAllRecent()),
+        getArtists: () => dispatch(getAllArtists())
     }
 }
 

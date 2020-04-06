@@ -14,7 +14,7 @@ import { IoIosHeart } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
 
-import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks } from '../../actions'
+import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, getAllArtists } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
@@ -51,6 +51,8 @@ class Album extends Component {
         this.props.getTracks()
         this.props.getPlaylists()
         this.props.getLikes()
+        this.props.getAllRecent()
+        this.props.getArtists()
     }
 
     // shouldComponentUpdate() {
@@ -397,8 +399,10 @@ function mapStateToProps({ loggedIn }) {
 function mapDispatchToProps(dispatch) {
     return {
         getAlbums: () => dispatch(getAllAlbums()),
+        getAllRecent: () => dispatch(getAllRecent()),
         getTracks: () => dispatch(getAllTracks()),
         getPlaylists: () => dispatch(getAllPlaylists()),
+        getArtists: () => dispatch(getAllArtists()),
         getLikes: () => dispatch(getAllLikes()),
     }
 }

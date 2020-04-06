@@ -14,7 +14,7 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
 
-import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks } from '../../actions'
+import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, getAllArtists } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
@@ -50,6 +50,8 @@ class Playlist extends Component {
         this.props.getTracks()
         this.props.getPlaylists()
         this.props.getLikes()
+        this.props.getAllRecent()
+        this.props.getArtists()
     }
 
     // shouldComponentUpdate(nextProps) {
@@ -399,6 +401,8 @@ function mapDispatchToProps(dispatch) {
         getTracks: () => dispatch(getAllTracks()),
         getPlaylists: () => dispatch(getAllPlaylists()),
         getLikes: () => dispatch(getAllLikes()),
+        getAllRecent: () => dispatch(getAllRecent()),
+        getArtists: () => dispatch(getAllArtists())
     }
 }
 

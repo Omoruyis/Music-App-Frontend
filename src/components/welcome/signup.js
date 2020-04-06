@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { IoIosEye } from "react-icons/io";
+import { IoMdEyeOff } from "react-icons/io";
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import queryString from 'query-string'
 
-import password from '../../assets/images/password.png'
 import config from '../../config/config'
 
 import '../../App.css'
 
 class Signup extends Component {
     state = {
-        song: null
+        song: null,
+        show: false
     }
 
     validEmail = (email) => {
@@ -21,13 +24,24 @@ class Signup extends Component {
         }
     }
 
+    createNotification = (type, message) => {
+        switch (type) {
+          case 'success':
+            NotificationManager.success('Successfully signed up', '', 3000);
+            break;
+          case 'error':
+            NotificationManager.error(message, '', 2000);
+            break;
+        }
+    }
+
     submitForm = (e) => {
         e.preventDefault()
         if (!this.validEmail(this.email.value)) {
             this.name.value = ''
             this.email.value = ''
             this.password.value = ''
-            return alert('wrong email address')
+            this.createNotification('error', 'Wrong email address')
         }
         const request = {
             userName: this.name.value,
@@ -38,13 +52,13 @@ class Signup extends Component {
         axios.post(`${config().url}/signup`, request, config().headers)
             .then(response => {
                 if (response.data === 'User already exists') {
-                    alert(response.data)
                     this.name.value = ''
                     this.email.value = ''
                     this.password.value = ''
+                    this.createNotification('error', 'This user already exists')
                     return 
                 }
-                localStorage.setItem("token", response.data.token);
+                // localStorage.setItem("token", response.data.token);
                 this.props.history.push('/')
             })
             .catch(e => console.log('this is the error', e))
@@ -52,13 +66,18 @@ class Signup extends Component {
 
     show = () => {
         this.password.type = this.password.type === 'password' ? 'text' : 'password'
+        this.setState({
+            show: !this.state.show
+        })
     }
 
     render() {
         const redirect = queryString.parse(this.props.location.search).redirect_link
+        const { show } = this.state
 
         return (
             <div className="signup_image_container">
+                <NotificationContainer />
                 <div className="signup_container">
                     <div className="signup_community_image">
                         <p>Join The Largest Music Community In The World</p>
@@ -68,12 +87,12 @@ class Signup extends Component {
                         <p className="signup_existing">Existing User? <Link to={`/login?redirect_link=${redirect}`} style={{ textDecoration: 'none' }}>Login</Link></p>
                         <form className="signup_form" onSubmit={this.submitForm}>
                             <label className="signup_label">Display Name</label>
-                            <input type="text" placeholder="John Doe" className="signup_text" ref={el => this.name = el} required={true} />
+                            <input type="text" placeholder="User One" className="signup_text" ref={el => this.name = el} required={true} />
                             <label className="signup_label">E-mail Address</label>
                             <input type="email" placeholder="johndoe@example.com" className="signup_text" ref={el => this.email = el} required={true} />
                             <div className="signup_password_container">
                                 <input type="password" placeholder="Password" minLength="6" className="signup_text_password" ref={el => this.password = el} required={true} />
-                                <img src={password} alt="show password" className="signup_password_image" onClick={this.show} />
+                                {show ? <IoMdEyeOff className="password_second_image" onClick={this.show}/> : <IoIosEye className="password_second_image" onClick={this.show}/>}
                             </div>
                         </form>
                         <div type="submit" className="login_button" onClick={this.submitForm} style={{width: '70%'}}>

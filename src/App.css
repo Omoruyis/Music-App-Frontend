@@ -410,6 +410,17 @@
   align-items: center;
 }
 
+.reset_section {
+  width: 48%;
+  background-color: white;
+  height: 100vh;
+  padding: 30px 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .login_details_password {
   border: none; 
   outline: none;
@@ -430,6 +441,14 @@
 .password_image {
   position: absolute;
   top: 17px; 
+  right: 10px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.password_second_image {
+  position: absolute;
+  top: 0px; 
   right: 10px;
   height: 30px;
   cursor: pointer;
@@ -464,9 +483,17 @@
 .login_create_account {
   width: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
   margin-top: 35px;
+}
+
+.move_sign_up {
+  margin: 2px 0px 0px 5px;
+}
+
+.move_sign_up:hover {
+  color: red;
 }
 
 .login_create_account > button {
@@ -493,8 +520,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-top: 35px;
-  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 0px;
 }
 
 .login_text {
@@ -580,8 +607,12 @@
 }
 
 /*********Explore Page ****/
+.explore_container_logged_in {
+  padding: 30px 80px 20px 80px
+}
+
 .explore_container {
-  padding: 30px 150px 20px 150px
+  padding: 30px 150px 20px 200px
 }
 
 .explore_charts {

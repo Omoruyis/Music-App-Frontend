@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { CircularProgress } from '@material-ui/core';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import Modal from 'react-modal';
 import { MdPlayArrow } from "react-icons/md";
 import { MdExplicit } from "react-icons/md";
@@ -12,12 +13,13 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosMore } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
-import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllAlbums, getAllTracks, getAllPlaylists } from '../../actions'
+import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllAlbums, getAllTracks, getAllPlaylists, getAllRecent, getAllArtists } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
 import { trimString, trackTime } from '../../helper/helper'
 
+import 'react-notifications/lib/notifications.css';
 import '../../App.css';
 
 const customStyles = {
@@ -84,6 +86,8 @@ class MyTracks extends Component {
         this.props.getTracks()
         this.props.getPlaylists()
         this.props.getLikes()
+        this.props.getAllRecent()
+        this.props.getArtists()
     }
 
     openModal = (number) => {
@@ -142,6 +146,8 @@ class MyTracks extends Component {
         return answer
     }
 
+
+
     showPlayButton = async (number, button, plIcon, pl) => {
         number.style.display = 'none'
         button.style.backgroundColor = 'black'
@@ -164,6 +170,17 @@ class MyTracks extends Component {
         pl.classList.remove('show_playlist_icon')
     }
 
+    createNotification = (type) => {
+          switch (type) {
+            case 'success':
+              NotificationManager.success('Successfully added track to playlist', '', 2000);
+              break;
+            case 'error':
+              NotificationManager.error('This song already exists in this playlist', '', 2000);
+              break;
+          }
+    }
+
     addToPlaylist = track => {
         this.setState({ addedTrack: track, modalIsOpen: true })
     }
@@ -171,9 +188,11 @@ class MyTracks extends Component {
     addTrackToPlaylist = async (title) => {
         const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
         if (result.data === 'This song is already in this playlist') {
-            return alert(result.data)
+            this.createNotification('error')
+            return
         }
         this.closeModal()
+        this.createNotification('success')
     }
 
     createNewPlaylist = async () => {
@@ -267,12 +286,13 @@ class MyTracks extends Component {
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Songs" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
-                            <LibraryNav history={history}/>
+                            <LibraryNav history={history} />
                         </div>
                         {tracks && trackLikes && mounted ? (!tracks.length ?
                             <div className="no_track">
                                 <p className="discography_header_text">You don't currently have any tracks added</p>
                             </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
+                                <NotificationContainer />
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterTracks().length} ${this.filterTracks().length > 1 ? 'Songs' : 'Song'}`}</p>
                                     <select defaultValue="Sort Songs" onChange={(e) => this.sortTracks(e)} className="select_options">
@@ -423,6 +443,8 @@ function mapDispatchToProps(dispatch) {
         getLikes: () => dispatch(getAllLikes()),
         getPlaylists: () => dispatch(getAllPlaylists()),
         getAlbums: () => dispatch(getAllAlbums()),
+        getAllRecent: () => dispatch(getAllRecent()),
+        getArtists: () => dispatch(getAllArtists()),
         createPlaylist: (title, description) => dispatch(createPlaylist(title, description))
     }
 }
