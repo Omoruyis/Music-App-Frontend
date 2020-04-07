@@ -103,7 +103,6 @@ class All extends Component {
     topArtist = (artist) => {
         const artistLower = artist.toLowerCase()
         const query = this.props.match.params.query.toLowerCase()
-        console.log(artistLower, query)
         if (artistLower === query || artistLower.includes(query)) {
             return true
         }
