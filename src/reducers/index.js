@@ -98,7 +98,6 @@ function rootReducer (state = { loggedIn: false}, action) {
                 tracks: [...state.tracks, {...data, albumTitle: data.information.album.title, albumId: data.information.album.id, cover: data.information.album.picture ? data.information.album.picture : data.information.album.cover, createdAt:  new Date().getTime() }]
             }
         case CREATE_PLAYLIST:
-            axios.post(`${config().url}/createplaylist`, { title, description }, config().headers)
             return {
                 ...state,
                 playlists: [...state.playlists, {information: { title, description, tracks: { data: [] } }, personal: true, createdAt: new Date().getTime() }]

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
+import axios from 'axios'
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
 import { CircularProgress } from '@material-ui/core';
@@ -12,7 +13,7 @@ import { IoMdAdd } from "react-icons/io";
 import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists, getAllTracks, getAllAlbums, getAllRecent, getAllArtists } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
-
+import config from '../../config/config'
 
 import '../../App.css';
 
@@ -45,7 +46,8 @@ class MyPlaylists extends Component {
         sortDisplay: 'All',
         type: null,
         id: 0,
-        modalIsOpen: false
+        modalIsOpen: false,
+        creating: false
     }
 
     componentDidMount() {
@@ -158,7 +160,13 @@ class MyPlaylists extends Component {
         }
     }
 
-    createNewPlaylist = () => {
+    changeCreate = () => {
+        this.setState({
+            creating: !this.state.creating
+        })
+    }
+
+    createNewPlaylist = async () => {
         let answer
         if(!this.playlistTitle.value) {
             return this.createNotification('error', 'Please input a title')
@@ -172,9 +180,13 @@ class MyPlaylists extends Component {
             }
         }
         if (answer) {
-            return this.createNotification('error', 'This playlist already exist')
+            return this.createNotification('error', 'This playlist already exists')
         }
+        this.changeCreate()
+        await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
+        this.props.getPlaylists()
         this.props.createPlaylist(this.playlistTitle.value, this.playlistDescription.value)
+        this.changeCreate()
         this.createNotification('success', 'Successfully created playlist')
         this.setState({ modalIsOpen: false })
     }
@@ -209,7 +221,7 @@ class MyPlaylists extends Component {
     }
 
     render() {
-        const { type, id, mounted, modalIsOpen } = this.state
+        const { type, id, mounted, modalIsOpen, creating } = this.state
         const { playlistLikes, playlists, history } = this.props
         this.playlistLike = []
         this.playlistNumber = []
@@ -291,7 +303,12 @@ class MyPlaylists extends Component {
                                                 <div className="explore_artist" id="discography_playlist_mapped" key={index}>
                                                     <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(undefined, this.playlistImage[index])} onMouseOut={() => this.hideIcon(undefined, this.playlistImage[index])}>
                                                     <Link to={`/myplaylists/${playlist._id}`}>
-                                                            {playlist.information.tracks.data.length ? <img src={playlist.information.tracks.data[0].album.picture} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" /> :
+                                                            {playlist.information.tracks.data.length ? (playlist.information.tracks.data.length < 4 ? <img src={playlist.information.tracks.data[0].album.picture} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" /> : <div className="four_pictures" ref={el => this.playlistImage[index] = el}>
+                                                            <img src={playlist.information.tracks.data[0].album.picture} alt="playlist cover" style={{borderTopLeftRadius: '5px'}}/>
+                                                            <img src={playlist.information.tracks.data[1].album.picture} alt="playlist cover" style={{borderTopRightRadius: '5px'}}/>
+                                                            <img src={playlist.information.tracks.data[2].album.picture} alt="playlist cover" style={{borderBottomLeftRadius: '5px'}}/>
+                                                            <img src={playlist.information.tracks.data[3].album.picture} alt="playlist cover" style={{borderBottomRightRadius: '5px'}}/>
+                                                            </div>) :
                                                                 <div className="empty_playlist_image" ref={el => this.playlistImage[index] = el}>
                                                                     <IoIosMusicalNotes className="empty_playlist_music_icon" />
                                                                 </div>}
@@ -336,7 +353,7 @@ class MyPlaylists extends Component {
                     </div>
                     <div className="modal_buttons">
                         <button onClick={this.closeModal} className="modal_cancel_button">Cancel</button>
-                        <button className="modal_save_button" onClick={() => this.createNewPlaylist()}>Create</button>
+                        <button className="modal_save_button" id={creating ? 'dim_create' : ''} disabled={creating} onClick={() => this.createNewPlaylist()}>{creating ? "Creating" : "Create"}</button>
                     </div>
                 </Modal>
 

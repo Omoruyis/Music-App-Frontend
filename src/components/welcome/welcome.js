@@ -56,10 +56,10 @@ class Welcome extends Component {
                 <div id="a">
                     <div className="welcome_page_buttons">
                         <Link to='/login' style={{ textDecoration: 'none' }}>
-                            <button className="home_login_button">Login</button>
+                            <button className="home_login_button">Sign In</button>
                         </Link>
                         <Link to='/signup' style={{ textDecoration: 'none' }}>
-                            <button className="home_signup_button">Sign up</button>
+                            <button className="home_signup_button">Sign Up</button>
                         </Link>
                     </div>
                     <div className="welcome_page_details">
@@ -76,9 +76,6 @@ class Welcome extends Component {
                         <p className="advert_content_text">Expand your music experience with music store. Access it on your desktop, or on your mobile browser</p>
                     </div>
                 </div>
-                {/* <div className="iframe_container">
-                    <iframe title="music-player" scrolling="no" frameborder="0" allowTransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&emptyPlayer=true&playlist=false&width=100%&height=350&color=ff0000&layout=dark&size=medium&type=${type}s&id=${id}&app_id=1`} width="100%" height="90"></iframe>
-                </div> */}
             </div>
         );
     }
@@ -102,4 +99,3 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Welcome)
 
-// export default Welcome;

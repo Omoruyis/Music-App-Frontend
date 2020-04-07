@@ -71,7 +71,8 @@ class MyTracks extends Component {
         id: 0,
         addedTrack: '',
         modalIsOpen: false,
-        modalIsOpen2: false
+        modalIsOpen2: false,
+        creating: false
     }
 
     componentDidMount() {
@@ -195,6 +196,12 @@ class MyTracks extends Component {
         this.createNotification('success', 'Successfully added track to playlist')
     }
 
+    changeCreate = () => {
+        this.setState({
+            creating: !this.state.creating
+        })
+    }
+
     createNewPlaylist = async () => {
         let answer
         if (!this.playlistTitle.value) {
@@ -209,11 +216,13 @@ class MyTracks extends Component {
             }
         }
         if (answer) {
-            return this.createNotification('error', 'This playlist already exist')
+            return this.createNotification('error', 'This playlist already exists')
         }
+        this.changeCreate()
         await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
 
         const res = await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
+        this.changeCreate()
         this.props.history.push(`/myplaylists/${res.data._id}`)
         this.createNotification('success', 'Successfully created playlist')
         this.setState({ modalIsOpen2: false })
@@ -247,7 +256,6 @@ class MyTracks extends Component {
     }
 
     filterTracks = () => {
-        console.log(this.props.tracks.length)
         let display = this.props.tracks
         if (this.state.sort === 'Artist') {
             display = display.sort((a, b) => a.information.artist.name.toLowerCase() < b.information.artist.name.toLowerCase() ? -1 : a.information.artist.name.toLowerCase() > b.information.artist.name.toLowerCase() ? 1 : 0)
@@ -270,7 +278,7 @@ class MyTracks extends Component {
     }
 
     render() {
-        const { type, id, mounted, modalIsOpen, modalIsOpen2 } = this.state
+        const { type, id, mounted, modalIsOpen, modalIsOpen2, creating } = this.state
         const { tracks, trackLikes, deleteTrack, history } = this.props
         this.trackLike = []
         this.trackNumber = []
@@ -410,7 +418,7 @@ class MyTracks extends Component {
                     </div>
                     <div className="modal_buttons">
                         <button onClick={() => this.closeModal(2)} className="modal_cancel_button">Cancel</button>
-                        <button className="modal_save_button" onClick={this.createNewPlaylist}>Create</button>
+                        <button className="modal_save_button" id={creating ? 'dim_create' : ''} disabled={creating} onClick={this.createNewPlaylist}>{creating ? "Creating" : "Create"}</button>
                     </div>
                 </Modal>
 

@@ -475,6 +475,12 @@
   font-weight: 600;
 }
 
+#disable_button {
+  opacity: 0.6;
+  padding: 15px 30px;
+  cursor: wait;
+}
+
 .login_button:hover {
   background-color: rgb(168, 160, 160);
   color: #203051;
@@ -762,6 +768,28 @@
   width: 100%;
   height: 100%;
   border-radius: 5px;
+}
+
+.four_pictures {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.four_pictures_second {
+  display: flex;
+  flex-wrap: wrap;
+  width: 200px;
+  height: 200px;
+}
+
+.four_pictures > img {
+  width: 50%;
+  height: 50%;
+}
+
+.four_pictures_second > img {
+  width: 50%;
+  height: 50%;
 }
 
 .explore_artists_images:hover {
@@ -1323,6 +1351,12 @@
   border-radius: 50%;
 }
 
+.top_search_album_image {
+  width: 200px;
+  height: 200px;
+  border-radius: 5px;
+}
+
 .search_tracks {
   margin-top: 20px;
 }
@@ -1574,6 +1608,11 @@
   padding: 7px 15px;
   border-radius: 5px;
   color: white;
+}
+
+#dim_create {
+  opacity: 0.7;
+  cursor: progress;
 }
 
 /***Track page modal***/

@@ -14,6 +14,7 @@ class Signup extends Component {
     state = {
         song: null,
         show: false,
+        login: false
     }
 
     validEmail = (email) => {
@@ -35,6 +36,12 @@ class Signup extends Component {
         }
     }
 
+    changeLogin = () => {
+        this.setState({
+            login: !this.state.login
+        })
+    }
+
     submitForm = (e) => {
         e.preventDefault()
         if (this.name.value.length < 1 ) {
@@ -46,6 +53,7 @@ class Signup extends Component {
         if (this.password.value.length < 6) {
             return this.createNotification('error', 'Please put a password with more than 6 characters')
         }
+        this.changeLogin()
         const request = {
             userName: this.name.value,
             email: this.email.value,
@@ -58,9 +66,11 @@ class Signup extends Component {
                     this.name.value = ''
                     this.email.value = ''
                     this.password.value = ''
-                    return this.createNotification('error', 'This user already exists')
+                    this.changeLogin()
+                    return this.createNotification('error', 'This account already exists')
                 }
                 // localStorage.setItem("token", response.data.token);
+                this.changeLogin()
                 return this.createNotification('success', `You've successfully signed up. Please proceed to login`)
                 // this.props.history.push(`/${this.state.redirect ?  `?redirect_link=${this.state.redirect}` : ''}`)
             })
@@ -76,7 +86,7 @@ class Signup extends Component {
 
     render() {
         const redirect = queryString.parse(this.props.location.search).redirect_link
-        const { show } = this.state
+        const { show, login } = this.state
 
         return (
             <div className="signup_image_container">
@@ -87,7 +97,7 @@ class Signup extends Component {
                     </div>
                     <div className="signup">
                         <p className="signup_community">Join our community</p>
-                        <p className="signup_existing">Existing User? <Link to={`/login${redirect ? `?redirect_link=${redirect}` : ''}`} style={{ textDecoration: 'none' }}>Login</Link></p>
+                        <p className="signup_existing">Existing User? <Link to={`/login${redirect ? `?redirect_link=${redirect}` : ''}`} style={{ textDecoration: 'none' }}>Sign In</Link></p>
                         <form className="signup_form" onSubmit={this.submitForm}>
                             <label className="signup_label">Display Name</label>
                             <input type="text" placeholder="User One" className="signup_text" ref={el => this.name = el} required={true} />
@@ -98,7 +108,7 @@ class Signup extends Component {
                                 {show ? <IoMdEyeOff className="password_second_image" onClick={this.show}/> : <IoIosEye className="password_second_image" onClick={this.show}/>}
                             </div>
                             <div style={{display: 'flex', justifyContent: 'center'}}>
-                                <button type="submit" className="login_button" onClick={this.submitForm} style={{width: '70%'}}>SIGN UP</button>
+                                <button type="submit" className="login_button" id={login ? 'disable_button' : ''} disabled={login} onClick={this.submitForm} style={{width: '70%'}}>{login ? "Signing Up" : "Sign Up"}</button>
                             </div>
                         </form>
                     </div>

@@ -15,7 +15,8 @@ import '../../App.css';
 
 class Login extends Component {
     state={
-        show: false
+        show: false, 
+        login: false
     }
 
     validEmail = (email) => {
@@ -53,12 +54,19 @@ class Login extends Component {
             .catch(e => console.log('this is the error', e))
     }
 
+    changeLogin = () => {
+        this.setState({
+            login: !this.state.login
+        })
+    }
+
     login = (e) => {
         e.preventDefault()
         if (!this.validEmail(this.email.value)) {
             this.createNotification('error', 'Invalid email address')
             return 
         }
+        this.changeLogin()
         const request = {
             email: this.email.value,
             password: this.password.value
@@ -76,8 +84,10 @@ class Login extends Component {
                     } else {
                         this.props.history.push('/explore')
                     }
+                    this.changeLogin()
                 } else {
                     this.createNotification('error', res.data)
+                    this.changeLogin()
                 }
             })
             .catch(e => console.log('this is the error', e))
@@ -93,13 +103,13 @@ class Login extends Component {
 
     render() {
         const redirect = queryString.parse(this.props.location.search).redirect_link
-        const { show } = this.state
+        const { show, login } = this.state
 
         return (
             <div className="login_container">
                 <NotificationContainer />
                 <div className="login_section">
-                    <p className="login">LOGIN</p>
+                    <p className="login">SIGN IN</p>
                     <form onSubmit={this.login} style={{ width: '100%' }}>
                         <input type="email" placeholder="Email Address" className="login_details" ref={el => this.email = el} required={true} />
                         <div className="login_password">
@@ -107,7 +117,7 @@ class Login extends Component {
                             {show ? <IoMdEyeOff className="password_image" onClick={this.show}/> : <IoIosEye className="password_image" onClick={this.show}/>}
                         </div>
                         <div style={{display: 'flex', justifyContent: 'center'}}>
-                            <button type="submit" className="login_button" onClick={this.login}>LOGIN</button>
+                            <button type="submit" className="login_button" id={login ? 'disable_button' : ''} disabled={login} onClick={this.login}>{login ? "Signing In" : "Sign In"}</button>
                         </div>
                     </form>
                     
