@@ -764,6 +764,28 @@
   border-radius: 5px;
 }
 
+.four_pictures {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.four_pictures_second {
+  display: flex;
+  flex-wrap: wrap;
+  width: 200px;
+  height: 200px;
+}
+
+.four_pictures > img {
+  width: 50%;
+  height: 50%;
+}
+
+.four_pictures_second > img {
+  width: 50%;
+  height: 50%;
+}
+
 .explore_artists_images:hover {
   opacity: 0.8
 }
@@ -1321,6 +1343,12 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
+}
+
+.top_search_album_image {
+  width: 200px;
+  height: 200px;
+  border-radius: 5px;
 }
 
 .search_tracks {

@@ -1,5 +1,5 @@
-const url = 'http://localhost:8080'
-// const url = 'https://omoruyi-music-store-app.herokuapp.com'
+// const url = 'http://localhost:8080'
+const url = 'https://omoruyi-music-store-app.herokuapp.com'
 
 function config () {
     let token 
@@ -13,7 +13,7 @@ function config () {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                // 'Access-Control-Allow-Origin': 'https://omoruyi-music-store-app.herokuapp.com/'
             }
         }
     } else {
@@ -24,7 +24,7 @@ function config () {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
                     authorization: `Bearer ${token}`,
-                    'Access-Control-Allow-Origin': 'http://localhost:3000'
+                    // 'Access-Control-Allow-Origin': 'https://omoruyi-music-store-app.herokuapp.com/'
                 }
             }
         }

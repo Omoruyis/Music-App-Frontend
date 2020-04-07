@@ -235,13 +235,13 @@ class AlbumTracks extends Component {
         this.setState({ addedTrack: track, modalIsOpen: true })
     }
 
-    createNotification = (type) => {
+    createNotification = (type, message) => {
         switch (type) {
           case 'success':
-            NotificationManager.success('Successfully added track to playlist', '', 2000);
+            NotificationManager.success(message, '', 2000);
             break;
           case 'error':
-            NotificationManager.error('This song already exists in this playlist', '', 2000);
+            NotificationManager.error(message, '', 2000);
             break;
         }
   }
@@ -249,11 +249,11 @@ class AlbumTracks extends Component {
     addTrackToPlaylist = async (title) => {
         const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: { ...this.state.addedTrack, album: { id: this.state.album.information.id, title: this.state.album.information.title, picture: this.state.album.information.cover_small, type: 'album' } } }, config().headers)
         if (result.data === 'This song is already in this playlist') {
-            this.createNotification('error')
+            this.createNotification('error', result.data)
             return
         }
         this.closeModal()
-        this.createNotification('success')
+        this.createNotification('success', 'Successfully added track to playlist')
     }
 
     changeInput = () => {
@@ -278,7 +278,7 @@ class AlbumTracks extends Component {
     createNewPlaylist = async () => {
         let answer
         if (!this.playlistTitle.value) {
-            return alert('Please add a title')
+            return this.createNotification('error', 'Please input a title')
         }
         for (let i = 0; i < this.props.playlists.length; i++) {
             if (this.props.playlists[i].information.title === this.playlistTitle.value) {
@@ -289,12 +289,13 @@ class AlbumTracks extends Component {
             }
         }
         if (answer) {
-            return alert('This playlist already exist')
+            return this.createNotification('error', 'This playlist already exist')
         }
         await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
 
         const res = await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack, album: { id: this.state.album.information.id, title: this.state.album.information.title, picture: this.state.album.information.cover_small, type: 'album' } } }, config().headers)
         this.props.history.push(`/myplaylists/${res.data._id}`)
+        this.createNotification('success', 'Successfully created playlist')
         this.setState({ modalIsOpen2: false })
     }
 

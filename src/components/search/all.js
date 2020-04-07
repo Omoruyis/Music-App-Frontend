@@ -103,7 +103,11 @@ class All extends Component {
     topArtist = (artist) => {
         const artistLower = artist.toLowerCase()
         const query = this.props.match.params.query.toLowerCase()
-        return artistLower === query || artistLower.includes(query)
+        console.log(artistLower, query)
+        if (artistLower === query || artistLower.includes(query)) {
+            return true
+        }
+        // return artistLower === query || artistLower.includes(query)
     }
 
     render() {
@@ -125,7 +129,7 @@ class All extends Component {
 
         return (
             <div>
-                {topResults.length && this.topArtist(topResults.artist.name) ? <div className="top_search_result">
+                {topResults.artist && this.topArtist(topResults.artist.name) ? <div className="top_search_result">
                     <p className="discography_header_text">Top Results</p>
                     <div className="top_search_image_holder">
                         <Link to={`/${topResults.artist.type}/${topResults.artist.id}`}>
@@ -137,11 +141,11 @@ class All extends Component {
                     </div>
                 </div> : ''}
 
-                {topResults.length && this.topArtist(topResults.album.title) ? <div className="top_search_result">
+                {topResults.album && this.topArtist(topResults.album.title) ? <div className="top_search_result">
                     <p className="discography_header_text">Top Results</p>
                     <div className="top_search_image_holder">
                         <Link to={`/${topResults.album.type}/${topResults.album.id}`}>
-                            <img src={topResults.album.cover_medium} className="top_search_image" alt="artist cover" />
+                            <img src={topResults.album.cover_medium} className="top_search_album_image" alt="artist cover" />
                         </Link>
                         <Link to={`/${topResults.album.type}/${topResults.album.id}`} style={{ textDecoration: 'none' }}>
                             <p className="top_search_image_text turn_red">{topResults.album.title}</p>
