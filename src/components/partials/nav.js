@@ -11,7 +11,8 @@ import '../../App.css';
 class Nav extends Component {
     state = {
         inputValue: false,
-        name: localStorage.name
+        name: localStorage.name,
+        logout: false
     }
 
     checkInput = (e) => {
@@ -28,10 +29,18 @@ class Nav extends Component {
         this.checkInput()
     }
 
+    changeLogout = () => {
+        this.setState({
+            logout: !this.state.logout
+        })
+    }
+
     logout = async () => {
+        this.changeLogout()
         await axios.get(`${config().url}/logout`, config().headers)
         this.props.dispatch(changeSong('', ''))
         this.props.dispatch(logout())
+        this.changeLogout()
         this.props.history.push('/')
         localStorage.removeItem('token')
         localStorage.removeItem('name')
@@ -39,7 +48,7 @@ class Nav extends Component {
 
 
     render() {
-        const { name } = this.state
+        const { name, logout } = this.state
         const { type, id } = this.props
         return (
             <div className="explorenav_container">
@@ -50,14 +59,14 @@ class Nav extends Component {
                 {name ?
                     <div className="explorenav_buttons">
                         <p className="display_name">{name}</p>
-                        <button className="logout_button" onClick={this.logout}>Log out</button>
+                        <button className="logout_button" id={logout ? 'logout_button' : ''} disabled={logout} onClick={this.logout}>{logout ? "Signing Out" : "Sign Out"}</button>
                     </div> :
                     <div className="explorenav_buttons">
                         <Link to={`/login?redirect_link=${type}${id ? `/${id}` : ''}`} style={{textDecoration: 'none' }} >
-                        <button className="explorenav_login">Login</button>
+                        <button className="explorenav_login">Sign In</button>
                         </Link>
                         <Link to={`/signup?redirect_link=${type}${id ? `/${id}` : ''}`} style={{textDecoration: 'none' }}>
-                        <button className="explorenav_signup">Sign up</button>
+                        <button className="explorenav_signup">Sign Up</button>
                         </Link>
                     </div>
                 }

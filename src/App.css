@@ -1671,6 +1671,12 @@
   background-color: red;
 }
 
+#logout_button {
+  opacity: 0.6;
+  padding: 5px 10px;
+  cursor: wait;
+}
+
 /*****Welcome Page ***/ 
 @media (max-width: 850px) {
   .welcome_page_text {
