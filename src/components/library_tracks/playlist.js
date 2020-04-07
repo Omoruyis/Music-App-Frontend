@@ -14,7 +14,7 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
 
-import { deleteLike, addLike, deleteTrack, getAllLikes, getAllTracks, getAllPlaylists, addTrack, deleteFromPlaylist, deletePlaylist, deletePersonalPlaylist, editPlaylist } from '../../actions'
+import { deleteLike, addLike, deleteTrack, getAllLikes, getAllTracks, getAllPlaylists, addTrack, deleteFromPlaylist, deletePlaylist, deletePersonalPlaylist, editPlaylist, changeSong } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
 import { trimString, trackTime, time } from '../../helper/helper'
@@ -76,10 +76,7 @@ class PlaylistTracks extends Component {
     }
 
     play = (type, id) => {
-        this.setState({
-            type,
-            id
-        })
+        this.props.changeSong(id, type)
     }
 
     expandPlay = (clas) => {
@@ -255,7 +252,7 @@ class PlaylistTracks extends Component {
     }
 
     render() {
-        const { type, id, mounted, playlist, modalIsOpen } = this.state
+        const { mounted, playlist, modalIsOpen } = this.state
         const { trackLikes, history } = this.props
         this.trackLike = []
         this.trackNumber = []
@@ -407,9 +404,6 @@ class PlaylistTracks extends Component {
                             }
                         </div>
                     </div>
-                    {type ? <div className="iframe_container">
-                        <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
-                    </div> : ''}
                 </div>
 
                 <Modal
@@ -468,6 +462,7 @@ function mapDispatchToProps(dispatch) {
         editPlaylist: (_id, title, description) => dispatch(editPlaylist(_id, title, description)),
         getLikes: () => dispatch(getAllLikes()),
         getTracks: () => dispatch(getAllTracks()),
+        changeSong: (id, type) => dispatch(changeSong(id, type))
     }
 }
 

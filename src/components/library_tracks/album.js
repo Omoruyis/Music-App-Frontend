@@ -17,7 +17,7 @@ import { IoIosMore } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
 
-import { deleteLike, addLike, deleteTrackFromAlbum, getAllLikes, getAllAlbums, getAllPlaylists, deletePlaylist, deleteEmptyAlbum } from '../../actions'
+import { deleteLike, addLike, deleteTrackFromAlbum, getAllLikes, getAllAlbums, getAllPlaylists, deletePlaylist, deleteEmptyAlbum, changeSong } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
@@ -113,10 +113,7 @@ class AlbumTracks extends Component {
     }
 
     play = (type, id) => {
-        this.setState({
-            type,
-            id
-        })
+        this.props.changeSong(id, type)
     }
 
     expandPlay = (clas) => {
@@ -328,7 +325,7 @@ class AlbumTracks extends Component {
     }
 
     render() {
-        const { type, id, mounted, album, modalIsOpen, modalIsOpen2, creating } = this.state
+        const { mounted, album, modalIsOpen, modalIsOpen2, creating } = this.state
         const { trackLikes, history } = this.props
         this.trackLike = []
         this.trackNumber = []
@@ -438,9 +435,6 @@ class AlbumTracks extends Component {
                             }
                         </div>
                     </div>
-                    {type ? <div className="iframe_container">
-                        <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
-                    </div> : ''}
                 </div>
 
                 <Modal
@@ -526,6 +520,7 @@ function mapDispatchToProps(dispatch) {
         getAlbums: () => dispatch(getAllAlbums()),
         getLikes: () => dispatch(getAllLikes()),
         getPlaylists: () => dispatch(getAllPlaylists()),
+        changeSong: (id, type) => dispatch(changeSong(id, type))
     }
 }
 

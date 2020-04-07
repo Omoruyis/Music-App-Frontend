@@ -19,6 +19,7 @@ export const DELETE_TRACK_FROM_ALBUM = 'DELETE_TRACK_FROM_ALBUM'
 export const DELETE_EMPTY_ALBUM = 'DELETE_EMPTY_ALBUM'
 export const DELETE_PERSONAL_PLAYLIST = 'DELETE_PERSONAL_PLAYLIST'
 export const EDIT_PLAYLIST = 'EDIT_PLAYLIST'
+export const CHANGE_SONG = 'CHANGE_SONG'
 
 
 export function login () {
@@ -158,6 +159,14 @@ export function editPlaylist (_id, title, description) {
         _id,
         title,
         description
+    }
+}
+
+export function changeSong (deezerId, deezerType) {
+    return {
+        type: CHANGE_SONG,
+        deezerId,
+        deezerType,
     }
 }
 

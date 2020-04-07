@@ -13,7 +13,7 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosMore } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
-import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllAlbums, getAllTracks, getAllPlaylists, getAllRecent, getAllArtists } from '../../actions'
+import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllAlbums, getAllTracks, getAllPlaylists, getAllRecent, getAllArtists, changeSong } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
@@ -108,10 +108,7 @@ class MyTracks extends Component {
     }
 
     play = (type, id) => {
-        this.setState({
-            type,
-            id
-        })
+        this.props.changeSong(id, type)
     }
 
     addToLikes = (obj, clas) => {
@@ -278,7 +275,7 @@ class MyTracks extends Component {
     }
 
     render() {
-        const { type, id, mounted, modalIsOpen, modalIsOpen2, creating } = this.state
+        const { mounted, modalIsOpen, modalIsOpen2, creating } = this.state
         const { tracks, trackLikes, deleteTrack, history } = this.props
         this.trackLike = []
         this.trackNumber = []
@@ -367,9 +364,6 @@ class MyTracks extends Component {
                         }
                     </div>
                 </div>
-                {type ? <div className="iframe_container">
-                    <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
-                </div> : ''}
 
                 <Modal
                     isOpen={modalIsOpen}
@@ -454,7 +448,8 @@ function mapDispatchToProps(dispatch) {
         getAlbums: () => dispatch(getAllAlbums()),
         getAllRecent: () => dispatch(getAllRecent()),
         getArtists: () => dispatch(getAllArtists()),
-        createPlaylist: (title, description) => dispatch(createPlaylist(title, description))
+        createPlaylist: (title, description) => dispatch(createPlaylist(title, description)),
+        changeSong: (id, type) => dispatch(changeSong(id, type))
     }
 }
 

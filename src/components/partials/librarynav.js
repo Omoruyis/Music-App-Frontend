@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 
 import config from '../../config/config'
-import { logout } from '../../actions'
+import { logout, changeSong } from '../../actions'
 
 import '../../App.css';
 
@@ -14,6 +14,7 @@ class LibraryNav extends Component {
 
     logout = async () => {
         await axios.get(`${config().url}/logout`, config().headers)
+        this.props.dispatch(changeSong('', ''))
         this.props.dispatch(logout())
         this.props.history.push('/')
         localStorage.removeItem('token')

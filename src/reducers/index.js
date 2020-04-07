@@ -18,14 +18,15 @@ import {
     DELETE_EMPTY_ALBUM,
     DELETE_PERSONAL_PLAYLIST,
     EDIT_PLAYLIST,
+    CHANGE_SONG
 } from '../actions'
 
 import axios from 'axios'
 import config from '../config/config'
 
 
-function rootReducer (state = { loggedIn: false}, action) {
-    const { albums, playlists, recent, likes, artists, category, data, tracks, albumId, trackId, title, description, id, _id } = action
+function rootReducer (state = { loggedIn: false, deezerType: '', deezerId: ''}, action) {
+    const { albums, playlists, recent, likes, artists, category, data, tracks, albumId, trackId, title, description, id, _id, deezerId, deezerType } = action
     switch (action.type) {
         case LOGIN:
             return {
@@ -152,6 +153,12 @@ function rootReducer (state = { loggedIn: false}, action) {
             return {
                 ...state,
                 playlists: [...latestPlaylist]
+            }
+        case CHANGE_SONG:
+            return {
+                ...state,
+                deezerId,
+                deezerType
             }
         default:
             return state

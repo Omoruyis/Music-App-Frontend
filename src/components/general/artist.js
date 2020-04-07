@@ -12,7 +12,7 @@ import { CircularProgress } from '@material-ui/core';
 import { IoMdHeartEmpty } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 
-import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, getAllArtists } from '../../actions'
+import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, getAllArtists, changeSong } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
@@ -217,10 +217,7 @@ class Artist extends Component {
     }
 
     play = (type, id) => {
-        this.setState({
-            type,
-            id
-        })
+        this.props.changeSong(id, type)
     }
 
     login = () => {
@@ -228,7 +225,7 @@ class Artist extends Component {
     }
 
     render() {
-        const { playlist, type, path, likes, id, liked, availableTracks } = this.state
+        const { playlist, path, likes, liked, availableTracks } = this.state
         const { match, history, loggedIn } = this.props
         const reroute = this.props.location.pathname.split('/')
 
@@ -285,9 +282,6 @@ class Artist extends Component {
                         }
                     </div>
                 </div>
-                {type ? <div className="iframe_container">
-                    <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
-                </div> : ''}
             </div>
         )
     }
@@ -307,6 +301,7 @@ function mapDispatchToProps(dispatch) {
         getLikes: () => dispatch(getAllLikes()),
         getAllRecent: () => dispatch(getAllRecent()),
         getArtists: () => dispatch(getAllArtists()),
+        changeSong: (id, type) => dispatch(changeSong(id, type))
     }
 }
 

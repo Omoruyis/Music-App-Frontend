@@ -10,7 +10,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { IoIosMusicalNotes } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
-import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists, getAllTracks, getAllAlbums, getAllRecent, getAllArtists } from '../../actions'
+import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists, getAllTracks, getAllAlbums, getAllRecent, getAllArtists, changeSong } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
 import config from '../../config/config'
@@ -91,10 +91,7 @@ class MyPlaylists extends Component {
     }
 
     play = (type, id) => {
-        this.setState({
-            type,
-            id
-        })
+        this.props.changeSong(id, type)
     }
 
     addToLikes = (obj, clas, classs) => {
@@ -221,7 +218,7 @@ class MyPlaylists extends Component {
     }
 
     render() {
-        const { type, id, mounted, modalIsOpen, creating } = this.state
+        const { mounted, modalIsOpen, creating } = this.state
         const { playlistLikes, playlists, history } = this.props
         this.playlistLike = []
         this.playlistNumber = []
@@ -330,9 +327,6 @@ class MyPlaylists extends Component {
                         }
                     </div>
                 </div>
-                {type ? <div className="iframe_container">
-                    <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
-                </div> : ''}
 
 
                 <Modal
@@ -340,7 +334,6 @@ class MyPlaylists extends Component {
                     onAfterOpen={this.afterOpenModal}
                     onRequestClose={this.closeModal}
                     style={customStyles}
-                // contentLabel="Example Modal"
                 >
                     <p className="modal_create_playlist">Create a playlist</p>
                     <div className="modal_playlist_title">
@@ -387,7 +380,8 @@ function mapDispatchToProps(dispatch) {
         getTracks: () => dispatch(getAllTracks()),
         getAllRecent: () => dispatch(getAllRecent()),
         getArtists: () => dispatch(getAllArtists()),
-        createPlaylist: (title, description) => dispatch(createPlaylist(title, description))
+        createPlaylist: (title, description) => dispatch(createPlaylist(title, description)),
+        changeSong: (id, type) => dispatch(changeSong(id, type))
     }
 }
 

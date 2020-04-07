@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom'
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { login } from './actions/index'
+import { login, changeSong } from './actions/index'
 import config from './config/config'
 import Signup from './components/welcome/signup'
 import Login from './components/welcome/login'
@@ -44,10 +44,13 @@ class App extends Component {
         return
     }
     this.props.login()
+    this.props.changeSong()
     this.setState({ show: true })
   }
 
   render() {
+    const { id, type } = this.props
+
     return (
       <div>
         {this.state.show ? 
@@ -70,19 +73,26 @@ class App extends Component {
             <Route path="/myplaylists/:id" component={PlaylistTracks} /> 
             <Route path="/myalbums/:id" component={AlbumTracks} /> 
             <Route path="/myartists/:id" component={ArtistAlbums} /> 
+            {id && type ? <div className="iframe_container">
+                <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
+            </div> : ''}
           </div>: ''}
-        </div>
+      </div>
     );
   }
 }
 
-function mapStateToProps() {
-  return {}
+function mapStateToProps({ deezerId, deezerType}) {
+  return {
+    id: deezerId,
+    type: deezerType 
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-      login: () => dispatch(login())
+    login: () => dispatch(login()),
+    changeSong: () => dispatch(changeSong())
   }
 }
 

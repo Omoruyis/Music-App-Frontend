@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 import config from '../../config/config'
-import { logout } from '../../actions'
+import { logout, changeSong } from '../../actions'
 
 import '../../App.css';
 
@@ -29,7 +29,8 @@ class Nav extends Component {
     }
 
     logout = async () => {
-        await axios.get(`${config().url}/logout`, config().headers) 
+        await axios.get(`${config().url}/logout`, config().headers)
+        this.props.dispatch(changeSong('', ''))
         this.props.dispatch(logout())
         this.props.history.push('/')
         localStorage.removeItem('token')
@@ -43,7 +44,7 @@ class Nav extends Component {
         return (
             <div className="explorenav_container">
                 <div className="explorenav_search">
-                    <input type="search" placeholder="Search" className="explorenav_search_input" ref={el => this.search = el} onKeyPress={this.checkInput} />
+                    <input type="search" placeholder="Search for tracks, albums, artists" className="explorenav_search_input" ref={el => this.search = el} onKeyPress={this.checkInput} />
                 </div>
 
                 {name ?

@@ -127,7 +127,7 @@ class MyAlbums extends Component {
     }
 
     render() {
-        const { type, id, mounted } = this.state
+        const { mounted } = this.state
         const { albumLikes, albums, history } = this.props
         this.playlistLike = []
         this.playlistNumber = []
@@ -191,9 +191,6 @@ class MyAlbums extends Component {
                         }
                     </div>
                 </div>
-                {type ? <div className="iframe_container">
-                    <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
-                </div> : ''}
             </div>
         )
     }

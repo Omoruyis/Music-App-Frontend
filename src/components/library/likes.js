@@ -9,7 +9,7 @@ import Artists from '../favourites/artists'
 import Playlists from '../favourites/playlists'
 import { CircularProgress } from '@material-ui/core';
 
-import { deleteLike, getAllLikes, getAllTracks, deleteTrack, addTrack, getAllAlbums, getAllPlaylists, getAllRecent, getAllArtists } from '../../actions'
+import { deleteLike, getAllLikes, getAllTracks, deleteTrack, addTrack, getAllAlbums, getAllPlaylists, getAllRecent, getAllArtists, changeSong } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
 import config from '../../config/config'
@@ -54,10 +54,7 @@ class Favourites extends Component {
     }
 
     play = (type, id) => {
-        this.setState({
-            type,
-            id
-        })
+        this.props.changeSong(id, type)
     }
 
     addAlbPl = (type, id, trackId, index) => {
@@ -117,7 +114,7 @@ class Favourites extends Component {
 
 
     render() {
-        const { type, path, id, mounted, inputValue } = this.state
+        const { path, mounted, inputValue } = this.state
         const { history, trackLikes, artistLikes, albumLikes, playlistLikes, tracks, deleteLike, deleteTrack, addTrack } = this.props
 
         return (
@@ -158,9 +155,6 @@ class Favourites extends Component {
                     </div>
 
                 </div>
-                {type ? <div className="iframe_container">
-                    <iframe title="music-player" scrolling="no" frameBorder="0" allowtransparency="true" src={`https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=${type}&id=${id}&app_id=1`} width="100%" height="100%"></iframe>
-                </div> : ''}
             </div>
         )
     }
@@ -197,7 +191,8 @@ function mapDispatchToProps(dispatch) {
         getAllRecent: () => dispatch(getAllRecent()),
         getArtists: () => dispatch(getAllArtists()),
         deleteTrack: (albumId, trackId) => dispatch(deleteTrack(albumId, trackId)),
-        addTrack: (data) => dispatch(addTrack(data))
+        addTrack: (data) => dispatch(addTrack(data)),
+        changeSong: (id, type) => dispatch(changeSong(id, type))
     }
 }
 
