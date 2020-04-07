@@ -247,7 +247,6 @@ class MyTracks extends Component {
     }
 
     filterTracks = () => {
-        console.log(this.props.tracks.length)
         let display = this.props.tracks
         if (this.state.sort === 'Artist') {
             display = display.sort((a, b) => a.information.artist.name.toLowerCase() < b.information.artist.name.toLowerCase() ? -1 : a.information.artist.name.toLowerCase() > b.information.artist.name.toLowerCase() ? 1 : 0)
