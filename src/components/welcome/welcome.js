@@ -1,51 +1,23 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import axios from 'axios'
 
 import playButton from '../../assets/images/playbutton.png'
 import cd from '../../assets/images/cd.png'
-import config from '../../config/config'
 
 import '../../App.css';
 
 class Welcome extends Component {
     state = {
-        charts: null,
         type: null,
         id: 0,
         loggedIn: false
     }
 
     componentDidMount() {
-        this.getCharts()
         if (this.props.loggedIn) {
             this.props.history.push('/explore')
         }
-    }
-
-    getCharts = async () => {
-        const result = await axios.get(`${config.url}/explore`, config.headers)
-        this.setState({
-            charts: result.data
-        })
-    }
-
-    play = (id, type) => {
-        this.setState({
-            id,
-            type
-        })
-    }
-
-    appendIframe = (e) => {
-        const parent = e.target.parentNode.parentNode
-        const html = `<div class="iframe">
-        <iframe scrolling="no" frameborder="0" allowTransparency="true" src="https://www.deezer.com/plugins/player?format=classic&autoplay=false&emptyPlayer=true&playlist=false&width=700&height=350&color=ff0000&layout=dark&size=medium&type=album&id=119606&app_id=1" width="700" height="90"></iframe>
-        <button onClick="removeIframe
-        ()">remove</button>
-    </div>`
-        parent.insertAdjacentHTML('beforeend', html)
     }
 
     render() {
@@ -89,12 +61,7 @@ function mapStateToProps({ loggedIn }) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        // getAlbums: () => dispatch(getAllAlbums()),
-        // getTracks: () => dispatch(getAllTracks()),
-        // getPlaylists: () => dispatch(getAllPlaylists()),
-        // getLikes: () => dispatch(getAllLikes()),
-    }
+    return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Welcome)
