@@ -59,7 +59,7 @@ class Recent extends Component {
 
     render() {
         const { mounted } = this.state
-        const { recent, history } = this.props
+        const { recent, history, location } = this.props
         this.playlistImage = []
 
         return (
@@ -71,7 +71,7 @@ class Recent extends Component {
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Recent" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
-                            <LibraryNav history={history}/>
+                            <LibraryNav history={history} location={location}/>
                         </div>
                         {recent && mounted ? (!recent.length ?
                             <div className="no_playlist">

@@ -62,7 +62,7 @@ class App extends Component {
             <Route path='/artist/:id' component={Artist} />
             <Route path='/login' component={Login} />
             <Route path='/signup' component={Signup} />
-            <Route path='/reset' component={Reset} />
+            <Route path='/changepassword' component={Reset} />
             <Route path='/search/:query' component={Search} />
             <Route path="/my_tracks" component={MyTracks} />
             <Route path="/my_playlists" component={MyPlaylists} />

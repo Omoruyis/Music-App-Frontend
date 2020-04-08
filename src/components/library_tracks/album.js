@@ -326,7 +326,7 @@ class AlbumTracks extends Component {
 
     render() {
         const { mounted, album, modalIsOpen, modalIsOpen2, creating } = this.state
-        const { trackLikes, history } = this.props
+        const { trackLikes, history, location } = this.props
         this.trackLike = []
         this.trackNumber = []
         this.playSong = []
@@ -344,7 +344,7 @@ class AlbumTracks extends Component {
                                 <div className="explorenav_search">
                                     <input type="search" placeholder="Search Playlist" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                                 </div>
-                                <LibraryNav history={history}/>
+                                <LibraryNav history={history} location={location}/>
                             </div>
                             {album && trackLikes && mounted ? <div>
                                 <NotificationContainer />

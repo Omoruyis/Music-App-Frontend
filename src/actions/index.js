@@ -172,6 +172,7 @@ export function changeSong (deezerId, deezerType) {
 
 
 
+
 /******Thunk */
 
 export const getAllAlbums = () => dispatch => (

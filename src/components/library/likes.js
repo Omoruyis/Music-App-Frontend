@@ -115,7 +115,7 @@ class Favourites extends Component {
 
     render() {
         const { path, mounted, inputValue } = this.state
-        const { history, trackLikes, artistLikes, albumLikes, playlistLikes, tracks, deleteLike, deleteTrack, addTrack } = this.props
+        const { history, trackLikes, artistLikes, albumLikes, playlistLikes, tracks, deleteLike, deleteTrack, addTrack, location } = this.props
 
         return (
             <div className="main_container">
@@ -126,7 +126,7 @@ class Favourites extends Component {
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Likes" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
-                            <LibraryNav history={history}/>
+                            <LibraryNav history={history} location={location}/>
                         </div>
                         {tracks && trackLikes && mounted ?
                             <div className="search_container">

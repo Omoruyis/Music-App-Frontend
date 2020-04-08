@@ -128,7 +128,7 @@ class MyAlbums extends Component {
 
     render() {
         const { mounted } = this.state
-        const { albumLikes, albums, history } = this.props
+        const { albumLikes, albums, history, location } = this.props
         this.playlistLike = []
         this.playlistNumber = []
         this.playlistImage = []
@@ -143,7 +143,7 @@ class MyAlbums extends Component {
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Albums" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
-                            <LibraryNav history={history}/>
+                            <LibraryNav history={history} location={location}/>
                         </div>
                         {albums && albumLikes && mounted ? (!albums.length ?
                             <div className="no_playlist">

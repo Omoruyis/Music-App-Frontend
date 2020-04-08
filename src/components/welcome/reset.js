@@ -13,7 +13,8 @@ import '../../App.css';
 class Reset extends Component {
     state={
         show: false,
-        show2: false
+        show2: false,
+        reset: false
     }
 
     validEmail = (email) => {
@@ -35,6 +36,12 @@ class Reset extends Component {
         }
     }
 
+    changeReset = () => {
+        this.setState({
+            reset: !this.state.reset
+        })
+    }
+
     update = (e) => {
         e.preventDefault()
         if (!this.validEmail(this.email.value)) {
@@ -52,6 +59,7 @@ class Reset extends Component {
         if (this.newPassword.value.length < 6) {
             return this.createNotification('error', 'Please put a new password with more than 6 characters')
         }
+        this.changeReset()
         const request = {
             email: this.email.value,
             password: this.password.value,
@@ -60,8 +68,12 @@ class Reset extends Component {
 
         axios.post(`${config().url}/reset`, request, config().headers)
             .then(response => {
+                this.changeReset()
                 if (response.data === 'Your password has been changed successfully') {
                     this.createNotification('success', response.data)
+                    this.email.value = ''
+                    this.password.value = ''
+                    this.newPassword.value = ''
                     return
                 }
                 this.createNotification('error', response.data)
@@ -86,7 +98,7 @@ class Reset extends Component {
 
     render() {
         const redirect = queryString.parse(this.props.location.search).redirect_link
-        const { show, show2 } = this.state
+        const { show, show2, reset } = this.state
 
         return (
             <div className="login_container">
@@ -103,13 +115,13 @@ class Reset extends Component {
                             {show2 ? <IoMdEyeOff className="password_image" onClick={() => this.show(2)}/> : <IoIosEye className="password_image" onClick={() => this.show(2)}/>}
                         </div>
                         <div style={{display: 'flex', justifyContent: 'center'}}>
-                            <button type="submit" className="login_button" onClick={this.update}>RESET</button>
+                            <button type="submit" className="login_button" id={reset ? 'disable_button' : ''} disabled={reset} onClick={this.update}>{reset ? "Updating" : "Update"}</button>
                         </div>
                     </form>
                     
                     <div className="login_create_account">
-                        <Link to={`/login${redirect ? `?redirect_link=${redirect}` : ''}`} style={{ textDecoration: 'none' }}>
-                            LOGIN
+                        <Link to={`/${redirect}`} style={{ textDecoration: 'none' }}>
+                            RETURN TO LIBRARY
                         </Link>
                     </div>
                 </div>

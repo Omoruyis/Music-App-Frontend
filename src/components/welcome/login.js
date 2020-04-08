@@ -78,6 +78,7 @@ class Login extends Component {
                 if (res.data.token) {
                     localStorage.setItem("token", res.data.token);
                     localStorage.setItem("name", res.data.local.userName);
+                    localStorage.setItem("account", "local");
                     this.props.login()
                     if (redirect) {
                         this.props.history.push(`/${redirect}`)
@@ -121,16 +122,12 @@ class Login extends Component {
                         </div>
                     </form>
                     
-                    <Link to={`/reset${redirect ? `?redirect_link=${redirect}` : ''}`} style={{ textDecoration: 'none', marginTop: '10px' }}>
-                            Reset Password
-                        </Link>
-                    {/* <p>Change Password</p> */}
                     <div className="login_or">
                         <div className="login_underline"></div><p className="login_text">Or</p><div className="login_underline"></div>
                     </div>
                     <GoogleLogin
                         clientId="271277109562-8tt8jqb5m0cg2b5pgph5ig419irp4ir2.apps.googleusercontent.com"
-                        buttonText="LOGIN WITH GOOGLE"
+                        buttonText="SIGN IN WITH GOOGLE"
                         onSuccess={this.responseGoogle}
                         onFailure={this.responseGoogle}
                         cookiePolicy={'single_host_origin'}
@@ -154,7 +151,7 @@ function mapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        login: () => dispatch(login())
+        login: () => dispatch(login()),
     }
 }
 

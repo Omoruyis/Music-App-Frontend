@@ -253,7 +253,7 @@ class PlaylistTracks extends Component {
 
     render() {
         const { mounted, playlist, modalIsOpen } = this.state
-        const { trackLikes, history } = this.props
+        const { trackLikes, history, location } = this.props
         this.trackLike = []
         this.trackNumber = []
         this.playSong = []
@@ -270,7 +270,7 @@ class PlaylistTracks extends Component {
                                 <div className="explorenav_search">
                                     <input type="search" placeholder="Search Playlist" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                                 </div>
-                                <LibraryNav history={history}/>
+                                <LibraryNav history={history} location={location}/>
                             </div>
                             {playlist && trackLikes && mounted ? <div>
                                 <div className="top_search_result search_tracks remove_search_border my_tracks">

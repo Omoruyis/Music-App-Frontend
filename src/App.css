@@ -526,7 +526,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 30px;
   margin-bottom: 0px;
 }
 
@@ -554,9 +554,17 @@
   z-index: 200;
   height: 60px;
   width: 100%;
-  padding: 15px 40px;
+  padding: 15px 20px;
   border-top: 1px solid rgb(240, 232, 232);
   border-bottom: 1px solid rgb(240, 232, 232);
+}
+
+.popup_drop {
+  cursor: pointer;
+}
+
+.pop_drop_icon {
+  font-size: 30px;
 }
 
 .display_name {
@@ -1354,10 +1362,18 @@
   border-radius: 50%;
 }
 
+.top_search_image:hover {
+  opacity: 0.8
+}
+
 .top_search_album_image {
   width: 200px;
   height: 200px;
   border-radius: 5px;
+}
+
+.top_search_album_image:hover {
+  opacity: 0.8
 }
 
 .search_tracks {
@@ -1668,6 +1684,11 @@
   padding: 5px 10px;
   border-radius: 5px;
   margin-left: 20px;
+  margin-right: 10px;
+}
+
+.back_arrow {
+  font-size: 45px;
 }
 
 .logout_button:hover {

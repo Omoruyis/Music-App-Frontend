@@ -159,7 +159,7 @@ class Explore extends Component {
                                     <p className="explore_updated">Updated every day</p>
                                     <div className="explore_tracks">
                                         <Link to={`/playlist/${3155776842}`} className="explore_tracks" style={{ textDecoration: 'none' }}>
-                                            <img src={signup} alt="top tracks" className="explore_tracks_image" />
+                                            <img src={"https://cdns-images.dzcdn.net/images/playlist/f1ac18441ab1dabc94282e4d1d5f4955/250x250-000000-80-0-0.jpg"} alt="top tracks" className="explore_tracks_image" />
                                             <div className="explore_tracks_text">
                                                 <p className="explore_tracks_text_top">Top WorldWide</p>
                                                 <p className="explore_tracks_text_sub">100 tracks</p>
