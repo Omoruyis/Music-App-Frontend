@@ -61,7 +61,7 @@ class PlaylistTracks extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (this.props.playlists !== nextProps.playlists) {
+        if (nextProps.playlists && !this.state.playlist) {
             this.setState({ playlist: nextProps.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0] })
         }
         return true

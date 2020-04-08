@@ -90,7 +90,7 @@ class AlbumTracks extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (this.props.albums !== nextProps.albums) {
+        if (nextProps.albums && !this.state.album) {
             this.setState({ album: nextProps.albums.filter(album => album._id === this.props.match.params.id)[0] })
         }
         return true

@@ -654,10 +654,13 @@
   opacity: 0.8
 }
 
+
 .explore_tracks_image {
   height: 100%;
-  width: 50%;
-  background-size: cover;
+  width: 20rem;
+  /* omit this: background-size: cover; */
+  object-fit: cover;
+  object-position: center;
 }
 
 .explore_tracks_text {
