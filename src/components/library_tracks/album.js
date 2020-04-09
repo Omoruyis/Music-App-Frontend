@@ -79,7 +79,8 @@ class AlbumTracks extends Component {
         album: '',
         modalIsOpen: false,
         modalIsOpen2: false,
-        creating: false
+        creating: false, 
+        index: ''
     }
 
     componentDidMount() {
@@ -91,6 +92,11 @@ class AlbumTracks extends Component {
 
     shouldComponentUpdate(nextProps) {
         if (nextProps.albums && !this.state.album) {
+            nextProps.albums.forEach((album, index) => { 
+                if (album._id === this.props.match.params.id) {
+                    this.setState({ index})
+                }
+            })
             this.setState({ album: nextProps.albums.filter(album => album._id === this.props.match.params.id)[0] })
         }
         return true
@@ -160,12 +166,15 @@ class AlbumTracks extends Component {
     }
 
     removeAlbPl = (trackId) => {
-        this.props.deleteTrackFromAlbum(this.state.album.information.id, trackId)
-        if (!this.filterTracks().length) {
+        if (this.props.albums[this.state.index].information.tracks.data.length === 1) {
+            this.props.deletePlaylist(this.state.album.information.id, 'albums')
             const mySource = this.props.albumSource
+            
             this.props.history.push(mySource === 'artist' ? '/my_artists' : '/my_albums')
-            this.props.deleteEmptyAlbum(this.state.album.information.id)
+        } else {
+            this.props.deleteTrackFromAlbum(this.state.album.information.id, trackId)
         }
+        
     }
 
     liked = () => {

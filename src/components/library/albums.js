@@ -19,7 +19,7 @@ class MyAlbums extends Component {
         sort: 'Title',
         type: null,
         id: 0,
-        modalIsOpen: false
+        modalIsOpen: false, 
     }
 
     componentDidMount() {
@@ -28,9 +28,19 @@ class MyAlbums extends Component {
             this.props.getAlbums()
         }
         if (!this.props.likes) {
+            console.log('getting likes')
             this.props.getLikes()
         }
     }
+
+    // shouldComponentUpdate(nextProps) {
+    //     if (this.props.albums.length && this.props.albums.length !== nextProps.albums.length) {
+    //         // console.log(this.props.albums.length)
+    //         // console.log(nextProps.albums.length)
+    //         return false
+    //     }
+    //     return true
+    // }
 
     componentWillUnmount() {
         this.props.albumSource('album')
