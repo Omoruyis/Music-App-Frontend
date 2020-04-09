@@ -142,13 +142,13 @@ function rootReducer (state = { loggedIn: false, deezerType: '', deezerId: '', s
                 albums: [...newAlbum]
             }
         case DELETE_EMPTY_ALBUM:
-            const emptyAlbumIndex = state.albums.findIndex(cur => cur.information.id === albumId)
-            let newEmptyAlbum = state.albums
-            newEmptyAlbum.splice(emptyAlbumIndex, 1)
-            console.log('djdjdjdjdjdjdjdjdjdj')
+            // const emptyAlbumIndex = state.albums.findIndex(cur => cur.information.id === albumId)
+            // let newEmptyAlbum = state.albums
+            // newEmptyAlbum.splice(emptyAlbumIndex, 1)
             return {
                 ...state,
-                albums: [...newEmptyAlbum]
+                // albums: [...newEmptyAlbum]
+                albums: state.albums.filter(cur => cur.information.id !== id)
             }
         case DELETE_PERSONAL_PLAYLIST:
             axios.post(`${config().url}/deleteplaylist`, { _id }, config().headers)

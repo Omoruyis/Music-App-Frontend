@@ -61,12 +61,10 @@ class PlaylistTracks extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (this.props.source === 'playlist' && this.props.playlists.length && this.props.playlists.length === nextProps.playlists.length && !this.state.playlist) {
-            console.log('rrrrr')
+        if (this.props.source === 'playlist' && this.props.playlists.length && nextProps.playlists.length && this.props.playlists.length === nextProps.playlists.length && !this.state.playlist) {
             this.setState({ playlist: this.props.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0] })
         }
-        if (this.props.source === 'track' && this.props.playlists.length !== nextProps.playlists.length && !this.state.playlist) {
-            console.log('bbbbb')
+        if (this.props.source === 'track' && nextProps.playlists.length && this.props.playlists.length !== nextProps.playlists.length && !this.state.playlist) {
             this.setState({ playlist: nextProps.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0] })
         }
         return true
