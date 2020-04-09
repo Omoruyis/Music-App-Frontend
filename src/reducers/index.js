@@ -158,10 +158,13 @@ function rootReducer (state = { loggedIn: false, deezerType: '', deezerId: '', s
             }
         case EDIT_PLAYLIST:
             axios.patch(`${config().url}/editplaylist`, { _id, title, description }, config().headers)
-            const index = state.playlists.findIndex(cur => cur.personal === true && cur._id === _id)
             let latestPlaylist = state.playlists
-            latestPlaylist[index].information.title = title
-            latestPlaylist[index].information.description = description
+            latestPlaylist.forEach(cur => {
+                if (cur._id === _id && cur.personal) {
+                    cur.information.title = title
+                    cur.information.description = description
+                } 
+            })
             return {
                 ...state,
                 playlists: [...latestPlaylist]
