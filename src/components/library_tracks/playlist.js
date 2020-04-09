@@ -61,7 +61,12 @@ class PlaylistTracks extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (nextProps.playlists && !this.state.playlist) {
+        if (this.props.source === 'playlist' && this.props.playlists.length && this.props.playlists.length === nextProps.playlists.length && !this.state.playlist) {
+            console.log('rrrrr')
+            this.setState({ playlist: this.props.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0] })
+        }
+        if (this.props.source === 'track' && this.props.playlists.length !== nextProps.playlists.length && !this.state.playlist) {
+            console.log('bbbbb')
             this.setState({ playlist: nextProps.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0] })
         }
         return true
@@ -275,7 +280,7 @@ class PlaylistTracks extends Component {
                             {playlist && trackLikes && mounted ? <div>
                                 <div className="top_search_result search_tracks remove_search_border my_tracks">
                                     <div className="playlist_header" style={{ marginBottom: '30px' }} id="playlist_header">
-                                        {!playlist.personal ? <img src={playlist.information.picture_medium} alt="playlist-cover" className="playlist_image" /> : (playlist.information.tracks.data.length ? (playlist.information.tracks.data.length < 4 ? <img src={playlist.information.tracks.data[0].album.picture} alt="playlist cover" className="playlist_image" /> : <div className="four_pictures_second">
+                                        {!playlist.personal ? <img src={playlist.information.picture_medium} alt="playlist-cover" className="playlist_image" /> : (this.filterTracks().length ? (playlist.information.tracks.data.length < 4 ? <img src={playlist.information.tracks.data[0].album.picture} alt="playlist cover" className="playlist_image" /> : <div className="four_pictures_second">
                                         <img src={playlist.information.tracks.data[0].album.picture} alt="playlist cover" style={{borderTopLeftRadius: '5px'}}/>
                                         <img src={playlist.information.tracks.data[1].album.picture} alt="playlist cover" style={{borderTopRightRadius: '5px'}}/>
                                         <img src={playlist.information.tracks.data[2].album.picture} alt="playlist cover" style={{borderBottomLeftRadius: '5px'}}/>
@@ -437,14 +442,16 @@ function mapStateToProps(state) {
             tracks: state.tracks,
             playlists: state.playlists,
             trackLikes: state.likes.trackLikes,
-            playlistLikes: state.likes.playlistLikes
+            playlistLikes: state.likes.playlistLikes,
+            source: state.source
         }
     } else {
         return {
             tracks: '',
             playlists: '',
             trackLikes: '',
-            playlistLikes: ''
+            playlistLikes: '',
+            source: state.source
         }
     }
 }

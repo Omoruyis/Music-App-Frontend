@@ -10,7 +10,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { IoIosMusicalNotes } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
-import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists, getAllTracks, getAllAlbums, getAllRecent, getAllArtists, changeSong } from '../../actions'
+import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists, getAllTracks, getAllAlbums, getAllRecent, getAllArtists, changeSong, changeSource } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
 import config from '../../config/config'
@@ -61,6 +61,7 @@ class MyPlaylists extends Component {
     }
 
     componentWillUnmount() {
+        this.props.changeSource('playlist')
         this.props.getAlbums()
         this.props.getTracks()
         this.props.getPlaylists()
@@ -381,7 +382,8 @@ function mapDispatchToProps(dispatch) {
         getAllRecent: () => dispatch(getAllRecent()),
         getArtists: () => dispatch(getAllArtists()),
         createPlaylist: (title, description) => dispatch(createPlaylist(title, description)),
-        changeSong: (id, type) => dispatch(changeSong(id, type))
+        changeSong: (id, type) => dispatch(changeSong(id, type)),
+        changeSource: (playlist) => dispatch(changeSource(playlist)),
     }
 }
 

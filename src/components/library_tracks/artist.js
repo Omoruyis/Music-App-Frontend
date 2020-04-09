@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { CircularProgress } from '@material-ui/core';
 import { FaRegHeart } from "react-icons/fa";
 
-import { deleteLike, addLike, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks } from '../../actions'
+import { deleteLike, addLike, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks, albumSource } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
 
@@ -33,6 +33,7 @@ class ArtistAlbums extends Component {
     }
 
     componentWillUnmount() {
+        this.props.albumSource('artist')
         this.props.getAlbums()
         this.props.getTracks()
         this.props.getPlaylists()
@@ -216,6 +217,7 @@ function mapDispatchToProps(dispatch) {
         getLikes: () => dispatch(getAllLikes()),
         getPlaylists: () => dispatch(getAllPlaylists()),
         getTracks: () => dispatch(getAllTracks()),
+        albumSource: (source) => dispatch(albumSource(source)),
     }
 }
 

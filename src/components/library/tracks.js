@@ -13,7 +13,7 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosMore } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
-import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllAlbums, getAllTracks, getAllPlaylists, getAllRecent, getAllArtists, changeSong } from '../../actions'
+import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllAlbums, getAllTracks, getAllPlaylists, getAllRecent, getAllArtists, changeSong, changeSource } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
@@ -219,6 +219,7 @@ class MyTracks extends Component {
         await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
 
         const res = await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
+        this.props.changeSource('track')
         this.changeCreate()
         this.props.history.push(`/myplaylists/${res.data._id}`)
         this.createNotification('success', 'Successfully created playlist')
@@ -449,7 +450,8 @@ function mapDispatchToProps(dispatch) {
         getAllRecent: () => dispatch(getAllRecent()),
         getArtists: () => dispatch(getAllArtists()),
         createPlaylist: (title, description) => dispatch(createPlaylist(title, description)),
-        changeSong: (id, type) => dispatch(changeSong(id, type))
+        changeSong: (id, type) => dispatch(changeSong(id, type)),
+        changeSource: (source) => dispatch(changeSource(source))
     }
 }
 

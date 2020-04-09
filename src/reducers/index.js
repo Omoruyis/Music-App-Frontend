@@ -19,14 +19,16 @@ import {
     DELETE_PERSONAL_PLAYLIST,
     EDIT_PLAYLIST,
     CHANGE_SONG, 
+    PLAYLIST_SOURCE,
+    ALBUM_SOURCE
 } from '../actions'
 
 import axios from 'axios'
 import config from '../config/config'
 
 
-function rootReducer (state = { loggedIn: false, deezerType: '', deezerId: '' }, action) {
-    const { albums, playlists, recent, likes, artists, category, data, tracks, albumId, trackId, title, description, id, _id, deezerId, deezerType, profile } = action
+function rootReducer (state = { loggedIn: false, deezerType: '', deezerId: '', source: 'track', albumSource: '' }, action) {
+    const { albums, playlists, recent, likes, artists, category, data, tracks, albumId, trackId, title, description, id, _id, deezerId, deezerType, source, albumSource } = action
     switch (action.type) {
         case LOGIN:
             return {
@@ -67,6 +69,16 @@ function rootReducer (state = { loggedIn: false, deezerType: '', deezerId: '' },
             return {
                 ...state,
                 artists
+            }
+        case PLAYLIST_SOURCE:
+            return {
+                ...state,
+                source
+            }
+        case ALBUM_SOURCE:
+            return {
+                ...state,
+                albumSource
             }
         case DELETE_LIKE:
             axios.post(`${config().url}/unlikeUndownload`, { type: data.information.type, data: {id: data.information.id} }, config().headers)

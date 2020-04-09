@@ -20,6 +20,8 @@ export const DELETE_EMPTY_ALBUM = 'DELETE_EMPTY_ALBUM'
 export const DELETE_PERSONAL_PLAYLIST = 'DELETE_PERSONAL_PLAYLIST'
 export const EDIT_PLAYLIST = 'EDIT_PLAYLIST'
 export const CHANGE_SONG = 'CHANGE_SONG'
+export const PLAYLIST_SOURCE = 'PLAYLIST_SOURCE'
+export const ALBUM_SOURCE = 'ALBUM_SOURCE'
 
 
 export function login () {
@@ -170,6 +172,19 @@ export function changeSong (deezerId, deezerType) {
     }
 }
 
+export function changeSource (source) {
+    return {
+        type: PLAYLIST_SOURCE,
+        source
+    }
+}
+
+export function albumSource (albumSource) {
+    return {
+        type: ALBUM_SOURCE,
+        albumSource
+    }
+}
 
 
 

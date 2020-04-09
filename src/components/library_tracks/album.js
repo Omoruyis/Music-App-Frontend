@@ -17,7 +17,7 @@ import { IoIosMore } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
 
-import { deleteLike, addLike, deleteTrackFromAlbum, getAllLikes, getAllAlbums, getAllPlaylists, deletePlaylist, deleteEmptyAlbum, changeSong } from '../../actions'
+import { deleteLike, addLike, deleteTrackFromAlbum, getAllLikes, getAllAlbums, getAllPlaylists, deletePlaylist, deleteEmptyAlbum, changeSong, changeSource } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
@@ -161,8 +161,9 @@ class AlbumTracks extends Component {
 
     removeAlbPl = (trackId) => {
         this.props.deleteTrackFromAlbum(this.state.album.information.id, trackId)
-        if (this.state.album.information.tracks.data.length === 0) {
-            this.props.history.push('/my_albums')
+        if (!this.filterTracks().length) {
+            const mySource = this.props.albumSource
+            this.props.history.push(mySource === 'artist' ? '/my_artists' : '/my_albums')
             this.props.deleteEmptyAlbum(this.state.album.information.id)
         }
     }
@@ -226,7 +227,8 @@ class AlbumTracks extends Component {
 
     deletePlaylist = (id) => {
         this.props.deletePlaylist(id, 'albums')
-        this.props.history.push('/my_albums')
+        const mySource = this.props.albumSource
+        this.props.history.push(mySource === 'artist' ? '/my_artists' : '/my_albums')
     }
 
     addToPlaylist = track => {
@@ -299,6 +301,7 @@ class AlbumTracks extends Component {
         await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
 
         const res = await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack, album: { id: this.state.album.information.id, title: this.state.album.information.title, picture: this.state.album.information.cover_small, type: 'album' } } }, config().headers)
+        this.props.changeSource('track')
         this.changeCreate()
         this.props.history.push(`/myplaylists/${res.data._id}`)
         this.createNotification('success', 'Successfully created playlist')
@@ -498,14 +501,16 @@ function mapStateToProps(state) {
             albums: state.albums,
             playlists: state.playlists,
             trackLikes: state.likes.trackLikes,
-            albumLikes: state.likes.albumLikes
+            albumLikes: state.likes.albumLikes,
+            albumSource: state.albumSource
         }
     } else {
         return {
             albums: '',
             playlists: '',
             trackLikes: '',
-            albumLikes: ''
+            albumLikes: '',
+            albumSource: state.albumSource
         }
     }
 }
@@ -520,7 +525,8 @@ function mapDispatchToProps(dispatch) {
         getAlbums: () => dispatch(getAllAlbums()),
         getLikes: () => dispatch(getAllLikes()),
         getPlaylists: () => dispatch(getAllPlaylists()),
-        changeSong: (id, type) => dispatch(changeSong(id, type))
+        changeSong: (id, type) => dispatch(changeSong(id, type)),
+        changeSource: (source) => dispatch(changeSource(source))
     }
 }
 
