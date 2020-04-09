@@ -50,7 +50,8 @@ class PlaylistTracks extends Component {
         type: null,
         id: 0,
         playlist: '',
-        modalIsOpen: false
+        modalIsOpen: false, 
+        index: ''
     }
 
     componentDidMount() {
@@ -63,9 +64,19 @@ class PlaylistTracks extends Component {
     shouldComponentUpdate(nextProps) {
         if (this.props.source === 'playlist' && this.props.playlists.length && nextProps.playlists.length && this.props.playlists.length === nextProps.playlists.length && !this.state.playlist) {
             this.setState({ playlist: this.props.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0] })
+            this.props.playlists.forEach((cur, index) => {
+                if (cur._id === this.props.match.params.id) {
+                    this.setState({index})
+                }
+            })
         }
         if (this.props.source === 'track' && nextProps.playlists.length && this.props.playlists.length !== nextProps.playlists.length && !this.state.playlist) {
             this.setState({ playlist: nextProps.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0] })
+            nextProps.playlists.forEach((cur, index) => {
+                if (cur._id === this.props.match.params.id) {
+                    this.setState({index})
+                }
+            })
         }
         return true
     }
@@ -235,6 +246,11 @@ class PlaylistTracks extends Component {
         this.closeModal()
     }
 
+    getValue = () => {
+        let display = this.props.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0]
+        return display
+    }
+
     changeValue = () => {
         this.setState({ inputValue: this.searchTrack.value })
     }
@@ -287,16 +303,16 @@ class PlaylistTracks extends Component {
                                             <IoIosMusicalNotes className="empty_playlist_music_icon" />
                                         </div>)}
                                         <div className="playlist_details_holder">
-                                            <p className="playlist_title">{trimString(playlist.information.title, 17)}</p>
+                                            <p className="playlist_title">{trimString(this.getValue().information.title, 17)}</p>
                                             {playlist.personal ?
-                                                <p>{trimString(playlist.information.description, 30)}</p> : ''}
+                                                <p>{trimString(this.getValue().information.description, 30)}</p> : ''}
                                             <div className="playlist_duration">
                                                 {!playlist.personal ?
                                                     <p className="dura">{playlist.nb_tracks} {playlist.information.nb_tracks !== 1 ? 'tracks' : 'track'}</p> :
-                                                    <p className="dura">{playlist.information.tracks.data.length} {playlist.information.tracks.data.length !== 1 ? 'tracks' : 'track'}</p>}
+                                                    <p className="dura">{this.getValue().information.tracks.data.length} {playlist.information.tracks.data.length !== 1 ? 'tracks' : 'track'}</p>}
                                                 {!playlist.personal ?
                                                     <p className="playlist_time">{time(playlist.information.duration)}</p> :
-                                                    <p className="playlist_time">{time(this.calculateTime(playlist))}</p>}
+                                                    <p className="playlist_time">{time(this.calculateTime(this.getValue()))}</p>}
                                             </div>
                                         </div>
                                         {!playlist.personal ? <div className="play_holder" ref={el => this.playTop = el} onClick={() => this.play('playlist', playlist.information.id)} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
@@ -415,14 +431,14 @@ class PlaylistTracks extends Component {
                     onRequestClose={this.closeModal}
                     style={customStyles}
                 >
-                    <p className="modal_create_playlist">Create a playlist</p>
+                    <p className="modal_create_playlist">Edit your playlist</p>
                     <div className="modal_playlist_title">
                         <p>What should we call your playlist?</p>
-                        <input type="text" defaultValue={playlist ? playlist.information.title : ''} placeholder="Playlist name" ref={el => this.playlistTitle = el} />
+                        <input type="text" defaultValue={playlist ? this.getValue().information.title : ''} placeholder="Playlist name" ref={el => this.playlistTitle = el} />
                     </div>
                     <div className="modal_playlist_title">
                         <p>Give some information about your playlist</p>
-                        <input type="text" defaultValue={playlist ? playlist.information.description : ''} placeholder="Enter a description for playlist (optional)" ref={el => this.playlistDescription = el} />
+                        <input type="text" defaultValue={playlist ? this.getValue().information.description : ''} placeholder="Enter a description for playlist (optional)" ref={el => this.playlistDescription = el} />
                     </div>
                     <div className="modal_buttons">
                         <button onClick={() => this.deletePersonalPlaylist(playlist._id)} className="modal_cancel_button">Delete Playlist</button>
