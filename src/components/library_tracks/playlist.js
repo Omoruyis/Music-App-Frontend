@@ -309,7 +309,7 @@ class PlaylistTracks extends Component {
                                             <div className="playlist_duration">
                                                 {!playlist.personal ?
                                                     <p className="dura">{playlist.nb_tracks} {playlist.information.nb_tracks !== 1 ? 'tracks' : 'track'}</p> :
-                                                    <p className="dura">{this.getValue().information.tracks.data.length} {playlist.information.tracks.data.length !== 1 ? 'tracks' : 'track'}</p>}
+                                                    <p className="dura">{this.getValue().information.tracks.data.length} {this.getValue().information.tracks.data.length !== 1 ? 'tracks' : 'track'}</p>}
                                                 {!playlist.personal ?
                                                     <p className="playlist_time">{time(playlist.information.duration)}</p> :
                                                     <p className="playlist_time">{time(this.calculateTime(this.getValue()))}</p>}

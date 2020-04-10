@@ -317,6 +317,19 @@ class AlbumTracks extends Component {
         this.setState({ modalIsOpen2: false })
     }
 
+    getValue = () => {
+        let display = this.props.albums.filter(album => album._id === this.props.match.params.id)[0]
+        return display
+    }
+
+    getTime = () => {
+        let display = this.getValue().information.tracks.data.reduce((total, track) => {
+            total = total + track.duration
+            return total
+        }, 0)
+        return display
+    }
+
     changeValue = () => {
         this.setState({ inputValue: this.searchTrack.value })
     }
@@ -364,13 +377,13 @@ class AlbumTracks extends Component {
                                     <div className="playlist_header" style={{ marginBottom: '30px' }} id="playlist_header">
                                         <img src={album.information.cover_medium} alt="playlist-cover" className="playlist_image" />
                                         <div className="playlist_details_holder">
-                                            <p className="playlist_title">{trimString(album.information.title, 17)}</p>
+                                            <p className="playlist_title">{trimString(this.getValue().information.title, 17)}</p>
                                             <Link to={`/${album.information.artist.type}/${album.information.artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>
                                                 <p className="explore_artists_name turn_red">{trimString(album.information.artist.name, 20)}</p>
                                             </Link>
                                             <div className="playlist_duration">
-                                                <p className="dura">{album.information.tracks.data.length} {album.information.nb_tracks !== 1 ? 'tracks' : 'track'}</p>
-                                                <p className="playlist_time">{time(album.information.duration)}</p>
+                                                <p className="dura">{this.getValue().information.tracks.data.length} {this.getValue().information.nb_tracks !== 1 ? 'tracks' : 'track'}</p>
+                                                <p className="playlist_time">{time(this.getTime())}</p>
                                             </div>
                                         </div>
                                     </div>

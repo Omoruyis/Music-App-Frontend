@@ -15,11 +15,33 @@ class MyArtists extends Component {
         name: localStorage.name,
         inputValue: '',
         mounted: false,
+        artists: ''
     }
 
     componentDidMount() {
         this.setState({ mounted: true })
-        this.props.getArtists()
+        if (this.props.albums) {
+            this.getArtistsF()
+        } else {
+            this.props.getAlbums()
+        }
+        // this.props.getArtists()
+    }
+
+    // shouldComponentUpdate(nextProps) {
+    //     if (this.props.albums !== nextProps.albums && !this.state.artists) {
+    //         let artists = nextProps.albums.map(album => album.information.artist)
+    //         this.setState({artists})
+    //     }
+    //     return true 
+    // }
+
+    getArtistsF() {
+        let artists = this.props.albums.map(album => `${album.information.artist.id}*****${album.information.artist.name}*****${album.information.artist.picture_medium}`)
+        console.log(artists)
+        const newArtists = new Set(artists)
+        console.log(newArtists)
+        this.setState({artists})
     }
 
     componentWillUnmount() {
@@ -43,7 +65,7 @@ class MyArtists extends Component {
     }
 
     filterPlaylists = () => {
-        let display = this.props.artists
+        let display = this.state.artists
         if (!this.searchTrack.value) {
             return display
         }
@@ -58,8 +80,8 @@ class MyArtists extends Component {
     }
 
     render() {
-        const { mounted } = this.state
-        const { artists, history, location } = this.props
+        const { mounted, artists } = this.state
+        const { history, location } = this.props
         this.playlistImage = []
 
         return (
@@ -83,10 +105,10 @@ class MyArtists extends Component {
                                             <div className="explore_artist" id="discography_playlist_mapped" key={index}>
                                                 <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistImage[index])}>
                                                     <Link to={`/myartists/${artist.id}`}>
-                                                        <img src={artist.picture} ref={el => this.playlistImage[index] = el} alt="album cover" className="explore_artists_images" />
+                                                        <img src={artist.picture_medium} ref={el => this.playlistImage[index] = el} alt="album cover" className="explore_artists_images" />
                                                     </Link>
                                                 </div>
-                                                <Link to={`/myartists/${artist._id}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                                <Link to={`/myartists/${artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>
                                                     <p className="explore_artists_name turn_red">{artist.name}</p>
                                                 </Link>
                                             </div>
@@ -107,13 +129,14 @@ class MyArtists extends Component {
 }
 
 function mapStateToProps(state) {
-    if (state.artists) {
+    if (state.albums) {
         return {
-            artists: state.artists,
+            // artists: state.artists,
+            albums: state.albums 
         }
     } else {
         return {
-            artists: '',
+            albums: '',
         }
     }
 }

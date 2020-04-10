@@ -1256,6 +1256,11 @@
   color: black;
 }
 
+.no_result {
+  padding: 20px;
+  text-align: center;
+}
+
 .discography_playlists {
   display: flex;
   flex-direction: column;
