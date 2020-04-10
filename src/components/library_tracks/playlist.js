@@ -294,11 +294,11 @@ class PlaylistTracks extends Component {
                             {playlist && trackLikes && mounted ? <div>
                                 <div className="top_search_result search_tracks remove_search_border my_tracks">
                                     <div className="playlist_header" style={{ marginBottom: '30px' }} id="playlist_header">
-                                        {!playlist.personal ? <img src={playlist.information.picture_medium} alt="playlist-cover" className="playlist_image" /> : (this.filterTracks().length ? (playlist.information.tracks.data.length < 4 ? <img src={playlist.information.tracks.data[0].album.picture} alt="playlist cover" className="playlist_image" /> : <div className="four_pictures_second">
-                                        <img src={playlist.information.tracks.data[0].album.picture} alt="playlist cover" style={{borderTopLeftRadius: '5px'}}/>
-                                        <img src={playlist.information.tracks.data[1].album.picture} alt="playlist cover" style={{borderTopRightRadius: '5px'}}/>
-                                        <img src={playlist.information.tracks.data[2].album.picture} alt="playlist cover" style={{borderBottomLeftRadius: '5px'}}/>
-                                        <img src={playlist.information.tracks.data[3].album.picture} alt="playlist cover" style={{borderBottomRightRadius: '5px'}}/>
+                                        {!playlist.personal ? <img src={playlist.information.picture_medium} alt="playlist-cover" className="playlist_image" /> : (this.filterTracks().length ? (this.getValue().information.tracks.data.length < 4 ? <img src={this.getValue().information.tracks.data[0].album.picture} alt="playlist cover" className="playlist_image" /> : <div className="four_pictures_second">
+                                        <img src={this.getValue().information.tracks.data[0].album.picture} alt="playlist cover" style={{borderTopLeftRadius: '5px'}}/>
+                                        <img src={this.getValue().information.tracks.data[1].album.picture} alt="playlist cover" style={{borderTopRightRadius: '5px'}}/>
+                                        <img src={this.getValue().information.tracks.data[2].album.picture} alt="playlist cover" style={{borderBottomLeftRadius: '5px'}}/>
+                                        <img src={this.getValue().information.tracks.data[3].album.picture} alt="playlist cover" style={{borderBottomRightRadius: '5px'}}/>
                                         </div>) : <div className="empty_playlist_image">
                                             <IoIosMusicalNotes className="empty_playlist_music_icon" />
                                         </div>)}
@@ -309,7 +309,7 @@ class PlaylistTracks extends Component {
                                             <div className="playlist_duration">
                                                 {!playlist.personal ?
                                                     <p className="dura">{playlist.nb_tracks} {playlist.information.nb_tracks !== 1 ? 'tracks' : 'track'}</p> :
-                                                    <p className="dura">{this.getValue().information.tracks.data.length} {playlist.information.tracks.data.length !== 1 ? 'tracks' : 'track'}</p>}
+                                                    <p className="dura">{this.getValue().information.tracks.data.length} {this.getValue().information.tracks.data.length !== 1 ? 'tracks' : 'track'}</p>}
                                                 {!playlist.personal ?
                                                     <p className="playlist_time">{time(playlist.information.duration)}</p> :
                                                     <p className="playlist_time">{time(this.calculateTime(this.getValue()))}</p>}
