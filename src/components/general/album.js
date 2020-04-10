@@ -40,7 +40,6 @@ class Album extends Component {
         this.getPathName()
         this.checkLogin()
         this.getPlaylist()
-
     }
 
     componentWillUnmount() {

@@ -22,6 +22,7 @@ export const EDIT_PLAYLIST = 'EDIT_PLAYLIST'
 export const CHANGE_SONG = 'CHANGE_SONG'
 export const PLAYLIST_SOURCE = 'PLAYLIST_SOURCE'
 export const ALBUM_SOURCE = 'ALBUM_SOURCE'
+export const ALBUM_NUMBER = 'ALBUM_NUMBER'
 
 
 export function login () {
@@ -109,11 +110,12 @@ export function addTrack (data) {
     }
 }
 
-export function createPlaylist (title, description) {
+export function createPlaylist (title, description, _id) {
     return {
         type: CREATE_PLAYLIST,
         title, 
-        description
+        description, 
+        _id
     }
 }
 
@@ -183,6 +185,13 @@ export function albumSource (albumSource) {
     return {
         type: ALBUM_SOURCE,
         albumSource
+    }
+}
+
+export function changeNumber (albumNumber) {
+    return {
+        type: ALBUM_NUMBER,
+        albumNumber
     }
 }
 

@@ -17,7 +17,7 @@ import { IoIosMore } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
 
-import { deleteLike, addLike, deleteTrackFromAlbum, getAllLikes, getAllAlbums, getAllPlaylists, deletePlaylist, deleteEmptyAlbum, changeSong, changeSource } from '../../actions'
+import { deleteLike, addLike, deleteTrackFromAlbum, getAllLikes, getAllAlbums, getAllPlaylists, deletePlaylist, deleteEmptyAlbum, changeSong, changeSource, changeNumber } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
@@ -167,6 +167,7 @@ class AlbumTracks extends Component {
 
     removeAlbPl = (trackId) => {
         if (this.props.albums[this.state.index].information.tracks.data.length === 1) {
+            this.props.changeNumber(this.props.albums.length)
             this.props.deletePlaylist(this.state.album.information.id, 'albums')
             const mySource = this.props.albumSource
             
@@ -235,6 +236,7 @@ class AlbumTracks extends Component {
     }
 
     deletePlaylist = (id) => {
+        this.props.changeNumber(this.props.albums.length)
         this.props.deletePlaylist(id, 'albums')
         const mySource = this.props.albumSource
         this.props.history.push(mySource === 'artist' ? '/my_artists' : '/my_albums')
@@ -548,7 +550,8 @@ function mapDispatchToProps(dispatch) {
         getLikes: () => dispatch(getAllLikes()),
         getPlaylists: () => dispatch(getAllPlaylists()),
         changeSong: (id, type) => dispatch(changeSong(id, type)),
-        changeSource: (source) => dispatch(changeSource(source))
+        changeSource: (source) => dispatch(changeSource(source)),
+        changeNumber: (number) => dispatch(changeNumber(number)),
     }
 }
 
