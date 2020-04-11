@@ -14,7 +14,7 @@ import { IoIosHeart } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
 
-import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, getAllArtists, changeSong } from '../../actions'
+import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, changeSong } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
@@ -44,7 +44,7 @@ class Album extends Component {
     }
 
     componentWillUnmount() {
-        if(!this.props.loggedIn) {
+        if (!this.props.loggedIn) {
             return
         }
         this.props.getAlbums()
@@ -52,16 +52,7 @@ class Album extends Component {
         this.props.getPlaylists()
         this.props.getLikes()
         this.props.getAllRecent()
-        this.props.getArtists()
     }
-
-    // shouldComponentUpdate() {
-    //     if (this.props.loggedIn !== this.state.loggedIn) {
-    //         this.checkLogin()
-    //         this.setState({ loggedIn: true })
-    //     }
-    //     return true
-    // }
 
     getPathName = () => {
         const path = this.props.location.pathname.split('/')[1]
@@ -71,31 +62,46 @@ class Album extends Component {
     }
 
     getPlaylist = async () => {
-        const result = await axios.post(`${config().url}/search/album`, { id: parseInt(this.props.match.params.id) }, config().headers)
-        this.setState({
-            playlist: result.data,
-            displayTracks: result.data.tracks.data
-        })
-        if (this.props.loggedIn) {
-            let availableTracks = []
-            result.data.tracks.data.forEach(async (cur, index) => {
-                const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: parseInt(this.props.match.params.id), trackId: cur.id }, config().headers)
-                availableTracks[index] = res.data
-            })
-            this.setState({
-                availableTracks
-            })
+        try {
+            const result = await axios.post(`${config().url}/search/album`, { id: parseInt(this.props.match.params.id) }, config().headers)
+            if (this.props.loggedIn) {
+                let availableTracks = []
+                result.data.tracks.data.forEach(async (cur, index) => {
+                    const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: parseInt(this.props.match.params.id), trackId: cur.id }, config().headers)
+                    availableTracks[index] = res.data
+                    if (index === (result.data.tracks.data.length - 1)) {
+                        this.setState({
+                            playlist: result.data,
+                            displayTracks: result.data.tracks.data
+                        })
+                    }
+                })
+                this.setState({
+                    availableTracks
+                })
+            } else {
+                this.setState({
+                    playlist: result.data,
+                    displayTracks: result.data.tracks.data
+                })
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 
     getLikes = async () => {
-        if (!this.props.loggedIn) {
-            return
+        try {
+            if (!this.props.loggedIn) {
+                return
+            }
+            const result = await axios.get(`${config().url}/getlikes`, config().headers)
+            this.setState({
+                likes: result.data
+            })
+        } catch (e) {
+            console.log(e)
         }
-        const result = await axios.get(`${config().url}/getlikes`, config().headers)
-        this.setState({
-            likes: result.data
-        })
     }
 
     checkLogin = async () => {
@@ -108,18 +114,26 @@ class Album extends Component {
     }
 
     checkAvailable = async (id, type) => {
-        const result = await axios.post(`${config().url}/checkavailable`, { id, type }, config().headers)
-        this.setState({
-            available: result.data.status,
-            _id: result.data._id
-        })
+        try {
+            const result = await axios.post(`${config().url}/checkavailable`, { id, type }, config().headers)
+            this.setState({
+                available: result.data.status,
+                _id: result.data._id
+            })
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     checkLike = async (id, type) => {
-        const result = await axios.post(`${config().url}/checklike`, { id, type }, config().headers)
-        this.setState({
-            liked: result.data
-        })
+        try {
+            const result = await axios.post(`${config().url}/checklike`, { id, type }, config().headers)
+            this.setState({
+                liked: result.data
+            })
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     play = (type, id) => {
@@ -136,14 +150,18 @@ class Album extends Component {
     }
 
     libraryAction = async (id, type, action, newState) => {
-        this.setState({
-            available: newState,
-        })
-        const result = await axios.post(`${config().url}/${action}`, { id, type }, config().headers)
-        this.setState({
-            _id: action === 'add' ? result.data._id : 0
-        })
-        this.getPlaylist()
+        try {
+            this.setState({
+                available: newState,
+            })
+            const result = await axios.post(`${config().url}/${action}`, { id, type }, config().headers)
+            this.setState({
+                _id: action === 'add' ? result.data._id : 0
+            })
+            this.getPlaylist()
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     likeUndownloadAction = (type, obj, action) => {
@@ -172,7 +190,7 @@ class Album extends Component {
             s.style.color = 'red'
             u.style.display = 'none'
             currentClass.className = "track_like_holder is_liked"
-            axios.post(`${config().url}/likeUndownload`, { type, data: {...obj, album: {id: this.state.playlist.id, title: this.state.playlist.title, picture: this.state.playlist.cover_medium, type: this.state.playlist.type}} }, config().headers)
+            axios.post(`${config().url}/likeUndownload`, { type, data: { ...obj, album: { id: this.state.playlist.id, title: this.state.playlist.title, picture: this.state.playlist.cover_medium, type: this.state.playlist.type } } }, config().headers)
         }
     }
 
@@ -190,23 +208,31 @@ class Album extends Component {
     }
 
     addAlbPl = async (type, id, index) => {
-        let newState = this.state.availableTracks
-        newState[index] = true
-        this.setState({
-            availableTracks: newState
-        })
-        await axios.post(`${config().url}/addAlbPlayTrack`, { type, id, index }, config().headers)
-        this.checkAvailable(parseInt(this.props.match.params.id), 'album')
+        try {
+            let newState = this.state.availableTracks
+            newState[index] = true
+            this.setState({
+                availableTracks: newState
+            })
+            await axios.post(`${config().url}/addAlbPlayTrack`, { type, id, index }, config().headers)
+            this.checkAvailable(parseInt(this.props.match.params.id), 'album')
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     removeAlbPl = async (id, trackId, index) => {
-        let newState = this.state.availableTracks
-        newState[index] = false
-        this.setState({
-            availableTracks: newState
-        })
-        await axios.post(`${config().url}/removeAlbPlayTrack`, { id, trackId }, config().headers)
-        this.checkAvailable(parseInt(this.props.match.params.id), 'album')
+        try {
+            let newState = this.state.availableTracks
+            newState[index] = false
+            this.setState({
+                availableTracks: newState
+            })
+            await axios.post(`${config().url}/removeAlbPlayTrack`, { id, trackId }, config().headers)
+            this.checkAvailable(parseInt(this.props.match.params.id), 'album')
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     showPlayButton = async (number, button, icon, plIcon, index) => {
@@ -247,7 +273,7 @@ class Album extends Component {
             this.setState({
                 displayTracks: this.state.playlist.tracks.data
             })
-            return 
+            return
         }
         const display = this.state.playlist.tracks.data.filter(cur => {
             const lower = cur.title.toLowerCase()
@@ -396,7 +422,6 @@ function mapDispatchToProps(dispatch) {
         getAllRecent: () => dispatch(getAllRecent()),
         getTracks: () => dispatch(getAllTracks()),
         getPlaylists: () => dispatch(getAllPlaylists()),
-        getArtists: () => dispatch(getAllArtists()),
         getLikes: () => dispatch(getAllLikes()),
         changeSong: (id, type) => dispatch(changeSong(id, type))
     }

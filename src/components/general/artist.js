@@ -12,7 +12,7 @@ import { CircularProgress } from '@material-ui/core';
 import { IoMdHeartEmpty } from "react-icons/io";
 import { IoIosHeartDislike } from "react-icons/io";
 
-import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, getAllArtists, changeSong } from '../../actions'
+import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, changeSong } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
@@ -38,7 +38,7 @@ class Artist extends Component {
     }
 
     componentWillUnmount() {
-        if(!this.props.loggedIn) {
+        if (!this.props.loggedIn) {
             return
         }
         this.props.getAlbums()
@@ -46,14 +46,9 @@ class Artist extends Component {
         this.props.getPlaylists()
         this.props.getLikes()
         this.props.getAllRecent()
-        this.props.getArtists()
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        // if (this.props.loggedIn !== this.state.loggedIn) {
-        //     this.checkLogin()
-        //     this.setState({ loggedIn: true })
-        // }
         if (nextState.url !== nextProps.match.params.id) {
             this.setState({ playlist: null })
             this.checkLogin()
@@ -79,38 +74,57 @@ class Artist extends Component {
     }
 
     getPlaylist = async (value) => {
-        const result = await axios.post(`${config().url}/search/artist`, { id: parseInt(value) }, config().headers)
-        this.setState({
-            playlist: result.data,
-            // displayTracks: result.data.tracks.data
-        })
-        if (this.props.loggedIn) {
-            let availableTracks = []
-            result.data.tracklist.forEach(async (cur, index) => {
-                const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: cur.album.id, trackId: cur.id }, config().headers)
-                availableTracks[index] = res.data
-            })
-            this.setState({
-                availableTracks
-            })
+        try {
+            const result = await axios.post(`${config().url}/search/artist`, { id: parseInt(value) }, config().headers)
+            if (this.props.loggedIn) {
+                let availableTracks = []
+                result.data.tracklist.forEach(async (cur, index) => {
+                    const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: cur.album.id, trackId: cur.id }, config().headers)
+                    availableTracks[index] = res.data
+                    if (index === (result.data.tracklist.length - 1)) {
+                        this.setState({
+                            playlist: result.data,
+                            // displayTracks: result.data.tracks.data
+                        })
+                    }
+                })
+                this.setState({
+                    availableTracks
+                })
+            } else {
+                this.setState({
+                    playlist: result.data,
+                    // displayTracks: result.data.tracks.data
+                })
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 
     getLikes = async () => {
-        if (!this.props.loggedIn) {
-            return
+        try {
+            if (!this.props.loggedIn) {
+                return
+            }
+            const result = await axios.get(`${config().url}/getlikes`, config().headers)
+            this.setState({
+                likes: result.data
+            })
+        } catch (e) {
+            console.log(e)
         }
-        const result = await axios.get(`${config().url}/getlikes`, config().headers)
-        this.setState({
-            likes: result.data
-        })
     }
 
     checkLike = async (id, type) => {
-        const result = await axios.post(`${config().url}/checklike`, { id, type }, config().headers)
-        this.setState({
-            liked: result.data
-        })
+        try {
+            const result = await axios.post(`${config().url}/checklike`, { id, type }, config().headers)
+            this.setState({
+                liked: result.data
+            })
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     addAlbPl = (type, id, trackId, index) => {
@@ -133,7 +147,7 @@ class Artist extends Component {
 
     addToLikes = (type, obj, clas) => {
         const currentClass = clas
-        const secondClass = currentClass.className.split(' ')       
+        const secondClass = currentClass.className.split(' ')
         const s = clas.querySelector('#liked_track')
         const u = clas.querySelector('#unliked_track')
         if (secondClass[1] === 'is_liked') {
@@ -147,7 +161,7 @@ class Artist extends Component {
             s.style.color = 'red'
             u.style.display = 'none'
             currentClass.className = "track_like_holder is_liked"
-            axios.post(`${config().url}/likeUndownload`, { type, data: {...obj, album: {id: obj.album.id, title: obj.album.title, picture: obj.album.cover_medium, type: obj.album.type}} }, config().headers)
+            axios.post(`${config().url}/likeUndownload`, { type, data: { ...obj, album: { id: obj.album.id, title: obj.album.title, picture: obj.album.cover_medium, type: obj.album.type } } }, config().headers)
         }
         this.getLikes()
     }
@@ -263,17 +277,17 @@ class Artist extends Component {
                                     {playlist.relatedArtists ? <Link to={`/${path}/${match.params.id}/similar_artists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}/similar_artists` ? 'artist_border' : ''}>Similar Artists</p></Link> : ''}
 
                                     {playlist.playlists ? <Link to={`/${path}/${match.params.id}/playlists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}/playlists` ? 'artist_border' : ''}>Playlists</p></Link> : ''}
-                                </div> 
+                                </div>
                                 <div>
-                                    <Route exact path='/artist/:id' render={(props) => <Discography {...props} topTracks={playlist} play={this.play} path={path} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn}/>} likeUndownloadAction={this.likeUndownloadAction}></Route>
+                                    <Route exact path='/artist/:id' render={(props) => <Discography {...props} topTracks={playlist} play={this.play} path={path} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} />} likeUndownloadAction={this.likeUndownloadAction}></Route>
 
-                                    <Route path='/artist/:id/top_tracks' render={(props) => <TopTracks {...props} topTracks={playlist.tracklist} play={this.play} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} availableTracks={availableTracks} path={path} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl}/>}></Route>
+                                    <Route path='/artist/:id/top_tracks' render={(props) => <TopTracks {...props} topTracks={playlist.tracklist} play={this.play} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} availableTracks={availableTracks} path={path} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl} />}></Route>
 
-                                    <Route path='/artist/:id/playlists' render={(props) => <ArtistPlaylists {...props} playlists={playlist.playlists} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} path={path} newLikes={this.newLikes}/>}></Route>
+                                    <Route path='/artist/:id/playlists' render={(props) => <ArtistPlaylists {...props} playlists={playlist.playlists} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} loggedIn={loggedIn} addToLikes2={this.addToLikes2} path={path} newLikes={this.newLikes} />}></Route>
 
-                                    <Route path='/artist/:id/albums' render={(props) => <ArtistAlbums {...props} albums={playlist.albums} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} path={path} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes}/>}></Route>
-                                    
-                                    <Route path='/artist/:id/similar_artists' render={(props) => <SimilarArtist {...props} related={playlist.relatedArtists} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes} path={path}/>}></Route>
+                                    <Route path='/artist/:id/albums' render={(props) => <ArtistAlbums {...props} albums={playlist.albums} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} play={this.play} path={path} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes} />}></Route>
+
+                                    <Route path='/artist/:id/similar_artists' render={(props) => <SimilarArtist {...props} related={playlist.relatedArtists} showIcon={this.showIcon} hideIcon={this.hideIcon} expandLike={this.expandLike} shrinkLike={this.shrinkLike} loggedIn={loggedIn} addToLikes2={this.addToLikes2} newLikes={this.newLikes} path={path} />}></Route>
                                 </div>
                             </div> :
                             <div className="spinner">
@@ -300,7 +314,6 @@ function mapDispatchToProps(dispatch) {
         getPlaylists: () => dispatch(getAllPlaylists()),
         getLikes: () => dispatch(getAllLikes()),
         getAllRecent: () => dispatch(getAllRecent()),
-        getArtists: () => dispatch(getAllArtists()),
         changeSong: (id, type) => dispatch(changeSong(id, type))
     }
 }

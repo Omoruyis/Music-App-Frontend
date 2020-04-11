@@ -6,10 +6,9 @@ import { FaRegHeart } from "react-icons/fa";
 import { MdPlayArrow } from "react-icons/md";
 import { Link } from 'react-router-dom'
 
-import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, getAllArtists, changeSong } from '../../actions'
+import { getAllAlbums, getAllPlaylists, getAllLikes, getAllTracks, getAllRecent, changeSong } from '../../actions'
 import Nav from '../partials/nav'
 import Sidebar from '../partials/sidebar'
-import signup from '../../assets/images/signup.png'
 import config from '../../config/config'
 
 import '../../App.css';
@@ -31,11 +30,10 @@ class Explore extends Component {
         this.props.getPlaylists()
         this.props.getLikes()
         this.props.getAllRecent()
-        this.props.getArtists()
     }
 
     componentWillUnmount() {
-        if(!this.props.loggedIn) {
+        if (!this.props.loggedIn) {
             return
         }
         this.props.getAlbums()
@@ -43,31 +41,30 @@ class Explore extends Component {
         this.props.getPlaylists()
         this.props.getLikes()
         this.props.getAllRecent()
-        this.props.getArtists()
     }
-
-    // shouldComponentUpdate() {
-    //     if (this.props.loggedIn !== this.state.loggedIn) {
-    //         this.checkLogin()
-    //         this.setState({ loggedIn: true })
-    //     }
-    //     return true
-    // }
 
     getCharts = async () => {
-        const result = await axios.get(`${config().url}/explore`, config().headers)
-        this.setState({
-            charts: result.data
-        })
+        try {
+            const result = await axios.get(`${config().url}/explore`, config().headers)
+            this.setState({
+                charts: result.data
+            })
+        } catch (e) {
+            console.log(e)
+        }
     }
     getLikes = async () => {
-        if (!this.props.loggedIn) {
-            return
+        try {
+            if (!this.props.loggedIn) {
+                return
+            }
+            const result = await axios.get(`${config().url}/getlikes`, config().headers)
+            this.setState({
+                likes: result.data
+            })
+        } catch (e) {
+            console.log(e)
         }
-        const result = await axios.get(`${config().url}/getlikes`, config().headers)
-        this.setState({
-            likes: result.data
-        })
     }
 
     checkLogin = async () => {
@@ -192,8 +189,8 @@ class Explore extends Component {
                                                                 <FaRegHeart />
                                                             </div>
                                                         </div>
-                                                        <Link to={`/${cur.type}/${cur.id}`} style={{textDecoration: 'none', color: 'black' }}>
-                                                        <p className="explore_artists_name turn_red">{cur.name}</p>
+                                                        <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                                                            <p className="explore_artists_name turn_red">{cur.name}</p>
                                                         </Link>
                                                     </div>
                                                 )
@@ -224,8 +221,8 @@ class Explore extends Component {
                                                                 <FaRegHeart />
                                                             </div>
                                                         </div>
-                                                        <Link to={`/${cur.type}/${cur.id}`} style={{textDecoration: 'none', color: 'black' }}>
-                                                        <p className="explore_artists_name turn_red">{cur.title}</p>
+                                                        <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                                                            <p className="explore_artists_name turn_red">{cur.title}</p>
                                                         </Link>
                                                     </div>
                                                 )
@@ -261,7 +258,6 @@ function mapDispatchToProps(dispatch) {
         getPlaylists: () => dispatch(getAllPlaylists()),
         getLikes: () => dispatch(getAllLikes()),
         getAllRecent: () => dispatch(getAllRecent()),
-        getArtists: () => dispatch(getAllArtists()),
         changeSong: (id, type) => dispatch(changeSong(id, type))
     }
 }
