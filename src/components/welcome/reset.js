@@ -78,7 +78,7 @@ class Reset extends Component {
                 }
                 this.createNotification('error', response.data)
             })
-            .catch(e => console.log('this is the error', e))
+            .catch(e => console.log(e))
     }
 
     show = (second) => {

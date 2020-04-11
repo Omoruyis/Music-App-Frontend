@@ -258,13 +258,17 @@ class AlbumTracks extends Component {
   }
 
     addTrackToPlaylist = async (title) => {
-        const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: { ...this.state.addedTrack, album: { id: this.state.album.information.id, title: this.state.album.information.title, picture: this.state.album.information.cover_small, type: 'album' } } }, config().headers)
+        try {
+            const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: { ...this.state.addedTrack, album: { id: this.state.album.information.id, title: this.state.album.information.title, picture: this.state.album.information.cover_small, type: 'album' } } }, config().headers)
         if (result.data === 'This song is already in this playlist') {
             this.createNotification('error', result.data)
             return
         }
         this.closeModal()
         this.createNotification('success', 'Successfully added track to playlist')
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     changeInput = () => {
@@ -293,7 +297,8 @@ class AlbumTracks extends Component {
     }
 
     createNewPlaylist = async () => {
-        let answer
+        try {
+            let answer
         if (!this.playlistTitle.value) {
             return this.createNotification('error', 'Please input a title')
         }
@@ -317,6 +322,9 @@ class AlbumTracks extends Component {
         this.props.history.push(`/myplaylists/${res.data._id}`)
         this.createNotification('success', 'Successfully created playlist')
         this.setState({ modalIsOpen2: false })
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     getValue = () => {

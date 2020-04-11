@@ -9,7 +9,7 @@ import Artists from '../favourites/artists'
 import Playlists from '../favourites/playlists'
 import { CircularProgress } from '@material-ui/core';
 
-import { deleteLike, getAllLikes, getAllTracks, deleteTrack, addTrack, getAllAlbums, getAllPlaylists, getAllRecent, getAllArtists, changeSong } from '../../actions'
+import { deleteLike, getAllLikes, getAllTracks, deleteTrack, addTrack, getAllAlbums, getAllPlaylists, getAllRecent, changeSong } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
 import config from '../../config/config'
@@ -43,7 +43,6 @@ class Favourites extends Component {
         this.props.getPlaylists()
         this.props.getLikes()
         this.props.getAllRecent()
-        this.props.getArtists()
     }
 
     getPathName = () => {
@@ -189,7 +188,6 @@ function mapDispatchToProps(dispatch) {
         getAlbums: () => dispatch(getAllAlbums()),
         getPlaylists: () => dispatch(getAllPlaylists()),
         getAllRecent: () => dispatch(getAllRecent()),
-        getArtists: () => dispatch(getAllArtists()),
         deleteTrack: (albumId, trackId) => dispatch(deleteTrack(albumId, trackId)),
         addTrack: (data) => dispatch(addTrack(data)),
         changeSong: (id, type) => dispatch(changeSong(id, type))

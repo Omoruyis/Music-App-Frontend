@@ -75,18 +75,24 @@ class Search extends Component {
 
             if (this.props.loggedIn) {
                 let availableTracks = []
-                result.data.tracks.forEach(async (cur, index) => {
-                    const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: cur.album.id, trackId: cur.id }, config().headers)
-                    availableTracks[index] = res.data
-                    if (index === (result.data.tracks.length - 1)) {
-                        this.setState({
-                            searchResult: result.data,
-                        })
-                    }
-                })
-                this.setState({
-                    availableTracks
-                })
+                if (!result.data.tracks.length) {
+                    this.setState({
+                        searchResult: result.data,
+                    })
+                } else {
+                    result.data.tracks.forEach(async (cur, index) => {
+                        const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: cur.album.id, trackId: cur.id }, config().headers)
+                        availableTracks[index] = res.data
+                        if (index === (result.data.tracks.length - 1)) {
+                            this.setState({
+                                searchResult: result.data,
+                            })
+                        }
+                    })
+                    this.setState({
+                        availableTracks
+                    })
+                }
             } else {
                 this.setState({
                     searchResult: result.data,
@@ -235,18 +241,18 @@ class Search extends Component {
                         <Nav type={path} id={`${reroute[2]}${reroute[3] ? `/${reroute[3]}` : ''}`} history={history} />
                         {searchResult && (loggedIn ? likes : true) ?
                             <div className="search_container">
-                                {!searchResult.artists.length && !searchResult.albums.length && !searchResult.playlists.length && !searchResult.tracks.length && !searchResult.topResults.keys ? <div className="no_playlist no_result">
-                                    <p className="discography_header_text">Sorry, we couldn't find any result for {reroute[reroute.length - 1]}</p>
+                                {!searchResult.artists.length && !searchResult.albums.length && !searchResult.playlists.length && !searchResult.tracks.length && !Object.keys(searchResult.topResults).length ? <div className="no_playlist no_result">
+                                    <p className="discography_header_text">Sorry, we couldn't find any result for {`"${reroute[reroute.length - 1]}"`}</p>
                                 </div> : <div className="artist_discography search_headers">
                                         <Link to={`/${path}/${match.params.query}`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}` ? 'artist_border' : ''}>All</p></Link>
 
-                                        {searchResult.tracks.length ? <Link to={`/${path}/${match.params.query}/tracks`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/tracks` ? 'artist_border' : ''}>Tracks</p></Link> : ''}
+                                        {searchResult.tracks && searchResult.tracks.length ? <Link to={`/${path}/${match.params.query}/tracks`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/tracks` ? 'artist_border' : ''}>Tracks</p></Link> : ''}
 
-                                        {searchResult.albums.length ? <Link to={`/${path}/${match.params.query}/albums`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/albums` ? 'artist_border' : ''}>Albums</p></Link> : ''}
+                                        {searchResult.albums && searchResult.albums.length ? <Link to={`/${path}/${match.params.query}/albums`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/albums` ? 'artist_border' : ''}>Albums</p></Link> : ''}
 
-                                        {searchResult.artists.length ? <Link to={`/${path}/${match.params.query}/artists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/artists` ? 'artist_border' : ''}>Artists</p></Link> : ''}
+                                        {searchResult.artists && searchResult.artists.length ? <Link to={`/${path}/${match.params.query}/artists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/artists` ? 'artist_border' : ''}>Artists</p></Link> : ''}
 
-                                        {searchResult.playlists.length ? <Link to={`/${path}/${match.params.query}/playlists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/playlists` ? 'artist_border' : ''}>Playlists</p></Link> : ''}
+                                        {searchResult.playlists && searchResult.playlists.length ? <Link to={`/${path}/${match.params.query}/playlists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/playlists` ? 'artist_border' : ''}>Playlists</p></Link> : ''}
                                     </div>}
                                 <div className="search_headers">
                                     <Route exact path='/search/:query' render={(props) => <All {...props} searchResult={searchResult} play={this.play} path={path} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} likeUndownloadAction={this.likeUndownloadAction} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl} availableTracks={availableTracks} showIcon={this.showIcon} hideIcon={this.hideIcon} expandPlay={this.expandPlay} shrinkPlay={this.shrinkPlay} expandLike={this.expandLike} shrinkLike={this.shrinkLike} addToLikes2={this.addToLikes2} />}></Route>

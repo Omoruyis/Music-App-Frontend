@@ -6,7 +6,6 @@ import {
     ALL_PLAYLISTS,
     ALL_RECENT,
     ALL_LIKES,
-    ALL_ARTISTS,
     DELETE_LIKE,
     ADD_LIKE, 
     DELETE_TRACK,
@@ -65,11 +64,6 @@ function rootReducer (state = { loggedIn: false, deezerType: '', deezerId: '', s
             return {
                 ...state,
                 likes
-            }
-        case ALL_ARTISTS:
-            return {
-                ...state,
-                artists
             }
         case PLAYLIST_SOURCE:
             return {

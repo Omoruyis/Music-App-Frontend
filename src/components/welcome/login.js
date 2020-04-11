@@ -51,7 +51,7 @@ class Login extends Component {
                     this.props.history.push('/explore')
                 }
             })
-            .catch(e => console.log('this is the error', e))
+            .catch(e => console.log(e))
     }
 
     changeLogin = () => {
@@ -91,7 +91,7 @@ class Login extends Component {
                     this.changeLogin()
                 }
             })
-            .catch(e => console.log('this is the error', e))
+            .catch(e => console.log(e))
     }
 
     show = () => {

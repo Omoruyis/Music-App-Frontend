@@ -69,12 +69,10 @@ class Signup extends Component {
                     this.changeLogin()
                     return this.createNotification('error', 'This account already exists')
                 }
-                // localStorage.setItem("token", response.data.token);
                 this.changeLogin()
                 return this.createNotification('success', `You've successfully signed up. Please proceed to login`)
-                // this.props.history.push(`/${this.state.redirect ?  `?redirect_link=${this.state.redirect}` : ''}`)
             })
-            .catch(e => console.log('this is the error', e))
+            .catch(e => console.log(e))
     }
 
     show = () => {

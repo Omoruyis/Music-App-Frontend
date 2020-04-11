@@ -27,16 +27,10 @@ const getLikes = async () => {
     return result.data
 }
 
-const getArtists = async () => {
-    const result = await axios.get(`${config().url}/allartists`, config().headers)
-    return result.data
-}
-
 export {
     getAlbums, 
     getTracks,
     getPlaylists,
     getRecent,
-    getLikes,
-    getArtists
+    getLikes
 }

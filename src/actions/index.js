@@ -7,7 +7,6 @@ export const ALL_TRACKS = 'ALL_TRACKS'
 export const ALL_PLAYLISTS = 'ALL_PLAYLISTS'
 export const ALL_RECENT = 'ALL_RECENT'
 export const ALL_LIKES = 'ALL_LIKES'
-export const ALL_ARTISTS = 'ALL_ARTISTS'
 export const DELETE_LIKE = 'DELETE_LIKE'
 export const ADD_LIKE = 'ADD_LIKE'
 export const DELETE_TRACK = 'DELETE_TRACK'
@@ -69,13 +68,6 @@ export function getMyLikes (likes) {
     return {
         type: ALL_LIKES,
         likes
-    }
-}
-
-export function getMyArtists (artists) {
-    return {
-        type: ALL_ARTISTS,
-        artists
     }
 }
 
@@ -231,12 +223,5 @@ export const getAllLikes = () => dispatch => (
     getLikes()
         .then(likes => {
             dispatch(getMyLikes(likes))
-        })
-)
-
-export const getAllArtists = () => dispatch => (
-    getArtists()
-        .then(artists => {
-            dispatch(getMyArtists(artists))
         })
 )

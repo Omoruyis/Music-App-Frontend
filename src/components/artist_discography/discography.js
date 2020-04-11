@@ -56,7 +56,7 @@ class Discography extends Component {
         return (
             <div>
                 <div className="discography_first">
-                    {topTracks.mostPlayed ? <div className="discography_top_tracks">
+                    {topTracks.mostPlayed && topTracks.mostPlayed.length ? <div className="discography_top_tracks">
                         <p className="discography_header_text">Top Tracks</p>
                         <div className="discography_mapped_container">
                             {topTracks.mostPlayed.map((track, index) => {
@@ -89,7 +89,7 @@ class Discography extends Component {
                             </Link>
                         </div>
                     </div> : ''}
-                    {topTracks.playlists ? <div className="discography_playlists">
+                    {topTracks.playlists && topTracks.playlists.length ? <div className="discography_playlists">
                         <p className="discography_header_text">Playlists</p>
                         <div>
                             {topTracks.playlists.map((cur, index) => {

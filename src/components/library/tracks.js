@@ -13,7 +13,7 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosMore } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
-import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllAlbums, getAllTracks, getAllPlaylists, getAllRecent, getAllArtists, changeSong, changeSource } from '../../actions'
+import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllAlbums, getAllTracks, getAllPlaylists, getAllRecent, changeSong, changeSource } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
@@ -88,7 +88,6 @@ class MyTracks extends Component {
         this.props.getPlaylists()
         this.props.getLikes()
         this.props.getAllRecent()
-        this.props.getArtists()
     }
 
     openModal = (number) => {
@@ -169,14 +168,14 @@ class MyTracks extends Component {
     }
 
     createNotification = (type, message) => {
-          switch (type) {
+        switch (type) {
             case 'success':
-              NotificationManager.success(message, '', 2000);
-              break;
+                NotificationManager.success(message, '', 2000);
+                break;
             case 'error':
-              NotificationManager.error(message, '', 2000);
-              break;
-          }
+                NotificationManager.error(message, '', 2000);
+                break;
+        }
     }
 
     addToPlaylist = track => {
@@ -184,13 +183,17 @@ class MyTracks extends Component {
     }
 
     addTrackToPlaylist = async (title) => {
-        const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
-        if (result.data === 'This song is already in this playlist') {
-            this.createNotification('error', result.data)
-            return
+        try {
+            const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
+            if (result.data === 'This song is already in this playlist') {
+                this.createNotification('error', result.data)
+                return
+            }
+            this.closeModal()
+            this.createNotification('success', 'Successfully added track to playlist')
+        } catch (e) {
+            console.log(e)
         }
-        this.closeModal()
-        this.createNotification('success', 'Successfully added track to playlist')
     }
 
     changeCreate = () => {
@@ -200,30 +203,34 @@ class MyTracks extends Component {
     }
 
     createNewPlaylist = async () => {
-        let answer
-        if (!this.playlistTitle.value) {
-            return this.createNotification('error', 'Please input a title')
-        }
-        for (let i = 0; i < this.props.playlists.length; i++) {
-            if (this.props.playlists[i].information.title === this.playlistTitle.value) {
-                answer = true
-                break
-            } else {
-                answer = false
+        try {
+            let answer
+            if (!this.playlistTitle.value) {
+                return this.createNotification('error', 'Please input a title')
             }
-        }
-        if (answer) {
-            return this.createNotification('error', 'This playlist already exists')
-        }
-        this.changeCreate()
-        await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
+            for (let i = 0; i < this.props.playlists.length; i++) {
+                if (this.props.playlists[i].information.title === this.playlistTitle.value) {
+                    answer = true
+                    break
+                } else {
+                    answer = false
+                }
+            }
+            if (answer) {
+                return this.createNotification('error', 'This playlist already exists')
+            }
+            this.changeCreate()
+            await axios.post(`${config().url}/createplaylist`, { title: this.playlistTitle.value, description: this.playlistDescription.value }, config().headers)
 
-        const res = await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
-        this.props.changeSource('track')
-        this.changeCreate()
-        this.props.history.push(`/myplaylists/${res.data._id}`)
-        this.createNotification('success', 'Successfully created playlist')
-        this.setState({ modalIsOpen2: false })
+            const res = await axios.patch(`${config().url}/addtoplaylist`, { title: this.playlistTitle.value, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
+            this.props.changeSource('track')
+            this.changeCreate()
+            this.props.history.push(`/myplaylists/${res.data._id}`)
+            this.createNotification('success', 'Successfully created playlist')
+            this.setState({ modalIsOpen2: false })
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     sortTracks = (e) => {
@@ -293,7 +300,7 @@ class MyTracks extends Component {
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Songs" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>
-                            <LibraryNav history={history} location={location}/>
+                            <LibraryNav history={history} location={location} />
                         </div>
                         {tracks && trackLikes && mounted ? (!tracks.length ?
                             <div className="no_track">
@@ -448,7 +455,6 @@ function mapDispatchToProps(dispatch) {
         getPlaylists: () => dispatch(getAllPlaylists()),
         getAlbums: () => dispatch(getAllAlbums()),
         getAllRecent: () => dispatch(getAllRecent()),
-        getArtists: () => dispatch(getAllArtists()),
         createPlaylist: (title, description) => dispatch(createPlaylist(title, description)),
         changeSong: (id, type) => dispatch(changeSong(id, type)),
         changeSource: (source) => dispatch(changeSource(source))
