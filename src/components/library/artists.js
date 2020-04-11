@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
 import { CircularProgress } from '@material-ui/core';
 
-import { getAllRecent, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks, getAllArtists } from '../../actions'
+import { getAllRecent, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks, getAllArtists, changeNumber } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
 
@@ -20,28 +20,33 @@ class MyArtists extends Component {
 
     componentDidMount() {
         this.setState({ mounted: true })
-        if (this.props.albums) {
-            this.getArtistsF()
+        if (this.props.albums && this.props.albums.length) {
+            this.getArtistsF(this.props.albums)
+        } else if (this.props.albumNumber === 1) {
+            this.getArtistsF(this.props.albums)
+            this.props.changeNumber('')
         } else {
             this.props.getAlbums()
         }
-        // this.props.getArtists()
     }
 
-    // shouldComponentUpdate(nextProps) {
-    //     if (this.props.albums !== nextProps.albums && !this.state.artists) {
-    //         let artists = nextProps.albums.map(album => album.information.artist)
-    //         this.setState({artists})
-    //     }
-    //     return true 
-    // }
+    shouldComponentUpdate(nextProps) {
+        if (this.props.albums !== nextProps.albums && !this.state.artists) {
+            this.getArtistsF(nextProps.albums)
+        }
+        return true 
+    }
 
-    getArtistsF() {
-        let artists = this.props.albums.map(album => `${album.information.artist.id}*****${album.information.artist.name}*****${album.information.artist.picture_medium}`)
-        console.log(artists)
-        const newArtists = new Set(artists)
-        console.log(newArtists)
-        this.setState({artists})
+    getArtistsF(arr) {
+        let artists = arr.reduce((obj, album) => {
+            const id = album.information.artist.id
+            if (!obj[`${id}`]) {
+                obj[`${id}`] = {id: album.information.artist.id, name: album.information.artist.name, picture: album.information.artist.picture_medium}
+            }
+            return obj
+        }, {})
+        const newArtists = Object.keys(artists).map(cur => artists[cur]).sort((a, b) => a.name > b.name ? 1 : -1)
+        this.setState({artists: newArtists})
     }
 
     componentWillUnmount() {
@@ -105,7 +110,7 @@ class MyArtists extends Component {
                                             <div className="explore_artist" id="discography_playlist_mapped" key={index}>
                                                 <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistImage[index])}>
                                                     <Link to={`/myartists/${artist.id}`}>
-                                                        <img src={artist.picture_medium} ref={el => this.playlistImage[index] = el} alt="album cover" className="explore_artists_images" />
+                                                        <img src={artist.picture} ref={el => this.playlistImage[index] = el} alt="album cover" className="explore_artists_images" />
                                                     </Link>
                                                 </div>
                                                 <Link to={`/myartists/${artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>
@@ -131,12 +136,13 @@ class MyArtists extends Component {
 function mapStateToProps(state) {
     if (state.albums) {
         return {
-            // artists: state.artists,
-            albums: state.albums 
+            albums: state.albums,
+            albumNumber: state.albumNumber
         }
     } else {
         return {
             albums: '',
+            albumNumber: state.albumNumber
         }
     }
 }
@@ -148,7 +154,8 @@ function mapDispatchToProps(dispatch) {
         getLikes: () => dispatch(getAllLikes()),
         getPlaylists: () => dispatch(getAllPlaylists()),
         getArtists: () => dispatch(getAllArtists()),
-        getTracks: () => dispatch(getAllTracks())
+        getTracks: () => dispatch(getAllTracks()),
+        changeNumber: (number) => dispatch(changeNumber(number))
     }
 }
 
