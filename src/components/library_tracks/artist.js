@@ -144,10 +144,11 @@ class ArtistAlbums extends Component {
                             </div>
                             <LibraryNav history={history} location={location}/>
                         </div>
-                        {albums && albumLikes && mounted ? (!albums.length ?
-                            <div className="no_playlist">
-                                <p className="discography_header_text">You don't currently have any album added</p>
-                            </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
+                        {albums && albumLikes && mounted ? (!this.filterPlaylists().length ?
+                            <div className="no_playlist no_result">
+                                <p className="discography_header_text">404, page not found</p>
+                            </div> : 
+                            <div className="top_search_result search_tracks remove_search_border my_tracks">
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterPlaylists().length} ${this.filterPlaylists().length !== 1 ? 'Albums' : 'Album'}`}</p>
                                     <div>

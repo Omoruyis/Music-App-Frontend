@@ -77,7 +77,6 @@ class Artist extends Component {
         try {
             const result = await axios.post(`${config().url}/search/artist`, { id: parseInt(value) }, config().headers)
             if (this.props.loggedIn) {
-                console.log(result.data)
                 let availableTracks = []
                 if (!result.data.tracklist || !result.data.tracklist.length) {
                     this.setState({
@@ -256,7 +255,7 @@ class Artist extends Component {
                         {playlist && (loggedIn ? likes : true) ?
                             <div className="playlist_container">
                                 {playlist.typeDetails.error ? <div className="no_playlist no_result">
-                                    <p className="discography_header_text">Sorry, this artist doesn't exist</p>
+                                    <p className="discography_header_text">404, page not found</p>
                                 </div> : 
                                 <div>
                                     <div className="artist_details">

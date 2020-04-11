@@ -65,19 +65,25 @@ class Album extends Component {
             const result = await axios.post(`${config().url}/search/album`, { id: parseInt(this.props.match.params.id) }, config().headers)
             if (this.props.loggedIn) {
                 let availableTracks = []
-                result.data.tracks.data.forEach(async (cur, index) => {
-                    const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: parseInt(this.props.match.params.id), trackId: cur.id }, config().headers)
-                    availableTracks[index] = res.data
-                    if (index === (result.data.tracks.data.length - 1)) {
-                        this.setState({
-                            playlist: result.data,
-                            displayTracks: result.data.tracks.data
-                        })
-                    }
-                })
-                this.setState({
-                    availableTracks
-                })
+                if (!result.data.tracks) {
+                    this.setState({
+                        playlist: result.data,
+                    })
+                } else {
+                    result.data.tracks.data.forEach(async (cur, index) => {
+                        const res = await axios.post(`${config().url}/checkTrackInAlbum`, { id: parseInt(this.props.match.params.id), trackId: cur.id }, config().headers)
+                        availableTracks[index] = res.data
+                        if (index === (result.data.tracks.data.length - 1)) {
+                            this.setState({
+                                playlist: result.data,
+                                displayTracks: result.data.tracks.data
+                            })
+                        }
+                    })
+                    this.setState({
+                        availableTracks
+                    })
+                }
             } else {
                 this.setState({
                     playlist: result.data,
@@ -305,98 +311,103 @@ class Album extends Component {
                         <Nav type={path} id={match.params.id} history={history} />
                         {playlist && (loggedIn ? likes : true) ?
                             <div className="playlist_container">
-                                <div className="playlist_header" id={loggedIn ? "playlist_header" : ''}>
-                                    <img src={playlist.cover_medium} alt="albu
-                                    m-cover" className="playlist_image" />
-                                    <div className="playlist_details_holder">
-                                        <p className="playlist_title">{trimString(playlist.title, 17)}</p>
-                                        <Link to={`/${playlist.artist.type}/${playlist.artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>
-                                            <p className="explore_artists_name turn_red">{trimString(playlist.artist.name, 20)}</p>
-                                        </Link>
-                                        {available ? <p className="playlist_duration">In Library</p> : ''}
-                                        <div className="playlist_duration">
-                                            <p className="dura">{playlist.nb_tracks} {playlist.nb_tracks !== 1 ? 'tracks' : 'track'}</p>
-                                            <p className="playlist_time">{time(playlist.duration)}</p>
+                                {playlist.error ? <div className="no_playlist no_result">
+                                    <p className="discography_header_text">404, page not found</p>
+                                </div> : 
+                                <div>
+                                    <div className="playlist_header" id={loggedIn ? "playlist_header" : ''}>
+                                        <img src={playlist.cover_medium} alt="albu
+                                        m-cover" className="playlist_image" />
+                                        <div className="playlist_details_holder">
+                                            <p className="playlist_title">{trimString(playlist.title, 17)}</p>
+                                            <Link to={`/${playlist.artist.type}/${playlist.artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>
+                                                <p className="explore_artists_name turn_red">{trimString(playlist.artist.name, 20)}</p>
+                                            </Link>
+                                            {available ? <p className="playlist_duration">In Library</p> : ''}
+                                            <div className="playlist_duration">
+                                                <p className="dura">{playlist.nb_tracks} {playlist.nb_tracks !== 1 ? 'tracks' : 'track'}</p>
+                                                <p className="playlist_time">{time(playlist.duration)}</p>
+                                            </div>
+                                        </div>
+                                        <div className="play_holder" ref={el => this.playTop = el} onClick={() => {
+                                            loggedIn ? this.play(path, match.params.id) : this.login()
+                                        }} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
+                                            <MdPlayArrow style={{ fontSize: '25px' }} />
                                         </div>
                                     </div>
-                                    <div className="play_holder" ref={el => this.playTop = el} onClick={() => {
-                                        loggedIn ? this.play(path, match.params.id) : this.login()
-                                    }} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
-                                        <MdPlayArrow style={{ fontSize: '25px' }} />
-                                    </div>
-                                </div>
-                                <div className="playlist_actions_holder">
-                                    <div className="playlist_button_holder">
-                                        <button className="playlist_button" id="playlist_listen" onClick={() => {
-                                            loggedIn ? this.play(path, match.params.id) : this.login()
-                                        }}>
-                                            <MdPlayCircleOutline className="playlist_button_icon" />
-                                            Listen
+                                    <div className="playlist_actions_holder">
+                                        <div className="playlist_button_holder">
+                                            <button className="playlist_button" id="playlist_listen" onClick={() => {
+                                                loggedIn ? this.play(path, match.params.id) : this.login()
+                                            }}>
+                                                <MdPlayCircleOutline className="playlist_button_icon" />
+                                                Listen
+                                            </button>
+                                            {!available ? <button className="playlist_button" onClick={() => loggedIn ? this.libraryAction(parseInt(match.params.id), path, 'add', true) : this.login()}>
+                                                <GoPlus className="playlist_button_icon" />
+                                                Add
+                                            </button> :
+                                                <button className="playlist_button" onClick={() => loggedIn ? this.libraryAction(parseInt(match.params.id), path, 'delete', false) : this.login()}>
+                                                    <IoMdRemove className="playlist_button_icon" />
+                                                Remove
+                                            </button>}
+                                            {!liked ?
+                                                <button className="playlist_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist, 'like') }}>
+                                                    <IoMdHeartEmpty className="playlist_button_icon" />
+                                                Like
+                                            </button> :
+                                                <button className="playlist_button" id="unlike_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist, 'unlike') }}>
+                                                    <IoIosHeartDislike className="playlist_button_icon" />
+                                            Unlike
                                         </button>
-                                        {!available ? <button className="playlist_button" onClick={() => loggedIn ? this.libraryAction(parseInt(match.params.id), path, 'add', true) : this.login()}>
-                                            <GoPlus className="playlist_button_icon" />
-                                            Add
-                                        </button> :
-                                            <button className="playlist_button" onClick={() => loggedIn ? this.libraryAction(parseInt(match.params.id), path, 'delete', false) : this.login()}>
-                                                <IoMdRemove className="playlist_button_icon" />
-                                            Remove
-                                        </button>}
-                                        {!liked ?
-                                            <button className="playlist_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist, 'like') }}>
-                                                <IoMdHeartEmpty className="playlist_button_icon" />
-                                            Like
-                                        </button> :
-                                            <button className="playlist_button" id="unlike_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist, 'unlike') }}>
-                                                <IoIosHeartDislike className="playlist_button_icon" />
-                                        Unlike
-                                    </button>
-                                        }
+                                            }
+                                        </div>
+                                        <input type="search" className="search_track" placeholder="Search within tracks" onInput={() => this.filterTracks()} ref={el => this.searchTrack = el} />
                                     </div>
-                                    <input type="search" className="search_track" placeholder="Search within tracks" onInput={() => this.filterTracks()} ref={el => this.searchTrack = el} />
-                                </div>
-                                <div>
-                                    <div className="tracks_header">
-                                        <div className="playlist_tracks_header" id="track_album_number"><p className="u">#</p></div>
-                                        <p className="playlist_tracks_header" id="track_album_title" >TRACK</p>
-                                        <p className="playlist_tracks_header" id="track_album_duration">DURATION</p>
-                                    </div>
-                                    {displayTracks.map((track, index) => {
-                                        return (
-                                            <div className="tracks_header tracks_header_background" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
-                                                <div className="track_number">
-                                                    <div className="u" ref={el => this.trackNumber[index] = el}>
-                                                        <p style={{ marginBottom: '0' }}>{index + 1}</p>
-                                                    </div>
-                                                    <div className="play_track_button" ref={el => this.playSong[index] = el} onClick={() => { loggedIn ? this.play('tracks', track.id) : this.login() }}>
-                                                        <MdPlayArrow style={{ fontSize: '25px', color: 'white' }} />
-                                                    </div>
-                                                    <div onClick={() => loggedIn ? this.addToLikes(track.type, track, this.trackLike[index]) : this.login()} ref={el => this.trackLike[index] = el} className={`track_like_holder ${loggedIn ? (this.newLikes(track, 'trackLikes') ? 'is_liked' : 'is_unliked') : ''}`}>
+                                    <div>
+                                        <div className="tracks_header">
+                                            <div className="playlist_tracks_header" id="track_album_number"><p className="u">#</p></div>
+                                            <p className="playlist_tracks_header" id="track_album_title" >TRACK</p>
+                                            <p className="playlist_tracks_header" id="track_album_duration">DURATION</p>
+                                        </div>
+                                        {displayTracks.map((track, index) => {
+                                            return (
+                                                <div className="tracks_header tracks_header_background" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
+                                                    <div className="track_number">
+                                                        <div className="u" ref={el => this.trackNumber[index] = el}>
+                                                            <p style={{ marginBottom: '0' }}>{index + 1}</p>
+                                                        </div>
+                                                        <div className="play_track_button" ref={el => this.playSong[index] = el} onClick={() => { loggedIn ? this.play('tracks', track.id) : this.login() }}>
+                                                            <MdPlayArrow style={{ fontSize: '25px', color: 'white' }} />
+                                                        </div>
+                                                        <div onClick={() => loggedIn ? this.addToLikes(track.type, track, this.trackLike[index]) : this.login()} ref={el => this.trackLike[index] = el} className={`track_like_holder ${loggedIn ? (this.newLikes(track, 'trackLikes') ? 'is_liked' : 'is_unliked') : ''}`}>
 
-                                                        <IoIosHeart className={!loggedIn ? 'hide' : (this.newLikes(track, 'trackLikes') ? 'track_liked' : 'hide')} id="liked_track" />
-                                                        <IoMdHeartEmpty className={!loggedIn ? 'show' : (this.newLikes(track, 'trackLikes') ? 'hide' : 'track_not_liked')} id="unliked_track" />
-                                                    </div>
-                                                </div>
-                                                <div className="track_album_title">
-                                                    <p style={{ width: '70%' }}>{trimString(track.title, 40)}</p>
-                                                    <div className="add_icon_holder">
-                                                        <div ref={el => this.addIcon[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.addAlbPl(path, parseInt(match.params.id), index) : this.login() }}>
-                                                            <IoIosAddCircleOutline className="add_icons_play" />
-                                                            <span className="tooltiptext">Add to library</span>
-                                                        </div>
-                                                        <div ref={el => this.addIconPl[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.removeAlbPl(parseInt(match.params.id), track.id, index) : this.login() }}>
-                                                            <IoIosRemoveCircleOutline className="add_icons_play" />
-                                                            <span className="tooltiptext">Remove from library</span>
+                                                            <IoIosHeart className={!loggedIn ? 'hide' : (this.newLikes(track, 'trackLikes') ? 'track_liked' : 'hide')} id="liked_track" />
+                                                            <IoMdHeartEmpty className={!loggedIn ? 'show' : (this.newLikes(track, 'trackLikes') ? 'hide' : 'track_not_liked')} id="unliked_track" />
                                                         </div>
                                                     </div>
-                                                    <div style={{ width: '10%' }}>
-                                                        {track.explicit_lyrics ? <MdExplicit /> : ''}
+                                                    <div className="track_album_title">
+                                                        <p style={{ width: '70%' }}>{trimString(track.title, 40)}</p>
+                                                        <div className="add_icon_holder">
+                                                            <div ref={el => this.addIcon[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.addAlbPl(path, parseInt(match.params.id), index) : this.login() }}>
+                                                                <IoIosAddCircleOutline className="add_icons_play" />
+                                                                <span className="tooltiptext">Add to library</span>
+                                                            </div>
+                                                            <div ref={el => this.addIconPl[index] = el} className="add_library_icon" onClick={() => { loggedIn ? this.removeAlbPl(parseInt(match.params.id), track.id, index) : this.login() }}>
+                                                                <IoIosRemoveCircleOutline className="add_icons_play" />
+                                                                <span className="tooltiptext">Remove from library</span>
+                                                            </div>
+                                                        </div>
+                                                        <div style={{ width: '10%' }}>
+                                                            {track.explicit_lyrics ? <MdExplicit /> : ''}
+                                                        </div>
                                                     </div>
+                                                    <p className="track_duration">{trackTime(track.duration)}</p>
                                                 </div>
-                                                <p className="track_duration">{trackTime(track.duration)}</p>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>}
                             </div> :
                             <div className="spinner">
                                 <CircularProgress />

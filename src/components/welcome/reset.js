@@ -27,12 +27,14 @@ class Reset extends Component {
 
     createNotification = (type, message) => {
         switch (type) {
-          case 'success':
-            NotificationManager.success(message, '', 3000);
-            break;
-          case 'error':
-            NotificationManager.error(message, '', 2000);
-            break;
+            case 'success':
+                NotificationManager.success(message, '', 3000);
+                break;
+            case 'error':
+                NotificationManager.error(message, '', 2000);
+                break;
+            default:
+                return ''
         }
     }
 

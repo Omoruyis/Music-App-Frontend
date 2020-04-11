@@ -1,4 +1,4 @@
-import { getPlaylists, getTracks, getAlbums, getRecent, getLikes, getArtists } from '../utils/getAPI'
+import { getPlaylists, getTracks, getAlbums, getRecent, getLikes } from '../utils/getAPI'
 
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'

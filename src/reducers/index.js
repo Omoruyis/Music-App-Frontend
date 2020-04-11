@@ -28,7 +28,7 @@ import config from '../config/config'
 
 
 function rootReducer (state = { loggedIn: false, deezerType: '', deezerId: '', source: 'track', albumSource: '', albumNumber: '' }, action) {
-    const { albums, playlists, recent, likes, artists, category, data, tracks, albumId, trackId, title, description, id, _id, deezerId, deezerType, source, albumSource, albumNumber } = action
+    const { albums, playlists, recent, likes, category, data, tracks, albumId, trackId, title, description, id, _id, deezerId, deezerType, source, albumSource, albumNumber } = action
     switch (action.type) {
         case LOGIN:
             return {

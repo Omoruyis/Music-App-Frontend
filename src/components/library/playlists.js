@@ -154,6 +154,8 @@ class MyPlaylists extends Component {
             case 'error':
                 NotificationManager.error(message, '', 2000);
                 break;
+            default:
+                return ''
         }
     }
 

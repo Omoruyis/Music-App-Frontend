@@ -56,7 +56,7 @@ class App extends Component {
         {this.state.show ? 
           <div>
             <Route exact path='/' component={Welcome} />
-            <Route path='/explore' component={Explore} />
+            <Route exact path='/explore' component={Explore} />
             <Route path='/playlist/:id' component={Playlist} />
             <Route path='/album/:id' component={Album} />
             <Route path='/artist/:id' component={Artist} />
@@ -64,12 +64,12 @@ class App extends Component {
             <Route path='/signup' component={Signup} />
             <Route path='/changepassword' component={Reset} />
             <Route path='/search/:query' component={Search} />
-            <Route path="/my_tracks" component={MyTracks} />
-            <Route path="/my_playlists" component={MyPlaylists} />
-            <Route path="/my_albums" component={MyAlbums} />
+            <Route exact path="/my_tracks" component={MyTracks} />
+            <Route exact path="/my_playlists" component={MyPlaylists} />
+            <Route exact path="/my_albums" component={MyAlbums} />
             <Route path="/favourites" component={Favourites} /> 
-            <Route path="/recentlyAdded" component={Recent} /> 
-            <Route path="/my_artists" component={MyArtists} /> 
+            <Route exact path="/recentlyAdded" component={Recent} /> 
+            <Route exact path="/my_artists" component={MyArtists} /> 
             <Route path="/myplaylists/:id" component={PlaylistTracks} /> 
             <Route path="/myalbums/:id" component={AlbumTracks} /> 
             <Route path="/myartists/:id" component={ArtistAlbums} /> 

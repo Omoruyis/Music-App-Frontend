@@ -29,12 +29,14 @@ class Login extends Component {
 
     createNotification = (type, message) => {
         switch (type) {
-          case 'success':
-            NotificationManager.success('Successfully signed up', '', 3000);
-            break;
-          case 'error':
-            NotificationManager.error(message, '', 2000);
-            break;
+            case 'success':
+                NotificationManager.success('Successfully signed up', '', 3000);
+                break;
+            case 'error':
+                NotificationManager.error(message, '', 2000);
+                break;
+            default:
+                return ''
         }
     }
 
