@@ -186,12 +186,12 @@ class MyTracks extends Component {
 
     addTrackToPlaylist = async (title) => {
         try {
+            this.closeModal()
             const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: { ...this.state.addedTrack.information, album: { id: this.state.addedTrack.albumId, title: this.state.addedTrack.albumTitle, picture: this.state.addedTrack.cover, type: 'album' } } }, config().headers)
             if (result.data === 'This song is already in this playlist') {
-                this.createNotification('error', result.data)
+                this.createNotification('error', 'This track already exists in this playlist')
                 return
             }
-            this.closeModal()
             this.createNotification('success', 'Successfully added track to playlist')
         } catch (e) {
             console.log(e)

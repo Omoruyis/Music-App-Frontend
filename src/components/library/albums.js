@@ -25,7 +25,6 @@ class MyAlbums extends Component {
     componentDidMount() {
         this.setState({ mounted: true })
         if (!this.props.albums) {
-            console.log('another one')
             this.props.getAlbums()
         }
         if (!this.props.likes) {

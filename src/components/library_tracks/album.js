@@ -17,7 +17,7 @@ import { IoIosMore } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 
 
-import { deleteLike, addLike, deleteTrackFromAlbum, getAllLikes, getAllAlbums, getAllPlaylists, deletePlaylist, deleteEmptyAlbum, changeSong, changeSource, changeNumber } from '../../actions'
+import { deleteLike, addLike, deleteTrackFromAlbum, getAllLikes, getAllAlbums, getAllTracks, getAllRecent, getAllPlaylists, deletePlaylist, deleteEmptyAlbum, changeSong, changeSource, changeNumber } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
@@ -87,6 +87,13 @@ class AlbumTracks extends Component {
         this.props.getAlbums()
         this.props.getPlaylists()
         this.props.getLikes()
+    }
+
+    componentWillUnmount() {
+        this.props.getTracks()
+        this.props.getPlaylists()
+        this.props.getLikes()
+        this.props.getAllRecent()
     }
 
     shouldComponentUpdate(nextProps) {
@@ -260,12 +267,12 @@ class AlbumTracks extends Component {
 
     addTrackToPlaylist = async (title) => {
         try {
+            this.closeModal()
             const result = await axios.patch(`${config().url}/addtoplaylist`, { title, data: { ...this.state.addedTrack, album: { id: this.state.album.information.id, title: this.state.album.information.title, picture: this.state.album.information.cover_small, type: 'album' } } }, config().headers)
         if (result.data === 'This song is already in this playlist') {
-            this.createNotification('error', result.data)
+            this.createNotification('error', 'This track already exists in this playlist')
             return
         }
-        this.closeModal()
         this.createNotification('success', 'Successfully added track to playlist')
         } catch (e) {
             console.log(e)
@@ -562,8 +569,10 @@ function mapDispatchToProps(dispatch) {
         deleteTrackFromAlbum: (albumId, trackId) => dispatch(deleteTrackFromAlbum(albumId, trackId)),
         deleteEmptyAlbum: (albumId) => dispatch(deleteEmptyAlbum(albumId)),
         deletePlaylist: (id, category) => dispatch(deletePlaylist(id, category)),
+        getTracks: () => dispatch(getAllTracks()),
         getAlbums: () => dispatch(getAllAlbums()),
         getLikes: () => dispatch(getAllLikes()),
+        getAllRecent: () => dispatch(getAllRecent()),
         getPlaylists: () => dispatch(getAllPlaylists()),
         changeSong: (id, type) => dispatch(changeSong(id, type)),
         changeSource: (source) => dispatch(changeSource(source)),
