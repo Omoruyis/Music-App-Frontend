@@ -52,7 +52,6 @@ class PlaylistTracks extends Component {
         id: 0,
         playlist: '',
         modalIsOpen: false, 
-        // index: ''
     }
 
     componentDidMount() {
@@ -70,12 +69,6 @@ class PlaylistTracks extends Component {
             } else {
                 this.setState({ playlist: 'bad request' })
             }
-            // this.setState({ playlist: this.props.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0] })
-            // this.props.playlists.forEach((cur, index) => {
-            //     if (cur._id === this.props.match.params.id) {
-            //         this.setState({index})
-            //     }
-            // })
         }
         if (this.props.source === 'track' && nextProps.playlists.length && this.props.playlists.length !== nextProps.playlists.length && !this.state.playlist) {
             const filtered = nextProps.playlists.filter(playlist => playlist._id === this.props.match.params.id)
@@ -84,12 +77,6 @@ class PlaylistTracks extends Component {
             } else {
                 this.setState({ playlist: 'bad request' })
             }
-            // this.setState({ playlist: nextProps.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0] })
-            // nextProps.playlists.forEach((cur, index) => {
-            //     if (cur._id === this.props.match.params.id) {
-            //         this.setState({index})
-            //     }
-            // })
         }
         return true
     }

@@ -80,7 +80,6 @@ class AlbumTracks extends Component {
         modalIsOpen: false,
         modalIsOpen2: false,
         creating: false, 
-        // index: ''
     }
 
     componentDidMount() {
@@ -92,11 +91,6 @@ class AlbumTracks extends Component {
 
     shouldComponentUpdate(nextProps) {
         if (nextProps.albums && !this.state.album) {
-            // nextProps.albums.forEach((album, index) => { 
-            //     if (album._id === this.props.match.params.id) {
-            //         this.setState({ index})
-            //     }
-            // })
             const filtered = nextProps.albums.filter(album => album._id === this.props.match.params.id)
             if (filtered.length) {
                 this.setState({ album: filtered[0] })
@@ -171,7 +165,6 @@ class AlbumTracks extends Component {
     }
 
     removeAlbPl = (trackId) => {
-        // if (this.props.albums[this.state.index].information.tracks.data.length === 1) {
         if (this.getValue().information.tracks.data.length === 1) {
             this.props.changeNumber(this.props.albums.length)
             this.props.deletePlaylist(this.state.album.information.id, 'albums')
