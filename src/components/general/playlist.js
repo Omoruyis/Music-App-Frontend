@@ -85,10 +85,16 @@ class Playlist extends Component {
                     })
                 }
             } else {
-                this.setState({
-                    playlist: result.data,
-                    displayTracks: result.data.tracks.data
-                })
+                if (!result.data.tracks) {
+                    this.setState({
+                        playlist: result.data,
+                    })
+                } else {
+                    this.setState({
+                        playlist: result.data,
+                        displayTracks: result.data.tracks.data
+                    })
+                }
             }
         } catch (e) {
             console.log(e)
