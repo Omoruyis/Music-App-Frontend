@@ -286,7 +286,7 @@ class Artist extends Component {
                                         {playlist.playlists && playlist.playlists.length ? <Link to={`/${path}/${match.params.id}/playlists`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.id}/playlists` ? 'artist_border' : ''}>Playlists</p></Link> : ''}
                                     </div>
                                     <div>
-                                        <Route exact path='/artist/:id' render={(props) => <Discography {...props} topTracks={playlist} play={this.play} path={path} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} />} likeUndownloadAction={this.likeUndownloadAction}></Route>
+                                        <Route exact path='/artist/:id' render={(props) => <Discography {...props} topTracks={playlist} play={this.play} path={path} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} likeUndownloadAction={this.likeUndownloadAction} />}></Route>
 
                                         <Route path='/artist/:id/top_tracks' render={(props) => <TopTracks {...props} topTracks={playlist.tracklist} play={this.play} addToLikes={this.addToLikes} newLikes={this.newLikes} loggedIn={loggedIn} availableTracks={availableTracks} path={path} addAlbPl={this.addAlbPl} removeAlbPl={this.removeAlbPl} />}></Route>
 
