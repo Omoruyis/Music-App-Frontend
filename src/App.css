@@ -272,6 +272,20 @@
 
 
 /******Signup Page ***/
+.signup_modal {
+  display: flex;
+  align-items: center;
+}
+
+.signup_successful_text {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.signup_modal_signin {
+  text-align: center;
+}
+
 .signup_image_container {
   background-image: url('./assets/images/signup.png');
   background-size: cover;

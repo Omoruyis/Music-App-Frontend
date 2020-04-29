@@ -5,16 +5,48 @@ import { IoIosEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import queryString from 'query-string'
+import Modal from 'react-modal';
 
 import config from '../../config/config'
+import successful from '../../assets/images/successful.jpg'
+
 
 import '../../App.css'
+
+const customStyles = {
+    overlay: {
+        backgroundColor: 'none',
+        zIndex: 200
+    },
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        width: '650px',
+        height: '350px',
+        padding: '10px 10px',
+        border: 'none',
+        boxShadow: '0 0 6px rgba(25, 25, 34, .16)'
+    }
+};
 
 class Signup extends Component {
     state = {
         song: null,
         show: false,
-        login: false
+        login: false,
+        modalIsOpen: false
+    }
+
+    openModal = () => {
+        this.setState({ modalIsOpen: true })
+    }
+
+    closeModal = () => {
+        this.setState({ modalIsOpen: false })
     }
 
     validEmail = (email) => {
@@ -72,7 +104,8 @@ class Signup extends Component {
                     return this.createNotification('error', 'This account already exists')
                 }
                 this.changeLogin()
-                return this.createNotification('success', `You've successfully signed up. Please proceed to login`)
+                // return this.createNotification('success', `You've successfully signed up. Please proceed to login`)
+                this.openModal()
             })
             .catch(e => console.log(e))
     }
@@ -86,7 +119,7 @@ class Signup extends Component {
 
     render() {
         const redirect = queryString.parse(this.props.location.search).redirect_link
-        const { show, login } = this.state
+        const { show, login, modalIsOpen } = this.state
 
         return (
             <div className="signup_image_container">
@@ -113,6 +146,21 @@ class Signup extends Component {
                         </form>
                     </div>
                 </div>
+
+                <Modal
+                    isOpen={modalIsOpen}
+                    onAfterOpen={this.afterOpenModal}
+                    onRequestClose={() => this.closeModal()}
+                    style={customStyles}
+                >
+                    <div className="signup_modal">
+                        <img src={successful} alt="successful signup cover" className="" />
+                        <p className="signup_successful_text">You have successfully signed up</p>
+                    </div>
+                    <div className="signup_modal_signin">
+                        <Link to={`/login${redirect ? `?redirect_link=${redirect}` : ''}`} style={{ textDecoration: 'none', fontSize: '25px' }}>Sign In</Link>
+                    </div>
+                </Modal>
             </div>
         );
     }
