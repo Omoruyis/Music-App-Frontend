@@ -64,6 +64,12 @@ class Login extends Component {
 
     login = (e) => {
         e.preventDefault()
+        if (!this.email.value) {
+            return this.createNotification('error', 'Please input an email address')
+        }
+        if (!this.password.value) {
+            return this.createNotification('error', 'Please input a password')
+        }
         if (!this.validEmail(this.email.value)) {
             this.createNotification('error', 'Invalid email address')
             return 
