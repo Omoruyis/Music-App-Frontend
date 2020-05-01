@@ -85,7 +85,7 @@ class Signup extends Component {
             return this.createNotification('error', 'Wrong email address')
         }
         if (this.password.value.length < 6) {
-            return this.createNotification('error', 'Please put a password with more than 6 characters')
+            return this.createNotification('error', 'Please put a password with 6 or more characters')
         }
         this.changeLogin()
         const request = {

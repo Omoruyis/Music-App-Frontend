@@ -46,24 +46,17 @@ class Reset extends Component {
 
     update = (e) => {
         e.preventDefault()
-        if (!this.validEmail(this.email.value)) {
-            this.email.value = ''
-            this.password.value = ''
-            this.newPassword.value = ''
-            return this.createNotification('error', 'Invalid email address')
+        if (this.password.value.length < 6) {
+            return this.createNotification('error', 'Please put a password with 6 or more characters')
+        }
+        if (this.newPassword.value.length < 6) {
+            return this.createNotification('error', 'Please put a new password with 6 or more characters')
         }
         if (this.password.value === this.newPassword.value) {
             return this.createNotification('error', 'Please put a new password different from the old one')
         }
-        if (this.password.value.length < 6) {
-            return this.createNotification('error', 'Please put a password with more than 6 characters')
-        }
-        if (this.newPassword.value.length < 6) {
-            return this.createNotification('error', 'Please put a new password with more than 6 characters')
-        }
         this.changeReset()
         const request = {
-            email: this.email.value,
             password: this.password.value,
             newPassword: this.newPassword.value
         }
@@ -107,7 +100,6 @@ class Reset extends Component {
                 <NotificationContainer />
                 <div className="reset_section">
                     <form onSubmit={this.login} style={{ width: '100%' }}>
-                        <input type="email" placeholder="Email Address" className="login_details" ref={el => this.email = el} required={true} />
                         <div className="login_password">
                             <input type="password" placeholder="Password" minLength="6" className="login_details_password" ref={el => this.password = el} required={true} />
                             {show ? <IoMdEyeOff className="password_image" onClick={() => this.show()}/> : <IoIosEye className="password_image" onClick={() => this.show()}/>}
