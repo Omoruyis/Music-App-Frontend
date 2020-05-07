@@ -25,11 +25,13 @@ class Explore extends Component {
     componentDidMount() {
         this.checkLogin()
         this.getCharts()
-        this.props.getAlbums()
-        this.props.getTracks()
-        this.props.getPlaylists()
-        this.props.getLikes()
-        this.props.getAllRecent()
+        if (this.props.loggedIn) {
+            this.props.getAlbums()
+            this.props.getTracks()
+            this.props.getPlaylists()
+            this.props.getLikes()
+            this.props.getAllRecent()
+        }
     }
 
     componentWillUnmount() {

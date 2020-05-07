@@ -32,6 +32,13 @@ class Search extends Component {
         this.getPathName()
         this.checkLogin()
         this.getSearchResult(this.props.match.params.query)
+        if (this.props.loggedIn) {
+            this.props.getAlbums()
+            this.props.getTracks()
+            this.props.getPlaylists()
+            this.props.getLikes()
+            this.props.getAllRecent()
+        }
     }
 
     componentWillUnmount() {

@@ -38,14 +38,15 @@ class App extends Component {
       this.setState({ show: true })
       return
     }
-    const result = await axios.get(`${config().url}/authenticate`, config().headers)
-    if (result.status !== 200) {
+    try {
+      await axios.get(`${config().url}/authenticate`, config().headers)
+      this.props.login()
+      this.props.changeSong()
       this.setState({ show: true })
-        return
+    } catch (e) {
+      localStorage.clear()
+      this.setState({ show: true })
     }
-    this.props.login()
-    this.props.changeSong()
-    this.setState({ show: true })
   }
 
   render() {

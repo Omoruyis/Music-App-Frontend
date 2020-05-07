@@ -40,6 +40,13 @@ class Album extends Component {
         this.getPathName()
         this.checkLogin()
         this.getPlaylist()
+        if (this.props.loggedIn) {
+            this.props.getAlbums()
+            this.props.getTracks()
+            this.props.getPlaylists()
+            this.props.getLikes()
+            this.props.getAllRecent()
+        }
     }
 
     componentWillUnmount() {
