@@ -8,7 +8,7 @@ import queryString from 'query-string'
 import Modal from 'react-modal';
 
 import config from '../../config/config'
-import successful from '../../assets/images/successful.jpg'
+// import successful from '../../assets/images/successful.jpg'
 
 
 import '../../App.css'
@@ -154,7 +154,8 @@ class Signup extends Component {
                     style={customStyles}
                 >
                     <div className="signup_modal">
-                        <img src={successful} alt="successful signup cover" className="" />
+                        {/* <img src={successful} alt="successful signup cover" className="" /> */}
+                        <img src="https://res.cloudinary.com/dfjzditzc/image/upload/v1588971408/successful_aqpio3.jpg" alt="successful signup cover" className="" />
                         <p className="signup_successful_text">You have successfully signed up</p>
                     </div>
                     <div className="signup_modal_signin">

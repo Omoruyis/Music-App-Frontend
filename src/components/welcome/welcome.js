@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import playButton from '../../assets/images/playbutton.png'
-import cd from '../../assets/images/cd.jpg'
+// import playButton from '../../assets/images/playbutton.png'
+// import cd from '../../assets/images/cd.jpg'
 
 import '../../App.css';
 
@@ -37,12 +37,13 @@ class Welcome extends Component {
                     <div className="welcome_page_details">
                         <h3 className="welcome_page_text">A New Way To Enjoy Music</h3>
                         <Link to='/explore' style={{ textDecoration: 'none' }}>
-                            <button className="checkout_button">Explore<span style={{ paddingLeft: 10 }}><img src={playButton} alt="play button" /></span></button>
+                            {/* <button className="checkout_button">Explore<span style={{ paddingLeft: 10 }}><img src={playButton} alt="play button" /></span></button> */}
+                            <button className="checkout_button">Explore<span style={{ paddingLeft: 10 }}><img src="https://res.cloudinary.com/dfjzditzc/image/upload/v1588971513/playbutton_nrfcl0.png" alt="play button" /></span></button>
                         </Link>
                     </div>
                 </div>
                 <div className="advert_container">
-                    <img src={cd} alt="cd" className="cd_image" />
+                    <img src="https://res.cloudinary.com/dfjzditzc/image/upload/v1588971330/cd_yp5yt2.jpg" alt="cd" className="cd_image" />
                     <div className="advert_content">
                         <p className="advert_content_head">50 million songs on all your devices</p>
                         <p className="advert_content_text">Expand your music experience with music store. Access it on your desktop, or on your mobile browser</p>
