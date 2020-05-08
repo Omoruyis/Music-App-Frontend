@@ -34,6 +34,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    console.log('oi')
     if (!localStorage.getItem('token')) {
       this.setState({ show: true })
       return
