@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import playButton from '../../assets/images/playbutton.png'
-import cd from '../../assets/images/cd.png'
+import cd from '../../assets/images/cd.jpg'
 
 import '../../App.css';
 
