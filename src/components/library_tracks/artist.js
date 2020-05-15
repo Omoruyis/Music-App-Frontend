@@ -7,6 +7,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { deleteLike, addLike, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks, albumSource } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
+import LibraryToggle from '../partials/librarytoggle'
 
 import '../../App.css';
 
@@ -139,6 +140,7 @@ class ArtistAlbums extends Component {
                     <Sidebar current="artists" />
                     <div className="nav_child_container nav_child_container_margin">
                         <div className="explorenav_container">
+                            <LibraryToggle />
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Albums" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>

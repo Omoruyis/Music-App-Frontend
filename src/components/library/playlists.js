@@ -13,6 +13,7 @@ import { IoMdAdd } from "react-icons/io";
 import { createPlaylist, deleteLike, addLike, getAllLikes, getAllPlaylists, getAllTracks, getAllAlbums, getAllRecent, changeSong, changeSource } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
+import LibraryToggle from '../partials/librarytoggle'
 import config from '../../config/config'
 
 import '../../App.css';
@@ -237,6 +238,7 @@ class MyPlaylists extends Component {
                     <Sidebar current="playlists" />
                     <div className="nav_child_container nav_child_container_margin">
                         <div className="explorenav_container">
+                            <LibraryToggle />
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Playlists" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>

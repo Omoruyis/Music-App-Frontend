@@ -17,6 +17,7 @@ import { createPlaylist, deleteLike, addLike, deleteTrack, getAllLikes, getAllAl
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
+import LibraryToggle from '../partials/librarytoggle'
 import { trimString, trackTime } from '../../helper/helper'
 
 import 'react-notifications/lib/notifications.css';
@@ -299,6 +300,7 @@ class MyTracks extends Component {
                     <Sidebar current="songs" />
                     <div className="nav_child_container nav_child_container_margin">
                         <div className="explorenav_container">
+                            <LibraryToggle />
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Songs" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>

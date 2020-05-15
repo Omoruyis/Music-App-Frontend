@@ -12,6 +12,7 @@ import { CircularProgress } from '@material-ui/core';
 import { deleteLike, getAllLikes, getAllTracks, deleteTrack, addTrack, getAllAlbums, getAllPlaylists, getAllRecent, changeSong } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
+import LibraryToggle from '../partials/librarytoggle'
 import config from '../../config/config'
 
 import '../../App.css';
@@ -122,6 +123,7 @@ class Favourites extends Component {
                     <Sidebar current="favourites" />
                     <div className='nav_child_container nav_child_container_margin'>
                         <div className="explorenav_container">
+                            <LibraryToggle />
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Likes" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>

@@ -6,6 +6,7 @@ import { CircularProgress } from '@material-ui/core';
 import { getAllRecent, getAllLikes, getAllAlbums, getAllPlaylists, getAllTracks, changeNumber } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
+import LibraryToggle from '../partials/librarytoggle'
 
 import '../../App.css';
 
@@ -94,6 +95,7 @@ class MyArtists extends Component {
                     <Sidebar current="artists" />
                     <div className="nav_child_container nav_child_container_margin">
                         <div className="explorenav_container">
+                            <LibraryToggle />
                             <div className="explorenav_search">
                                 <input type="search" placeholder="Search Recent" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                             </div>

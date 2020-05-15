@@ -19,11 +19,51 @@
   padding-bottom: 30px;
 }
 
+.toggle-btn {
+  /* position: absolute;
+  top: 35px;
+  left: 35px; */
+  cursor: pointer;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.toggle-btn span {
+  height: 3px;
+  background-color:#303945;
+  margin-bottom: 9px;
+  display: none;
+}
+
+.toggle_btn {
+  /* position: absolute;
+  top: 35px;
+  left: 35px; */
+  cursor: pointer;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.toggle_btn span {
+  height: 3px;
+  background-color: #303945;
+  margin-bottom: 9px;
+  display: none;
+}
+
+#show_hamburger {
+  display: none;
+}
+
+#show_cancel {
+  display: none;
+}
+
 /* #hide_dropdown {
   display: none;
 } */
 
-.popup_drop {
+.remove_popup_icon > .popup_drop {
   display: none !important;
 }
 
@@ -591,6 +631,7 @@
 
 .pop_drop_icon {
   font-size: 30px;
+  color: #303945;
 }
 
 .display_name {
@@ -598,6 +639,10 @@
   margin-bottom: 0;
   font-weight: 300;
   color: rgb(27, 26, 26);
+}
+
+.show_display_name {
+  display: none;
 }
 
 .explorenav_buttons {
@@ -1487,12 +1532,13 @@
 .turn_red {
   margin-bottom: 0;
   color: black;
+  font-size: 14px;
 }
 
-.turn_red:hover {
+/* .turn_red:hover {
   color: rgb(240, 82, 82);
   margin-bottom: 0;
-}
+} */
 
 
 /****Track Page***/
@@ -1732,6 +1778,23 @@
   cursor: wait;
 }
 
+.logout_holder:hover {
+  background-color: #d3d3d3;
+  cursor: pointer;
+  /* color: white; */
+}
+
+.logout_holder {
+  display: flex;
+  align-items: center;
+  padding: 5px 20px;
+}
+
+.logout_text {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
 @media (max-width: 1025px) {
   .explore_container {
     padding: 30px 150px 20px 150px
@@ -1795,6 +1858,13 @@
     padding-top: 120px;
   }
 
+  .reset_section {
+    width: 100%;
+    height: 60%;
+    margin: auto 0;
+    padding-top: 120px;
+  }
+
   .explore_container {
     padding: 30px 50px 20px 50px;
   }
@@ -1822,6 +1892,104 @@
   .explorenav_search {
     width: 60%;
   }
+
+  .u {
+    display: none;
+  }
+
+  .play_track_button {
+    /* display: block; */
+    background-color: black;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sidebar_container {
+    position: fixed;
+    /* z-index: 500; */
+    background-color: white;
+    width: 250px;
+    transform: translateX(-250px);
+    transition: all 0.5s;
+    /* height: 100vh; */
+    /* overflow-y: auto; */
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* padding: 200px 20px 40px 20px; */
+  }
+
+  .close_sidebar_button {
+    font-size: 40px;
+    color:#303945;
+  }
+
+  .active {
+    transform: translateX(0);
+    z-index: 500
+  }
+
+  .rotate_right {
+    transform: rotate(-45deg);
+    width: 31px;
+  }
+
+  .rotate {
+    /* position: absolute;
+    bottom: 0; */
+    transform: rotate(45deg)
+}
+
+  /* .nav_child_container {
+    width: 100%;
+    min-height: 100vh;
+  } */
+  .nav_child_container_margin {
+    margin-left: 0%;
+  }
+
+  #show_hamburger {
+    display: block;
+    position: relative;
+    z-index: 700;
+  }
+
+  #show_cancel {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .toggle-btn span {
+    display: block;
+  }
+
+  .toggle_btn span {
+    display: block;
+  }
+
+  .line_1 {
+    width: 31px;
+  }
+  .line_2 {
+    width: 31px;
+  }
+
+  .line-1 {
+    width: 31px;
+  }
+
+  .line-2 {
+      width: 21.57px;
+  }
+
+  .line-3 {
+      width: 13.48px;
+  }
+
+  .rot {
+    transition: all 0.5s
+  }
 }
 
 @media (max-width: 500px) {
@@ -1843,6 +2011,11 @@
     padding-right: 20px;
   }
 
+  .reset_section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
   .explore_tracks_text {
     display: none;
   }
@@ -1851,7 +2024,7 @@
     display: none;
   }
 
-  .popup_drop {
+  .remove_popup_icon > .popup_drop {
     display: flex !important;
     justify-content: flex-end !important;
     display: block;
@@ -1861,10 +2034,20 @@
     display: block;
   } */
 
+  .hide_display_name {
+    display: none;
+  }
+
   .playlist_header {
     flex-direction: column;
     width: 100%;
     align-items: center;
+  }
+
+  #playlist_header {
+    flex-direction: column;
+    width: 100%;
+    align-items: center; 
   }
 
   .playlist_container {
@@ -1905,7 +2088,40 @@
   }
 
   .tracks_header {
-    width: 600px;
-    overflow: auto;
+    width: 800px;
+  }
+
+  .playlist_button {
+    padding: 6px 18px;
+    font-size: 15px;
+  }
+
+  .playlist_button_holder {
+    justify-content: center;
+  }
+
+  .show_display_name {
+    display: block;
+    padding: 0 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 300;
+    color: rgb(27, 26, 26);
+  }
+
+  .show_display_name > span {
+    font-weight: bold;
+  }
+
+  #reduce_width {
+    width: 10%;
+  }
+
+  .explorenav_search {
+    width: 90%;
+  }
+
+  .explore_container_logged_in {
+    padding: 30px 40px 20px 40px
   }
 }

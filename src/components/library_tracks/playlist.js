@@ -18,6 +18,7 @@ import { IoMdRemove } from "react-icons/io";
 import { deleteLike, addLike, deleteTrack, getAllLikes, getAllTracks, getAllPlaylists, addTrack, deleteFromPlaylist, deletePlaylist, deletePersonalPlaylist, editPlaylist, changeSong } from '../../actions'
 import Sidebar from '../partials/sidebar'
 import LibraryNav from '../partials/librarynav'
+import LibraryToggle from '../partials/librarytoggle'
 import { trimString, trackTime, time } from '../../helper/helper'
 
 import '../../App.css';
@@ -306,6 +307,7 @@ class PlaylistTracks extends Component {
                         <Sidebar current="playlists" />
                         <div className="nav_child_container nav_child_container_margin">
                             <div className="explorenav_container">
+                                <LibraryToggle />
                                 <div className="explorenav_search">
                                     <input type="search" placeholder="Search Playlist" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                                 </div>

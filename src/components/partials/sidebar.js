@@ -4,16 +4,23 @@ import { IoIosHeart } from "react-icons/io";
 import { IoMdApps } from "react-icons/io";
 import { Link } from 'react-router-dom'
 import { IoMdHeartEmpty } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 
 import '../../App.css';
 
 
 class Sidebar extends Component {
+    toggle = (e) => {
+        document.querySelector('.sidebar_container').classList.toggle('active')
+    }
 
     render() {
         const { current } = this.props
         return (
             <div className="sidebar_container">
+                <div className='toggle_btn' onClick={this.toggle} id="show_cancel" className="position_cancel">
+                    <IoMdClose className="close_sidebar_button" />
+                </div>
                 <Link to="/explore" style={{textDecoration: 'none' }}>
                     <div className="sidebar_content_div" id={current === 'explore' ? 'current' : ''}>
                         <IoIosMusicalNotes className="sidebar_content_icon"/>

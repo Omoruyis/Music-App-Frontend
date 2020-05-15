@@ -21,6 +21,7 @@ import { deleteLike, addLike, deleteTrackFromAlbum, getAllLikes, getAllAlbums, g
 import Sidebar from '../partials/sidebar'
 import config from '../../config/config'
 import LibraryNav from '../partials/librarynav'
+import LibraryToggle from '../partials/librarytoggle'
 import { trimString, trackTime, time } from '../../helper/helper'
 
 import 'react-notifications/lib/notifications.css';
@@ -384,6 +385,7 @@ class AlbumTracks extends Component {
                         <Sidebar current="albums" />
                         <div className="nav_child_container nav_child_container_margin">
                             <div className="explorenav_container">
+                                <LibraryToggle />
                                 <div className="explorenav_search">
                                     <input type="search" placeholder="Search Playlist" className="explorenav_search_input" onInput={() => { this.changeValue() }} ref={el => this.searchTrack = el} />
                                 </div>
