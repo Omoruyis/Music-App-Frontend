@@ -89,13 +89,37 @@ class Nav extends Component {
                             </div>
                         </Popover>
                     </div> :
-                    <div className="explorenav_buttons">
-                        <Link to={`/login?redirect_link=${type}${id ? `/${id}` : ''}`} style={{ textDecoration: 'none' }} >
-                            <button className="explorenav_login">Sign In</button>
-                        </Link>
-                        <Link to={`/signup?redirect_link=${type}${id ? `/${id}` : ''}`} style={{ textDecoration: 'none' }}>
-                            <button className="explorenav_signup">Sign Up</button>
-                        </Link>
+                    <div style={{ width: '40%'}}>
+                        <div className="explorenav_buttons" id="hide_sign">
+                            <Link to={`/login?redirect_link=${type}${id ? `/${id}` : ''}`} style={{ textDecoration: 'none' }} >
+                                <button className="explorenav_login">Sign In</button>
+                            </Link>
+                            <Link to={`/signup?redirect_link=${type}${id ? `/${id}` : ''}`} style={{ textDecoration: 'none' }}>
+                                <button className="explorenav_signup">Sign Up</button>
+                            </Link>
+                        </div>
+
+                        <Popover
+                            isOpen={isPopoverOpen}
+                            position={['bottom']}
+                            onClickOutside={() => this.setState({ isPopoverOpen: false })}
+                            content={(
+                                <div
+                                    style={{ backgroundColor: 'white', position: 'fixed', top: '70px', right: '20px', boxShadow: '0 0 6px rgba(25, 25, 34, .16)', padding: '10px 20px', display: 'flex', flexDirection: 'column' }}
+                                >
+                                    <Link to={`/login?redirect_link=${type}${id ? `/${id}` : ''}`} style={{ textDecoration: 'none', color: 'black' }} >
+                                        Sign In
+                                    </Link>
+                                    <Link to={`/signup?redirect_link=${type}${id ? `/${id}` : ''}`} style={{ textDecoration: 'none', color: 'black', marginTop: '10px' }}>
+                                        Sign Up
+                                    </Link>
+                                </div>
+                            )}
+                        >
+                            <div onClick={() => this.setState({ isPopoverOpen: !isPopoverOpen })} className="popup_drop">
+                                <IoMdArrowDropdown className="pop_drop_icon" id="hide_dropdown"/>
+                            </div>
+                        </Popover>
                     </div>
                 }
 

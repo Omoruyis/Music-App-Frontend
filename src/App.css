@@ -19,6 +19,14 @@
   padding-bottom: 30px;
 }
 
+/* #hide_dropdown {
+  display: none;
+} */
+
+.popup_drop {
+  display: none !important;
+}
+
 
 .welcome_page_buttons {
   margin-right: 51px;
@@ -291,7 +299,7 @@
   /* background-image: url('./assets/images/signup.jpg'); */
   background-image: url('https://res.cloudinary.com/dfjzditzc/image/upload/v1588971407/signup_eeojpm.jpg');
   background-size: cover;
-  height: 100vh;
+  min-height: 100vh;
   padding: 40px 100px 40px 100px;
 }
 
@@ -406,7 +414,7 @@
   /* background-image: url('./assets/images/signup.jpg'); */
   background-image: url('https://res.cloudinary.com/dfjzditzc/image/upload/v1588971407/signup_eeojpm.jpg');
   background-size: cover;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   justify-content: flex-end;
 }
@@ -421,7 +429,7 @@
 .login_section {
   width: 48%;
   background-color: white;
-  min-height: 100vh;
+  height: 100vh;
   padding: 30px 150px;
   display: flex;
   flex-direction: column;
@@ -596,7 +604,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 40%;
+  width: 100%;
   padding: 20px 0;
 }
 
@@ -934,7 +942,7 @@
   display: flex;
   position: relative;
   width: 50%; 
-  height: 200px;
+  min-height: 200px;
 }
 
 .playlist_image {
@@ -1724,6 +1732,12 @@
   cursor: wait;
 }
 
+@media (max-width: 1025px) {
+  .explore_container {
+    padding: 30px 150px 20px 150px
+  }
+}
+
 /*****Welcome Page ***/ 
 @media (max-width: 850px) {
   .welcome_page_text {
@@ -1731,5 +1745,167 @@
     font-size: 55px;
     color:#FFFBFB;
     margin-bottom: 41px;
+  }
+
+  .advert_container {
+    flex-direction: column;
+  }
+
+  .cd_image {
+    margin-right: 0;
+  }
+
+  .advert_content_head {
+    text-align: center;
+  }
+
+  .welcome_page_details {
+    margin-top: 90px;
+  }
+
+  .signup_container {
+    flex-direction: column;
+  }
+
+  .signup_community_image {
+    width: 100%;
+    padding-left: 60px;
+    padding-right: 60px;
+    text-align: center;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .signup {
+    padding-left: 90px;
+    padding-right: 90px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .signup_label {
+    text-align: left
+  }
+
+  .login_section {
+    width: 100%;
+    height: 100%;
+    padding-top: 120px;
+  }
+
+  .explore_container {
+    padding: 30px 50px 20px 50px;
+  }
+
+  .explore_artists_images_holder {
+    width: 200px;
+    height: 200px;
+  }
+
+  .explore_albums_images {
+    width: 200px;
+    height: 200px;
+  }
+
+  .explore_artists {
+    min-width: 100%;
+    overflow-x: auto;
+  }
+
+  .explore_artists {
+    flex-wrap: nowrap;
+    height: 270px;
+  }
+
+  .explorenav_search {
+    width: 60%;
+  }
+}
+
+@media (max-width: 500px) {
+  .signup_image_container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .signup_community_image {
+    background-size: cover;
+    background-position: center;
+    padding-top: 50px;
+    padding-left: 20px;
+    padding-right: 20px
+  }
+
+  .login_section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .explore_tracks_text {
+    display: none;
+  }
+
+  #hide_sign {
+    display: none;
+  }
+
+  .popup_drop {
+    display: flex !important;
+    justify-content: flex-end !important;
+    display: block;
+  }
+
+  /* #hide_dropdown {
+    display: block;
+  } */
+
+  .playlist_header {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  .playlist_container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .play_holder {
+    position: absolute;
+    top: 160px;
+    left: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .playlist_duration {
+    align-items: center;
+  }
+
+  .playlist_actions_holder {
+    flex-direction: column;
+  }
+
+  .search_track {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .tracks_mobile_display {
+    overflow-x: auto;
+    min-width: 100%;
+  }
+
+  .tracks_header {
+    width: 600px;
+    overflow: auto;
   }
 }
