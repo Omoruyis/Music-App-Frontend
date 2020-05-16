@@ -105,7 +105,7 @@ class TopTracks extends Component {
                             <p>Top Tracks</p>
                             <input type="search" className="search_track" placeholder="Search within tracks" onInput={() => this.filterTracks()} ref={el => this.searchTrack = el} />
                         </div>
-                        <div>
+                        <div className="tracks_mobile_display">
                             <div className="tracks_header">
                                 <div className="playlist_tracks_header" id="track_number"><p className="u">#</p></div>
                                 <p className="playlist_tracks_header" id="track_title" >TRACK</p>

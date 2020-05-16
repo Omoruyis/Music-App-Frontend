@@ -89,13 +89,11 @@ class Nav extends Component {
                                     style={{ backgroundColor: 'white', position: 'fixed', top: '70px', right: '20px', boxShadow: '0 0 6px rgba(25, 25, 34, .16)', padding: '10px 0', minWidth: '120px'}}
                                 >
                                     <p className="show_display_name">Signed in as <span>{name}</span></p>
-                                    {localStorage.account === 'local' ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}  className="logout_holder">
-                                    <Link to={`/changepassword?redirect_link=${type}${id ? `/${id}` : ''}`} style={{ textDecoration: 'none', color: 'black' }}><p className="turn_red">Change Password</p></Link>
-                                    </div> : ''}
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}  className="logout_holder">
-                                        {/* <IoIosArrowRoundForward className="back_arrow" /> */}
-                                        {/* <button className="logout_button" id={logout ? 'logout_button' : ''} disabled={logout} onClick={this.logout}>{logout ? "Signing Out" : "Sign Out"}</button> */}
-                                        <p className="logout_text" onClick={this.logout}>{logout ? "Signing Out" : "Sign Out"}</p>
+                                    {localStorage.account === 'local' ? <Link to={`/changepassword?redirect_link=${type}${id ? `/${id}` : ''}`} style={{ textDecoration: 'none', color: 'black' }}><div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0px' }}  className="logout_holder">
+                                    <p style={{ marginBottom: '0' }} className="logout_text">Change Password</p>
+                                    </div></Link> : ''}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0px' }}  className="logout_holder" onClick={this.logout}>
+                                        <p className="logout_text">{logout ? "Signing Out" : "Sign Out"}</p>
                                     </div>
                                 </div>
                             )}
@@ -121,13 +119,13 @@ class Nav extends Component {
                             onClickOutside={() => this.setState({ isPopoverOpen: false })}
                             content={(
                                 <div
-                                    style={{ backgroundColor: 'white', position: 'fixed', top: '70px', right: '20px', boxShadow: '0 0 6px rgba(25, 25, 34, .16)', padding: '10px 20px', display: 'flex', flexDirection: 'column' }}
+                                    style={{ backgroundColor: 'white', position: 'fixed', top: '70px', right: '20px', boxShadow: '0 0 6px rgba(25, 25, 34, .16)', padding: '10px 0' }}
                                 >
                                     <Link to={`/login?redirect_link=${type}${id ? `/${id}` : ''}`} style={{ textDecoration: 'none', color: 'black' }} >
-                                        Sign In
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0px' }}  className="logout_holder"><p style={{ marginBottom: '0' }} className="logout_text">Sign In</p></div>
                                     </Link>
                                     <Link to={`/signup?redirect_link=${type}${id ? `/${id}` : ''}`} style={{ textDecoration: 'none', color: 'black', marginTop: '10px' }}>
-                                        Sign Up
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0px' }}  className="logout_holder"><p style={{ marginBottom: '0' }} className="logout_text">Sign Up</p></div>
                                     </Link>
                                 </div>
                             )}

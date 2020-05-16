@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa";
 
+import { trimString } from '../../helper/helper'
+
 class SimilarArtist extends Component {
     showIcon = (clas, secClas) => {
         this.props.showIcon(clas, secClas)
@@ -39,13 +41,13 @@ class SimilarArtist extends Component {
         return (
             <div className="explore_artists flex">
             <p className="discography_header_text">Related Artists</p>
-            <div style={{display: 'flex', flexWrap: 'wrap'}}>
+            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
                 {related.map((cur, index) => {
                     return (
-                        <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                            <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
+                        <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                            <div className="explore_artists_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
                                 <Link to={`/${cur.type}/${cur.id}`}>
-                                    <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images hover_similar"/>
+                                    <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images hover_similar mobile_artist_album_image"/>
                                 </Link>
                                 <div
                                     className={!loggedIn ? 'favourite_holder white_favourite' : (this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite')}
@@ -57,7 +59,7 @@ class SimilarArtist extends Component {
                                 </div>
                             </div>
                             <Link to={`/${cur.type}/${cur.id}`} style={{ color: 'black', textDecoration: 'none'}}>
-                                <p className="explore_artists_name turn_red" style={{cursor: 'pointer'}}>{cur.name}</p>
+                                <p className="explore_artists_name turn_red" style={{cursor: 'pointer'}}>{trimString(cur.name, 18)}</p>
                             </Link>
                         </div>
                     )

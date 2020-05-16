@@ -19,6 +19,12 @@ class Login extends Component {
         login: false
     }
 
+    componentDidMount() {
+        if (this.props.loggedIn) {
+            this.props.history.push('/explore')
+        }
+    }
+
     validEmail = (email) => {
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
             return true
@@ -153,8 +159,10 @@ class Login extends Component {
     }
 }
 
-function mapStateToProps() {
-    return {}
+function mapStateToProps({ loggedIn }) {
+    return {
+        loggedIn
+    }
 }
 
 function mapDispatchToProps(dispatch) {

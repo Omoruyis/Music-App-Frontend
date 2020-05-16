@@ -326,7 +326,7 @@ class Playlist extends Component {
                                                 <p className="playlist_time">{time(playlist.duration)}</p>
                                             </div>
                                         </div>
-                                        <div className="play_holder" ref={el => this.playTop = el} onClick={() => {
+                                        <div className="play_holder playlist_play_holder" ref={el => this.playTop = el} onClick={() => {
                                             loggedIn ? this.play(path, match.params.id) : this.login()
                                         }} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
                                             <MdPlayArrow style={{ fontSize: '25px' }} />

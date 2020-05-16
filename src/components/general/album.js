@@ -336,13 +336,13 @@ class Album extends Component {
                                             <Link to={`/${playlist.artist.type}/${playlist.artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>
                                                 <p className="explore_artists_name turn_red">{trimString(playlist.artist.name, 20)}</p>
                                             </Link>
-                                            {available ? <p className="playlist_duration">In Library</p> : ''}
+                                            {available ? <p className="playlist_duration" style={{ marginBottom: '0'}}>In Library</p> : ''}
                                             <div className="playlist_duration">
                                                 <p className="dura">{playlist.nb_tracks} {playlist.nb_tracks !== 1 ? 'tracks' : 'track'}</p>
                                                 <p className="playlist_time">{time(playlist.duration)}</p>
                                             </div>
                                         </div>
-                                        <div className="play_holder" ref={el => this.playTop = el} onClick={() => {
+                                        <div className="play_holder playlist_play_holder" ref={el => this.playTop = el} onClick={() => {
                                             loggedIn ? this.play(path, match.params.id) : this.login()
                                         }} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
                                             <MdPlayArrow style={{ fontSize: '25px' }} />
@@ -377,15 +377,15 @@ class Album extends Component {
                                         </div>
                                         <input type="search" className="search_track" placeholder="Search within tracks" onInput={() => this.filterTracks()} ref={el => this.searchTrack = el} />
                                     </div>
-                                    <div>
-                                        <div className="tracks_header">
+                                    <div className="tracks_mobile_display">
+                                        <div className="tracks_header" id="tracks_header">
                                             <div className="playlist_tracks_header" id="track_album_number"><p className="u">#</p></div>
                                             <p className="playlist_tracks_header" id="track_album_title" >TRACK</p>
                                             <p className="playlist_tracks_header" id="track_album_duration">DURATION</p>
                                         </div>
                                         {displayTracks.map((track, index) => {
                                             return (
-                                                <div className="tracks_header tracks_header_background" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
+                                                <div className="tracks_header tracks_header_background" id="tracks_header" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
                                                     <div className="track_number">
                                                         <div className="u" ref={el => this.trackNumber[index] = el}>
                                                             <p style={{ marginBottom: '0' }}>{index + 1}</p>

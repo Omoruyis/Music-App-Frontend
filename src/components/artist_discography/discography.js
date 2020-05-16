@@ -61,7 +61,7 @@ class Discography extends Component {
                         <div className="discography_mapped_container">
                             {topTracks.mostPlayed.map((track, index) => {
                                 return (
-                                    <div className="tracks_header remove_border_top" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index])} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index])}>
+                                    <div className="tracks_header remove_border_top" id="mobile_artist_discography" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index])} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index])}>
                                         <div className="track_number_discograph">
                                             <div className="u" ref={el => this.trackNumber[index] = el}>
                                                 <p style={{ marginBottom: '0' }}>{index + 1}</p>
@@ -91,7 +91,7 @@ class Discography extends Component {
                     </div> : ''}
                     {topTracks.playlists && topTracks.playlists.length ? <div className="discography_playlists">
                         <p className="discography_header_text">Playlists</p>
-                        <div>
+                        <div className="mobile_discography_playlist_holder">
                             {topTracks.playlists.map((cur, index) => {
                                 if (index < 4) {
                                     return (
@@ -100,7 +100,7 @@ class Discography extends Component {
                                                 <img src={cur.picture} alt="artist cover" className="discography_playlist_image" />
                                             </div>
                                             <Link to={`/${cur.type}/${cur.id}`} style={{ textDecoration: 'none', width: '60%', color: 'black' }}>
-                                                <p className="turn_red" style={{ marginBottom: '0' }}>{trimString(cur.title, 11)}</p>
+                                                <p className="turn_red mobile_larger_discography_font" style={{ marginBottom: '0' }}>{trimString(cur.title, 18)}</p>
                                             </Link>
                                         </div>
                                     )

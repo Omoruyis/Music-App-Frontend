@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa";
 import { MdPlayArrow } from "react-icons/md";
 
+import { trimString } from '../../helper/helper'
+
 class ArtistAlbums extends Component {
     showIcon = (clas, secClas) => {
         this.props.showIcon(clas, secClas)
@@ -53,13 +55,13 @@ class ArtistAlbums extends Component {
         return (
             <div className="explore_artists flex">
                 <p className="discography_header_text">Albums</p>
-                <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
                 {albums.map((cur, index) => {
                     return (
-                        <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                            <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
+                        <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                            <div className="explore_albums_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
                                 <Link to={`/${cur.type}/${cur.id}`}>
-                                    <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" />
+                                    <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images mobile_artist_album_image" />
                                 </Link>
                                 <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { loggedIn ? this.play('album', cur.id) : this.login() }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
                                     <MdPlayArrow style={{ fontSize: '25px' }} />
@@ -74,7 +76,7 @@ class ArtistAlbums extends Component {
                                 </div>
                             </div>
                             <Link to={`/${cur.type}/${cur.id}`} style={{ color: 'black', textDecoration: 'none'}}>
-                                <p className="explore_artists_name turn_red">{cur.title}</p>
+                                <p className="explore_artists_name turn_red">{trimString(cur.title, 18)}</p>
                             </Link>
                         </div>
                     )

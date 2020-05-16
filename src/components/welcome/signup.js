@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { IoIosEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
@@ -39,6 +40,12 @@ class Signup extends Component {
         show: false,
         login: false,
         modalIsOpen: false
+    }
+
+    componentDidMount() {
+        if (this.props.loggedIn) {
+            this.props.history.push('/explore')
+        }
     }
 
     openModal = () => {
@@ -167,4 +174,10 @@ class Signup extends Component {
     }
 }
 
-export default Signup;
+function mapStateToProps({ loggedIn }) {
+    return {
+        loggedIn
+    }
+}
+
+export default connect(mapStateToProps)(Signup)
