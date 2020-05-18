@@ -446,6 +446,7 @@
   height: 90px;
   position: sticky;
   bottom: 0;
+  z-index: 1000;
 }
 
 /*******Login Page *******/
