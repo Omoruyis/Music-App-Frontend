@@ -734,12 +734,16 @@
 }
 
 
-.explore_tracks_image {
+/* .explore_tracks_image {
   height: 100%;
   width: 20rem;
-  /* omit this: background-size: cover; */
   object-fit: cover;
   object-position: center;
+} */
+
+.explore_tracks_image {
+  height: 250px;
+  width: 250px;
 }
 
 .explore_tracks_text {
@@ -1843,6 +1847,7 @@
     display: block;
     position: relative;
     z-index: 700;
+    margin-right:25px;
   }
 
   #show_cancel {
@@ -2434,6 +2439,20 @@
 
   .ReactModal__Content {
     width: 350px !important;
+  }
+
+  .explore_tracks {
+    height: 200px;
+    width: 200px;
+  }
+
+  .explore_tracks_image {
+    height: 200px;
+    width: 200px;
+  }
+
+  .sort_mobile_width {
+    width: 180px;
   }
 }
 

@@ -97,7 +97,7 @@ class AlbumTracks extends Component {
         this.props.getAllRecent()
     }
 
-    shouldComponentUpdate(nextProps) {
+    shouldComponentUpdate(nextProps, nextState) {
         if (nextProps.albums && !this.state.album) {
             const filtered = nextProps.albums.filter(album => album._id === this.props.match.params.id)
             if (filtered.length) {
@@ -105,6 +105,11 @@ class AlbumTracks extends Component {
             } else {
                 this.setState({ album: 'bad request'})
             }
+        }
+        if (this.props.albums.length && (this.props.albums.length !== nextProps.albums.length)) {
+            const pushTo = this.props.albumSource === 'artist' ? '/my_artists' : '/my_albums'
+            this.props.history.push(pushTo)
+            return false
         }
         return true
     }

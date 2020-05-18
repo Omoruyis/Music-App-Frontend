@@ -62,7 +62,7 @@ class PlaylistTracks extends Component {
         this.props.getLikes()
     }
 
-    shouldComponentUpdate(nextProps) {
+    shouldComponentUpdate(nextProps, nextState) {
         if (this.props.source === 'playlist' && this.props.playlists.length && nextProps.playlists.length && this.props.playlists.length === nextProps.playlists.length && !this.state.playlist) {
             const filtered = this.props.playlists.filter(playlist => playlist._id === this.props.match.params.id)
             if (filtered.length) {
@@ -78,6 +78,10 @@ class PlaylistTracks extends Component {
             } else {
                 this.setState({ playlist: 'bad request' })
             }
+        }
+        if (this.props.playlists.length && (this.props.playlists.length !== nextProps.playlists.length)) {
+            this.props.history.push('/my_playlists')
+            return false
         }
         return true
     }
@@ -268,7 +272,8 @@ class PlaylistTracks extends Component {
     }
 
     getValue = () => {
-        let display = this.props.playlists.filter(playlist => playlist._id === this.props.match.params.id)[0]
+        let filteredArray = this.props.playlists.filter(playlist => playlist._id === this.props.match.params.id)
+        let display = filteredArray[0]
         return display
     }
 

@@ -313,7 +313,7 @@ class MyTracks extends Component {
                                 <NotificationContainer />
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterTracks().length} ${this.filterTracks().length > 1 ? 'Songs' : 'Song'}`}</p>
-                                    <select defaultValue="Sort Songs" onChange={(e) => this.sortTracks(e)} className="select_options">
+                                    <select defaultValue="Sort Songs" onChange={(e) => this.sortTracks(e)} className="select_options sort_mobile_width">
                                         <option disabled>Sort Songs</option>
                                         <option>Title</option>
                                         <option>Artist</option>

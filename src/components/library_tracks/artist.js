@@ -154,7 +154,7 @@ class ArtistAlbums extends Component {
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterPlaylists().length} ${this.filterPlaylists().length !== 1 ? 'Albums' : 'Album'}`}</p>
                                     <div>
-                                        <select defaultValue="Sort Tracks" onChange={(e) => this.sortPlaylists(e)} className="select_options">
+                                        <select defaultValue="Sort Tracks" onChange={(e) => this.sortPlaylists(e)} className="select_options sort_mobile_width">
                                             <option disabled>Sort Albums</option>
                                             <option>Title</option>
                                             <option>Recently Added</option>
