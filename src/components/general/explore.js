@@ -206,7 +206,7 @@ class Explore extends Component {
                                         {charts && charts.chartAlbums.map((cur, index) => {
                                             if (index < 4) {
                                                 return (
-                                                    <div className="explore_artist" key={index}>
+                                                    <div className="explore_artist mobile_explore" key={index}>
                                                         <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
                                                             <Link to={`/${cur.type}/${cur.id}`}>
                                                                 <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" />

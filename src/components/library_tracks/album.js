@@ -398,7 +398,7 @@ class AlbumTracks extends Component {
                                 </div> : 
                                 <div>
                                     <NotificationContainer />
-                                    <div className="top_search_result search_tracks remove_search_border my_tracks">
+                                    <div className="top_search_result search_tracks remove_search_border my_tracks mobile_padding">
                                         <div className="playlist_header" style={{ marginBottom: '30px' }} id="playlist_header">
                                             <img src={album.information.cover_medium} alt="playlist-cover" className="playlist_image" />
                                             <div className="playlist_details_holder">
@@ -432,15 +432,15 @@ class AlbumTracks extends Component {
                                         <div className="select_holder">
                                             <p className="discography_header_text">{`${this.filterTracks().length} ${this.filterTracks().length !== 1 ? 'Songs' : 'Song'}`}</p>
                                         </div>
-                                        <div>
-                                            <div className="tracks_header">
+                                        <div className="tracks_mobile_display">
+                                            <div className="tracks_header library_album_tracks">
                                                 <div className="playlist_tracks_header" id="track_album_number"><p className="u">#</p></div>
                                                 <p className="playlist_tracks_header" id="track_album_title" >TRACK</p>
                                                 <p className="playlist_tracks_header" id="track_album_duration">DURATION</p>
                                             </div>
                                             {this.filterTracks().map((track, index) => {
                                                 return (
-                                                    <div className="tracks_header tracks_header_background remove_search_border_top" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIconPl[index], this.addPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIconPl[index], this.addPl[index])}>
+                                                    <div className="tracks_header library_album_tracks tracks_header_background remove_search_border_top" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIconPl[index], this.addPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIconPl[index], this.addPl[index])}>
                                                         <div className="track_number">
                                                             <div className="u" ref={el => this.trackNumber[index] = el}>
                                                                 {track.number}

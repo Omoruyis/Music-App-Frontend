@@ -104,14 +104,14 @@ class MyArtists extends Component {
                         {artists && mounted ? (!artists.length ?
                             <div className="no_playlist">
                                 <p className="discography_header_text">You don't currently have any artist in your library</p>
-                            </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
-                                <div className="my_playlists_holder">
+                            </div> : <div className="top_search_result search_tracks remove_search_border my_tracks mobile_padding">
+                                <div className="my_playlists_holder mobile_albart_display">
                                     {this.filterPlaylists().map((artist, index) => {
                                         return (
-                                            <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                                                <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistImage[index])}>
+                                            <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                                                <div className="explore_artists_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistImage[index])}>
                                                     <Link to={`/myartists/${artist.id}`}>
-                                                        <img src={artist.picture} ref={el => this.playlistImage[index] = el} alt="album cover" className="explore_artists_images" />
+                                                        <img src={artist.picture} ref={el => this.playlistImage[index] = el} alt="album cover" className="explore_artists_images mobile_artist_album_image" />
                                                     </Link>
                                                 </div>
                                                 <Link to={`/myartists/${artist.id}`} style={{ color: 'black', textDecoration: 'none' }}>

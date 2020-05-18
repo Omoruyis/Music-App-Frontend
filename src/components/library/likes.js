@@ -131,7 +131,7 @@ class Favourites extends Component {
                         </div>
                         {tracks && trackLikes && mounted ?
                             <div className="search_container">
-                                <div className="artist_discography search_headers">
+                                <div className="artist_discography search_headers" id="remove_extra_width">
                                     <Link to={`/${path}`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}` ? 'artist_border' : ''}>Tracks</p></Link>
 
                                     <Link to={`/${path}/albums`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/albums` ? 'artist_border' : ''}>Albums</p></Link>

@@ -116,7 +116,7 @@ class Tracks extends Component {
                                 <option>Recently Liked</option>
                             </select>
                         </div>
-                        <div>
+                        <div className="tracks_mobile_display">
                             <div className="tracks_header remove_header_border">
                                 <div className="playlist_tracks_header" id="track_number"><p className="u"></p></div>
                                 <p className="playlist_tracks_header" id="track_title" >TRACK</p>

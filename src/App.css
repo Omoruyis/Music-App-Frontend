@@ -693,11 +693,11 @@
 
 /*********Explore Page ****/
 .explore_container_logged_in {
-  padding: 30px 80px 20px 80px
+  padding: 30px 80px 80px 80px
 }
 
 .explore_container {
-  padding: 30px 150px 20px 200px
+  padding: 30px 150px 80px 200px
 }
 
 .explore_charts {
@@ -1433,7 +1433,7 @@
 
 .top_search_image_text {
   margin-left: 40px;
-  font-size: 22px;
+  font-size: 22px !important;
   color: black;
 }
 
@@ -1894,17 +1894,57 @@
   }
 
   .mobile_artist_album_image {
-    width: 240px;
-    height: 240px;
+    width: 282px;
+    height: 282px;
   }
 
-  #discography_playlist_mapped {
+  .search_container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .search_headers {
+    padding-left: 0px;
+    /* padding-right: 20px; */
+  }
+
+  .my_tracks {
+    margin-left: 0;
     margin-right: 0;
+  }
+
+  .mobile_padding {
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }
 
 /*****Welcome Page ***/ 
 @media (max-width: 850px) {
+  .mobile_albart_display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .mobile_padding {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #discography_playlist_mapped {
+    margin-right: 0;
+  }
+
+  .search_container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  #remove_extra_width {
+    width: 700px;
+}
+
   .welcome_page_text {
     font-weight: bold;
     font-size: 55px;
@@ -1988,7 +2028,11 @@
 
   .explore_artists {
     flex-wrap: nowrap;
-    /* height: 270px; */
+  }
+
+  .mobile_explore {
+    height: 270px;
+    margin-bottom: 0;
   }
 
   .explorenav_search {
@@ -2115,9 +2159,13 @@
     width: 1000px;
   }
 
+  .library_album_tracks {
+    width: 720px;
+  }
+
   .mobile_artist_album_image {
-    width: 250px;
-    height: 250px;
+    width: 325px;
+    height: 325px;
   }
 }
 
@@ -2216,6 +2264,10 @@
     width: 800px;
   }
 
+  .library_album_tracks {
+    width: 620px;
+  }
+
   #tracks_header {
     width: 650px;
   }
@@ -2252,7 +2304,7 @@
   }
 
   .explore_container_logged_in {
-    padding: 30px 40px 20px 40px
+    padding: 30px 30px 20px 30px
   }
 
   .artist_details > img {
@@ -2315,11 +2367,47 @@
   }
 
   .mobile_artist_album_image {
-    width: 155px;
-    height: 155px;
+    width: 165px;
+    height: 165px;
   }
 
   /* #discography_playlist_mapped {
     margin-right: 0;
   } */
+
+  .artist_details_like {
+    margin-left: 20px;
+  }
+
+  .mobile_artist_but {
+    padding: 6px 10px;
+  }
+
+  .mobile_artist_title {
+    font-size: 20px;
+  }
+
+  .search_container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .mobile_reduce_margin{
+    margin-left: 20px;
+  }
+
+  #remove_extra_width {
+    width: 300px;
+  }
+
+  .no_favourites {
+    text-align: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .mobile_artist_album_image {
+    width: 155px;
+    height: 155px;
+  }
 }

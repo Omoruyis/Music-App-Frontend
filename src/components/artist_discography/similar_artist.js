@@ -41,7 +41,7 @@ class SimilarArtist extends Component {
         return (
             <div className="explore_artists flex">
             <p className="discography_header_text">Related Artists</p>
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }} className="mobile_albart_display">
                 {related.map((cur, index) => {
                     return (
                         <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>

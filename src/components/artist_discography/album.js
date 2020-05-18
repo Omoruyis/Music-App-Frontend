@@ -55,10 +55,10 @@ class ArtistAlbums extends Component {
         return (
             <div className="explore_artists flex">
                 <p className="discography_header_text">Albums</p>
-                <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
+                <div style={{ display: 'flex', flexWrap: 'wrap' }} className="mobile_albart_display">
                 {albums.map((cur, index) => {
                     return (
-                        <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                        <div className="explore_artist mobile_artist_album_image " id="discography_playlist_mapped" key={index}>
                             <div className="explore_albums_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
                                 <Link to={`/${cur.type}/${cur.id}`}>
                                     <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images mobile_artist_album_image" />

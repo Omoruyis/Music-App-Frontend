@@ -79,7 +79,7 @@ class Tracks extends Component {
         return (
             <div className="top_search_result search_tracks remove_search_border">
                 <p className="discography_header_text">{`${tracks.length}  ${tracks.length > 1 ? 'tracks' : 'track'}`}</p>
-                <div>
+                <div className="tracks_mobile_display">
                     <div className="tracks_header">
                         <div className="playlist_tracks_header" id="track_number"><p className="u"></p></div>
                         <p className="playlist_tracks_header" id="track_title" >TRACK</p>

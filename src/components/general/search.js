@@ -250,7 +250,7 @@ class Search extends Component {
                             <div className="search_container">
                                 {!searchResult.artists.length && !searchResult.albums.length && !searchResult.playlists.length && !searchResult.tracks.length && !Object.keys(searchResult.topResults).length ? <div className="no_playlist no_result">
                                     <p className="discography_header_text">Sorry, we couldn't find any result for {`"${reroute[reroute.length - 1]}"`}</p>
-                                </div> : <div className="artist_discography search_headers">
+                                </div> : <div className="artist_discography search_headers" id="remove_extra_width">
                                         <Link to={`/${path}/${match.params.query}`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}` ? 'artist_border' : ''}>All</p></Link>
 
                                         {searchResult.tracks && searchResult.tracks.length ? <Link to={`/${path}/${match.params.query}/tracks`} style={{ textDecoration: 'none' }}><p className="artist_discography_text" id={this.props.location.pathname === `/${path}/${match.params.query}/tracks` ? 'artist_border' : ''}>Tracks</p></Link> : ''}

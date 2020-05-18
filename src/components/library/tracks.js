@@ -309,7 +309,7 @@ class MyTracks extends Component {
                         {tracks && trackLikes && mounted ? (!tracks.length ?
                             <div className="no_track">
                                 <p className="discography_header_text">You don't currently have any tracks added</p>
-                            </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
+                            </div> : <div className="top_search_result search_tracks remove_search_border my_tracks mobile_padding ">
                                 <NotificationContainer />
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterTracks().length} ${this.filterTracks().length > 1 ? 'Songs' : 'Song'}`}</p>
@@ -320,7 +320,7 @@ class MyTracks extends Component {
                                         <option>Recently Added</option>
                                     </select>
                                 </div>
-                                <div>
+                                <div className="tracks_mobile_display">
                                     <div className="tracks_header remove_header_border">
                                         <div className="playlist_tracks_header" id="track_number"><p className="u"></p></div>
                                         <p className="playlist_tracks_header" id="track_title" >TRACK</p>

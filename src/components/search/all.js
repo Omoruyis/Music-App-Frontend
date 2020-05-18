@@ -135,7 +135,7 @@ class All extends Component {
                             <img src={topResults.artist.picture_medium} className="top_search_image" alt="artist cover" />
                         </Link>
                         <Link to={`/${topResults.artist.type}/${topResults.artist.id}`} style={{ textDecoration: 'none' }}>
-                            <p className="top_search_image_text turn_red">{topResults.artist.name}</p>
+                            <p className="top_search_image_text turn_red mobile_reduce_margin">{topResults.artist.name}</p>
                         </Link>
                     </div>
                 </div> : ''}
@@ -154,7 +154,7 @@ class All extends Component {
 
                 {tracks.length ? <div className="top_search_result search_tracks remove_search_border">
                     <p className="discography_header_text">Tracks</p>
-                    {tracks.map((track, index) => {
+                    <div className="tracks_mobile_display">{tracks.map((track, index) => {
                         if (index < 6) {
                             return (
                                 <div className="tracks_header tracks_header_background remove_search_border_top" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIcon[index], this.addIconPl[index])}>
@@ -195,20 +195,20 @@ class All extends Component {
                                 </div>
                             )
                         } else { return '' }
-                    })}
+                    })}</div>
                 </div> : ''}
 
 
                 {albums.length ? <div className="top_search_result search_tracks remove_search_border">
                     <p className="discography_header_text">Albums</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }} className="mobile_albart_display">
                         {albums.map((cur, index) => {
                             if (index < 5) {
                                 return (
-                                    <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                                        <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
+                                    <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                                        <div className="explore_albums_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(this.albumLike[index], this.albumImage[index])} onMouseOut={() => this.hideIcon(this.albumLike[index], this.albumImage[index])}>
                                             <Link to={`/${cur.type}/${cur.id}`}>
-                                                <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images" />
+                                                <img src={cur.cover_medium} ref={el => this.albumImage[index] = el} alt="album cover" className="explore_albums_images mobile_artist_album_image" />
                                             </Link>
                                             <div className="play_holder" ref={el => this.playAlbum[index] = el} onClick={() => { loggedIn ? this.play('album', cur.id) : this.login() }} onMouseOver={() => this.expandPlay(this.playAlbum[index])} onMouseOut={() => this.shrinkPlay(this.playAlbum[index])}>
                                                 <MdPlayArrow style={{ fontSize: '25px' }} />
@@ -235,14 +235,14 @@ class All extends Component {
 
                 {artists.length ? <div className="top_search_result search_tracks remove_search_border">
                     <p className="discography_header_text">Artists</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }} className="mobile_albart_display">
                         {artists.map((cur, index) => {
                             if (index < 5) {
                                 return (
-                                    <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                                        <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
+                                    <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                                        <div className="explore_artists_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
                                             <Link to={`/${cur.type}/${cur.id}`}>
-                                                <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images" />
+                                                <img src={cur.picture_medium} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images mobile_artist_album_image" />
                                             </Link>
                                             <div
                                                 className={!loggedIn ? 'favourite_holder white_favourite' : (this.newLikes(cur, 'artistLikes') ? 'favourite_holder red_favourite' : 'favourite_holder white_favourite')}
@@ -266,14 +266,14 @@ class All extends Component {
 
                 {playlists.length ? <div className="top_search_result search_tracks remove_search_border">
                     <p className="discography_header_text">Playlists</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }} className="mobile_albart_display">
                         {playlists.map((cur, index) => {
                             if (index < 5) {
                                 return (
-                                    <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                                        <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.playlistLike[index], this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistLike[index], this.playlistImage[index])}>
+                                    <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                                        <div className="explore_albums_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(this.playlistLike[index], this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistLike[index], this.playlistImage[index])}>
                                             <Link to={`/${cur.type}/${cur.id}`}>
-                                                <img src={cur.picture_medium} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" />
+                                                <img src={cur.picture_medium} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images mobile_artist_album_image" />
                                             </Link>
                                             <div className="play_holder" ref={el => this.playPlaylist[index] = el} onClick={() => { loggedIn ? this.play('playlist', cur.id) : this.login() }} onMouseOver={() => this.expandPlay(this.playPlaylist[index])} onMouseOut={() => this.shrinkPlay(this.playPlaylist[index])}>
                                                 <MdPlayArrow style={{ fontSize: '25px' }} />

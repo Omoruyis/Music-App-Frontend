@@ -317,7 +317,7 @@ class PlaylistTracks extends Component {
                             <div className="no_playlist no_result">
                                 <p className="discography_header_text">404, page not found</p>
                             </div> : 
-                            <div className="top_search_result search_tracks remove_search_border my_tracks">
+                            <div className="top_search_result search_tracks remove_search_border my_tracks mobile_padding">
                                 <NotificationContainer />
                                 <div className="playlist_header" style={{ marginBottom: '30px' }} id="playlist_header">
                                     {!playlist.personal ? <img src={playlist.information.picture_medium} alt="playlist-cover" className="playlist_image" /> : (this.filterTracks().length ? (this.getValue().information.tracks.data.length < 4 ? <img src={this.getValue().information.tracks.data[0].album.picture} alt="playlist cover" className="playlist_image" /> : <div className="four_pictures_second">
@@ -334,14 +334,14 @@ class PlaylistTracks extends Component {
                                             <p>{trimString(this.getValue().information.description, 30)}</p> : ''}
                                         <div className="playlist_duration">
                                             {!playlist.personal ?
-                                                <p className="dura">{playlist.nb_tracks} {playlist.information.nb_tracks !== 1 ? 'tracks' : 'track'}</p> :
+                                                <p className="dura">{playlist.information.nb_tracks} {playlist.information.nb_tracks !== 1 ? 'tracks' : 'track'}</p> :
                                                 <p className="dura">{this.getValue().information.tracks.data.length} {this.getValue().information.tracks.data.length !== 1 ? 'tracks' : 'track'}</p>}
                                             {!playlist.personal ?
                                                 <p className="playlist_time">{time(playlist.information.duration)}</p> :
                                                 <p className="playlist_time">{time(this.calculateTime(this.getValue()))}</p>}
                                         </div>
                                     </div>
-                                    {!playlist.personal ? <div className="play_holder" ref={el => this.playTop = el} onClick={() => this.play('playlist', playlist.information.id)} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
+                                    {!playlist.personal ? <div className="play_holder playlist_play_holder" ref={el => this.playTop = el} onClick={() => this.play('playlist', playlist.information.id)} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
                                         <MdPlayArrow style={{ fontSize: '25px' }} />
                                     </div> : ''}
                                 </div>
@@ -375,7 +375,7 @@ class PlaylistTracks extends Component {
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterTracks().length} ${this.filterTracks().length !== 1 ? 'Songs' : 'Song'}`}</p>
                                 </div>
-                                <div>
+                                <div className="tracks_mobile_display">
                                     <div className="tracks_header remove_header_border">
                                         <div className="playlist_tracks_header" id="track_number"><p className="u"></p></div>
                                         <p className="playlist_tracks_header" id="track_title" >TRACK</p>

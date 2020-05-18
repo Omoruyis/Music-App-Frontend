@@ -75,13 +75,13 @@ class Artists extends Component {
                                 <option>Recently Liked</option>
                             </select>
                         </div>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '50px'}}>
+                        <div style={{ marginTop: '50px', display: 'flex' }} className="mobile_albart_display">
                         {this.filterAlbums().map((cur, index) => {
                             return (
-                                <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                                    <div className="explore_artists_images_holder" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
+                                <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                                    <div className="explore_artists_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(this.artistLike[index], this.artistImage[index])} onMouseOut={() => this.hideIcon(this.artistLike[index], this.artistImage[index])}>
                                         <Link to={`/${cur.type}/${cur.information.id}`}>
-                                            <img src={cur.information.picture} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images" />
+                                            <img src={cur.information.picture} alt="artist cover" ref={el => this.artistImage[index] = el} className="explore_artists_images mobile_artist_album_image" />
                                         </Link>
                                         <div
                                             className='favourite_holder red_favourite'

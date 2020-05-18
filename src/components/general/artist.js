@@ -268,13 +268,13 @@ class Artist extends Component {
                                         <div className="artist_details">
                                             <img src={playlist.typeDetails.picture_medium} alt="artist_picture" />
                                             <div className="artist_details_like">
-                                                <p className="playlist_title">{playlist.typeDetails.name}</p>
+                                                <p className="playlist_title mobile_artist_title">{playlist.typeDetails.name}</p>
                                                 {!liked ?
-                                                    <button className="playlist_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist.typeDetails, 'like') }}>
+                                                    <button className="playlist_button mobile_artist_but" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist.typeDetails, 'like') }}>
                                                         <IoMdHeartEmpty className="playlist_button_icon" />
                                                 Like
                                                 </button> :
-                                                    <button className="playlist_button" id="unlike_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist.typeDetails, 'unlike') }}>
+                                                    <button className="playlist_button mobile_artist_but" id="unlike_button" onClick={() => { !loggedIn ? this.login() : this.likeUndownloadAction(path, playlist.typeDetails, 'unlike') }}>
                                                         <IoIosHeartDislike className="playlist_button_icon" />
                                                 Unlike
                                                 </button>
