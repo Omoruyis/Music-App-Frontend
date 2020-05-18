@@ -149,7 +149,7 @@ class MyAlbums extends Component {
                         </div>
                         {albums && albumLikes && mounted ? (!albums.length ?
                             <div className="no_playlist">
-                                <p className="discography_header_text">You don't currently have any album added</p>
+                                <p className="discography_header_text mobile_empty_playlist">You don't currently have any album added</p>
                             </div> : <div className="top_search_result search_tracks remove_search_border my_tracks mobile_padding">
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterPlaylists().length} ${this.filterPlaylists().length !== 1 ? 'Albums' : 'Album'}`}</p>

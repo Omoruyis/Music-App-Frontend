@@ -308,7 +308,7 @@ class MyTracks extends Component {
                         </div>
                         {tracks && trackLikes && mounted ? (!tracks.length ?
                             <div className="no_track">
-                                <p className="discography_header_text">You don't currently have any tracks added</p>
+                                <p className="discography_header_text mobile_empty_playlist">You don't currently have any tracks added</p>
                             </div> : <div className="top_search_result search_tracks remove_search_border my_tracks mobile_padding ">
                                 <NotificationContainer />
                                 <div className="select_holder">

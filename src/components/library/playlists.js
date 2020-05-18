@@ -245,19 +245,19 @@ class MyPlaylists extends Component {
                             <LibraryNav history={history} location={location} />
                         </div>
                         {playlists && playlistLikes && mounted ? (!playlists.length ?
-                            <div className="no_playlist">
-                                <p className="discography_header_text">You don't currently have any playlist added</p>
-                                <div className="create_playlist make_column" onClick={() => this.openModal()}>
+                            <div className="no_playlist mobile_padding">
+                                <p className="discography_header_text mobile_empty_playlist">You don't currently have any playlist added</p>
+                                <div className="create_playlist make_column mobile_create_playlist" onClick={() => this.openModal()}>
                                     <div className="playlist_add_icon_holder">
                                         <IoMdAdd className="my_playlist_add_icon" />
                                     </div>
                                     <p style={{ marginTop: '30px' }}>Create a playlist</p>
                                 </div>
-                            </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
+                            </div> : <div className="top_search_result search_tracks remove_search_border my_tracks mobile_padding">
                                 <NotificationContainer />
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterPlaylists().length} ${this.filterPlaylists().length !== 1 ? 'Playlists' : 'Playlist'}`}</p>
-                                    <div>
+                                    <div className="mobile_playlist_sorter">
                                         <select defaultValue="Sort Tracks" style={{ marginRight: '10px' }} onChange={(e) => this.sortDisplayPlaylists(e)} className="select_options">
                                             <option disabled>Display Playlists</option>
                                             <option>All</option>
@@ -271,8 +271,8 @@ class MyPlaylists extends Component {
                                         </select>
                                     </div>
                                 </div>
-                                <div className="my_playlists_holder">
-                                    <div className="create_playlist make_column" onClick={() => this.openModal()}>
+                                <div className="my_playlists_holder mobile_albart_display">
+                                    <div className="create_playlist make_column mobile_artist_album_image mobile_create_playlist mobile_playlist_height" onClick={() => this.openModal()}>
                                         <div className="playlist_add_icon_holder">
                                             <IoMdAdd className="my_playlist_add_icon" />
                                         </div>
@@ -281,10 +281,10 @@ class MyPlaylists extends Component {
                                     {this.filterPlaylists().map((playlist, index) => {
                                         if (!playlist.personal) {
                                             return (
-                                                <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                                                    <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.playlistLike[index], this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistLike[index], this.playlistImage[index])}>
+                                                <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                                                    <div className="explore_albums_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(this.playlistLike[index], this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistLike[index], this.playlistImage[index])}>
                                                         <Link to={`/myplaylists/${playlist._id}`}>
-                                                            <img src={playlist.information.picture_medium} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" />
+                                                            <img src={playlist.information.picture_medium} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images mobile_artist_album_image" />
                                                         </Link>
                                                         <div className="play_holder" ref={el => this.playPlaylist[index] = el} onClick={() => this.play('playlist', playlist.information.id)} onMouseOver={() => this.expandPlay(this.playPlaylist[index])} onMouseOut={() => this.shrinkPlay(this.playPlaylist[index])}>
                                                             <MdPlayArrow style={{ fontSize: '25px' }} />
@@ -305,16 +305,16 @@ class MyPlaylists extends Component {
                                             )
                                         } else {
                                             return (
-                                                <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                                                    <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(undefined, this.playlistImage[index])} onMouseOut={() => this.hideIcon(undefined, this.playlistImage[index])}>
+                                                <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                                                    <div className="explore_albums_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(undefined, this.playlistImage[index])} onMouseOut={() => this.hideIcon(undefined, this.playlistImage[index])}>
                                                         <Link to={`/myplaylists/${playlist._id}`}>
-                                                            {playlist.information.tracks.data.length ? (playlist.information.tracks.data.length < 4 ? <img src={playlist.information.tracks.data[0].album.picture} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images" /> : <div className="four_pictures" ref={el => this.playlistImage[index] = el}>
+                                                            {playlist.information.tracks.data.length ? (playlist.information.tracks.data.length < 4 ? <img src={playlist.information.tracks.data[0].album.picture} ref={el => this.playlistImage[index] = el} alt="playlist cover" className="explore_albums_images mobile_artist_album_image" /> : <div className="four_pictures" ref={el => this.playlistImage[index] = el}>
                                                                 <img src={playlist.information.tracks.data[0].album.picture} alt="playlist cover" style={{ borderTopLeftRadius: '5px' }} />
                                                                 <img src={playlist.information.tracks.data[1].album.picture} alt="playlist cover" style={{ borderTopRightRadius: '5px' }} />
                                                                 <img src={playlist.information.tracks.data[2].album.picture} alt="playlist cover" style={{ borderBottomLeftRadius: '5px' }} />
                                                                 <img src={playlist.information.tracks.data[3].album.picture} alt="playlist cover" style={{ borderBottomRightRadius: '5px' }} />
                                                             </div>) :
-                                                                <div className="empty_playlist_image" ref={el => this.playlistImage[index] = el}>
+                                                                <div className="empty_playlist_image mobile_artist_album_image" ref={el => this.playlistImage[index] = el}>
                                                                     <IoIosMusicalNotes className="empty_playlist_music_icon" />
                                                                 </div>}
                                                         </Link>

@@ -76,7 +76,7 @@ class Recent extends Component {
                         </div>
                         {recent && mounted ? (!recent.length ?
                             <div className="no_playlist">
-                                <p className="discography_header_text">You don't currently have anything added</p>
+                                <p className="discography_header_text mobile_empty_playlist">You don't currently have anything added</p>
                             </div> : <div className="top_search_result search_tracks remove_search_border my_tracks">
                                 <div className="my_playlists_holder mobile_padding mobile_albart_display">
                                     {this.filterPlaylists().map((playlist, index) => {

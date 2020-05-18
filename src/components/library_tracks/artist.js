@@ -150,7 +150,7 @@ class ArtistAlbums extends Component {
                             <div className="no_playlist no_result">
                                 <p className="discography_header_text">404, page not found</p>
                             </div> : 
-                            <div className="top_search_result search_tracks remove_search_border my_tracks">
+                            <div className="top_search_result search_tracks remove_search_border my_tracks mobile_padding">
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterPlaylists().length} ${this.filterPlaylists().length !== 1 ? 'Albums' : 'Album'}`}</p>
                                     <div>
@@ -161,13 +161,13 @@ class ArtistAlbums extends Component {
                                         </select>
                                     </div>
                                 </div>
-                                <div className="my_playlists_holder">
+                                <div className="my_playlists_holder mobile_albart_display">
                                     {this.filterPlaylists().map((playlist, index) => {
                                         return (
-                                            <div className="explore_artist" id="discography_playlist_mapped" key={index}>
-                                                <div className="explore_albums_images_holder" onMouseOver={() => this.showIcon(this.playlistLike[index], this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistLike[index], this.playlistImage[index])}>
+                                            <div className="explore_artist mobile_artist_album_image" id="discography_playlist_mapped" key={index}>
+                                                <div className="explore_albums_images_holder mobile_artist_album_image" onMouseOver={() => this.showIcon(this.playlistLike[index], this.playlistImage[index])} onMouseOut={() => this.hideIcon(this.playlistLike[index], this.playlistImage[index])}>
                                                     <Link to={`/myalbums/${playlist._id}`}>
-                                                        <img src={playlist.information.cover_medium} ref={el => this.playlistImage[index] = el} alt="album cover" className="explore_albums_images" />
+                                                        <img src={playlist.information.cover_medium} ref={el => this.playlistImage[index] = el} alt="album cover" className="explore_albums_images mobile_artist_album_image" />
                                                     </Link>
                                                     <div
                                                         className={this.newLikes(playlist.information.id) ? 'favourite_album_holder red_favourite' : 'favourite_album_holder white_favourite'}

@@ -103,7 +103,7 @@ class MyArtists extends Component {
                         </div>
                         {artists && mounted ? (!artists.length ?
                             <div className="no_playlist">
-                                <p className="discography_header_text">You don't currently have any artist in your library</p>
+                                <p className="discography_header_text mobile_empty_playlist">You don't currently have any artist in your library</p>
                             </div> : <div className="top_search_result search_tracks remove_search_border my_tracks mobile_padding">
                                 <div className="my_playlists_holder mobile_albart_display">
                                     {this.filterPlaylists().map((artist, index) => {

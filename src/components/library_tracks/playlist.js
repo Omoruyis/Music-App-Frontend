@@ -375,7 +375,7 @@ class PlaylistTracks extends Component {
                                 <div className="select_holder">
                                     <p className="discography_header_text">{`${this.filterTracks().length} ${this.filterTracks().length !== 1 ? 'Songs' : 'Song'}`}</p>
                                 </div>
-                                <div className="tracks_mobile_display">
+                                <div style={!this.filterTracks().length ? {display: 'none'} : {}} className="tracks_mobile_display">
                                     <div className="tracks_header remove_header_border">
                                         <div className="playlist_tracks_header" id="track_number"><p className="u"></p></div>
                                         <p className="playlist_tracks_header" id="track_title" >TRACK</p>

@@ -2167,6 +2167,14 @@
     width: 325px;
     height: 325px;
   }
+
+  .mobile_create_playlist {
+    margin-right: 0;
+  }
+
+  .mobile_playlist_height {
+    height: 350px !important;
+  }
 }
 
 @media (max-width: 500px) {
@@ -2402,6 +2410,30 @@
 
   .no_favourites {
     text-align: center;
+  }
+
+  .mobile_playlist_sorter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .mobile_playlist_sorter > select {
+    margin-right: 0 !important;
+    margin-bottom: 10px;
+    width: 180px;
+  }
+
+  .mobile_playlist_height {
+    height: 175px !important;
+  }
+
+  .mobile_empty_playlist {
+    text-align: center;
+  }
+
+  .ReactModal__Content {
+    width: 350px !important;
   }
 }
 
