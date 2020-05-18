@@ -2278,6 +2278,10 @@
     width: 800px;
   }
 
+  .my_tracks_header {
+    width: 1000px !important;
+  }
+
   .library_album_tracks {
     width: 620px;
   }

@@ -321,7 +321,7 @@ class MyTracks extends Component {
                                     </select>
                                 </div>
                                 <div className="tracks_mobile_display">
-                                    <div className="tracks_header remove_header_border">
+                                    <div className="tracks_header my_tracks_header remove_header_border">
                                         <div className="playlist_tracks_header" id="track_number"><p className="u"></p></div>
                                         <p className="playlist_tracks_header" id="track_title" >TRACK</p>
                                         <p className="playlist_tracks_header track_artist">ARTIST</p>
@@ -330,7 +330,7 @@ class MyTracks extends Component {
                                     </div>
                                     {this.filterTracks().map((track, index) => {
                                         return (
-                                            <div className="tracks_header tracks_header_background remove_search_border_top" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIconPl[index], this.addPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIconPl[index], this.addPl[index])}>
+                                            <div className="tracks_header my_tracks_header tracks_header_background remove_search_border_top" key={index} onMouseOver={() => this.showPlayButton(this.trackNumber[index], this.playSong[index], this.addIconPl[index], this.addPl[index], index)} onMouseOut={() => this.hidePlayButton(this.trackNumber[index], this.playSong[index], this.addIconPl[index], this.addPl[index])}>
                                                 <div className="track_number">
                                                     <div className="u" ref={el => this.trackNumber[index] = el}>
                                                         <img src={track.cover} alt="small album cover" style={{ width: '30px', height: '30px', borderRadius: '5px' }} />
