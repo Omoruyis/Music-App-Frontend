@@ -339,7 +339,7 @@ class PlaylistTracks extends Component {
                                             {!playlist.personal ?
                                                 <p className="playlist_time">{time(playlist.information.duration)}</p> :
                                                 <p className="playlist_time">{time(this.calculateTime(this.getValue()))}</p>}
-                                        </div>
+                                        </div>  
                                     </div>
                                     {!playlist.personal ? <div className="play_holder playlist_play_holder" ref={el => this.playTop = el} onClick={() => this.play('playlist', playlist.information.id)} onMouseOver={() => this.expandPlay(this.playTop)} onMouseOut={() => this.shrinkPlay(this.playTop)}>
                                         <MdPlayArrow style={{ fontSize: '25px' }} />
